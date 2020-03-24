@@ -1,3 +1,4 @@
 {
-  "backgroundSwitcher": "view.js"
+  "backgroundSwitcher": "view.js",
+  "coordinateTransform": "view.js"
 }

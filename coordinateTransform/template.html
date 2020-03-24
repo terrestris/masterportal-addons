@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<div class="coordinate-transform">
+    <p>
+        Wählen Sie das Quell- und Zielkoordinatensystem durch Texteingabe aus.<br/>
+        Geben Sie dann im linken unteren Feld Koordinaten ein, die transformiert werden sollen.<br/>
+        Koordinaten werden mittels Komma getrennt, mehrere Paare mittels Semikolon.
+    </p>
+    <div class="coordinate-title-wrapper">
+        <div class="coordinate-source">
+            Quelle:
+        </div>
+        <div class="coordinate-target">
+            Ziel:
+        </div>
+    </div>
+    <div class="coordinate-crs-wrapper">
+            <div class="ui-widget">
+                <% if (availableSourceCrs.length > 0) { %>
+                    <select id="sourcecrs" placeholder="Bitte wählen...">
+                        <% _.each(availableSourceCrs, function (crs) { %>
+                            <option value=<%= crs %>>EPSG:<%= crs %></option>
+                        <% }); %>
+                    </select>
+                <% } else { %>
+                    <input id="sourcecrs" placeholder="Bitte wählen..."/>
+                <% } %>
+            </div>
+            <div class="ui-widget">
+                <% if (availableTargetCrs.length > 0) { %>
+                    <select id="targetcrs" placeholder="Bitte wählen...">
+                        <% _.each(availableTargetCrs, function (crs) { %>
+                            <option value=<%= crs %>>EPSG:<%= crs %></option>
+                        <% }); %>
+                    </select>
+                <% } else { %>
+                    <input id="targetcrs" placeholder="Bitte wählen..."/>
+                <% } %>
+            </div>
+    </div>
+    <div class="coordinate-wrapper">
+        <div class=coordinate-input>
+            <textarea id="input" rows="5" cols="20" placeholder="Koordinaten eingeben...&#10;Beispiel:&#10;50,7;&#10;51.437,6.9234"></textarea>
+        </div>
+        <div class=coordinate-output>
+            <textarea readonly id="output" rows="5" cols="20" placeholder="Ergebnis:"></textarea>
+        </div>
+    </div>
+</div>

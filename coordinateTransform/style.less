@@ -1,0 +1,82 @@
+.coordinate-transform {
+
+    .ui-autocomplete {
+        z-index: 99999;
+        background-color: #ffffff;
+        border: 1px solid gray;
+    }
+
+    .coordinate-title-wrapper {
+        display: flex;
+
+        .coordinate-source {
+            flex: 1;
+        }
+
+        .coordinate-target {
+             flex: 1;
+         }
+    }
+
+    .coordinate-crs-wrapper {
+        display: flex;
+
+        #sourcecrs {
+            min-width: 200px;
+        }
+
+        #targetcrs {
+            min-width: 200px;
+        }
+
+        .ui-widget {
+            flex: 1;
+
+            #sourcecrs.invalid {
+                border: 1px solid red;
+                background-color: #ffc9c9;
+            }
+
+            #targetcrs.invalid {
+                border: 1px solid red;
+                background-color: #ffc9c9;
+            }
+        }
+    }
+
+    .coordinate-wrapper {
+        display: flex;
+
+        .coordinate-input {
+            flex: 1;
+
+            textarea {
+                min-width: 200px;
+            }
+
+            textarea.invalid {
+                border: 1px solid red;
+                background-color: #ffc9c9;
+            }
+
+        }
+
+        .coordinate-output {
+            flex: 1;
+
+            textarea {
+                min-width: 200px;
+            }
+        }
+    }
+
+    .coordinates-loading {
+        background-color: #bfbfbf;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+}
+
+.ui-helper-hidden-accessible {
+    display: none;
+}
