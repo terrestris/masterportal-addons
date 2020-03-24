@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<% if (open) { %>
+    <div class="titlebar">
+        <span class="glyphicon glyphicon-chevron-right" title="Ausblenden"></span>
+        <div class="title">Hintergrundkarte</div>
+    </div>
+    <div class="expanded">
+        <% _.each(previews, function (preview) { %>
+            <% if (preview.layer === activeLayer) { %>
+                <div class="backgroundswitcher-preview active">
+            <% } else { %>
+                <div class="backgroundswitcher-preview">
+            <% } %>
+                <div class="backgroundswitcher-label">
+                    <%= preview.layer.name %>
+                </div>
+                <img src=" <%= preview.img %> " id="<%= preview.layer.id %>"/>
+            </div>
+        <% }); %>
+    </div>
+<% } else { %>
+    <div class="titlebar">
+        <span class="glyphicon glyphicon-chevron-left" title="Einblenden"></span>
+        <div class="title">Hintergrundkarte</div>
+    </div>
+    <div class="collapsed">
+        <% _.each(previews, function (preview) { %>
+            <% if (preview.layer === activeLayer) { %>
+                <div class="backgroundswitcher-preview active">
+                        <div class="backgroundswitcher-label">
+                                <%= activeLayer.name %>
+                        </div>
+                        <img src=" <%= preview.img %> " id="<%= preview.layer.id %>"/>
+                </div>
+            <% } %>
+        <% }); %>
+    </div>
+<% } %>

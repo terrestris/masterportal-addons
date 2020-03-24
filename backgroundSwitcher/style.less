@@ -1,0 +1,76 @@
+.background-switcher {
+    max-width: 60%;
+    max-height: 60%;
+    position: absolute;
+    bottom: 30px;
+    right: 25px;
+    border: 1px solid gray;
+    background-color: #ffffff85;
+
+    .titlebar {
+        display: flex;
+        cursor: pointer;
+
+        .title {
+            margin-left: auto;
+            margin-right: auto;
+            padding-top: 3px;
+            padding-right: 5px;
+        }
+    }
+
+    .expanded {
+        img {
+            width: 100%;
+            height: 100%;
+        }
+        @media (min-width: 600px) {
+            img {
+                min-width: 128px;
+            }
+        }
+    }
+
+    .collapsed {
+
+        .backgroundswitcher-preview.active {
+            height: 100%;
+            border: 1px solid gray;
+            img {
+                height: 50px;
+                margin-left: auto;
+                margin-right: auto;
+                display: block;
+            }
+        }
+    }
+
+    .glyphicon {
+        cursor: pointer;
+        font-size: 16px;
+        padding: 5px;
+        top: 40%;
+    }
+
+    .backgroundswitcher-preview.active {
+        border: 2px solid black;
+    }
+
+    .backgroundswitcher-preview {
+        cursor: pointer;
+        border: 1px solid gray;
+        padding: 5px;
+
+        .active-background-layer {
+            border: 3px solid gray;
+        }
+
+        .backgroundswitcher-label {
+            background-color: #ffffff85;
+            text-align: center;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    }
+}
