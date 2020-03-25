@@ -28,6 +28,7 @@ const CoordinateTransformView = Backbone.View.extend({
         this.model = new CoordinateTransformModel(attributes);
         this.listenTo(this.model, {
             "change:isActive": this.render,
+            "change:currentLng": this.render,
             "change:loading": this.updateLoadmask,
             "change:sourceCrsValid": this.showValidState,
             "change:targetCrsValid": this.showValidState,

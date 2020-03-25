@@ -2,6 +2,15 @@ import Tool from "../../modules/core/modelList/tool/model";
 
 const CoordinateTransformModel = Tool.extend({
     defaults: {
+        currentLng: "",
+        i18nChooseCrsByTyping: "",
+        i18nChooseCrsBySelecting: "",
+        i18nDescription: "",
+        i18nCrsSource: "",
+        i18nCrsTarget: "",
+        i18nCrsPlaceHolder: "",
+        i18nCoordinateInputPlaceHolder: "",
+        i18nResult: "",
         isActive: false,
         renderToWindow: true,
         sourceCrs: null,
@@ -36,6 +45,7 @@ const CoordinateTransformModel = Tool.extend({
      * @property {String} id="coordinateTransform" The model id
      * @property {String} name="Coordinate Transform" The model name
      * @property {String} glyphicon="glyphicon-record" The models glyphicon
+     * @listens i18next#RadioTriggerLanguageChanged
      */
     initialize: function () {
         this.superInitialize();
@@ -53,6 +63,10 @@ const CoordinateTransformModel = Tool.extend({
             this.set("availableTargetCrs", Config.coordinateTransformTargetCrs);
             this.set("targetCrs", Config.coordinateTransformTargetCrs[0]);
         }
+        this.listenTo(Radio.channel("i18next"), {
+            "languageChanged": this.changeLang
+        });
+        this.changeLang(i18next.language);
     },
 
     /**
@@ -163,6 +177,25 @@ const CoordinateTransformModel = Tool.extend({
         this.set("sourceCoordinatesValid", sourceCoordinatesValid);
 
         return sourceCrsValid && targetCrsValid && sourceCoordinatesValid;
+    },
+
+    /**
+     * change language - sets default values for the language
+     * @param {String} lng the language changed to
+     * @returns {Void}  -
+     */
+    changeLang: function (lng) {
+        this.set({
+            currentLng: lng,
+            i18nChooseCrsByTyping: i18next.t("additional:modules.tools.coordinateTransform.i18nChooseCrsByTyping"),
+            i18nChooseCrsBySelecting: i18next.t("additional:modules.tools.coordinateTransform.i18nChooseCrsBySelecting"),
+            i18nDescription: i18next.t("additional:modules.tools.coordinateTransform.i18nDescription"),
+            i18nCrsSource: i18next.t("additional:modules.tools.coordinateTransform.i18nCrsSource"),
+            i18nCrsTarget: i18next.t("additional:modules.tools.coordinateTransform.i18nCrsTarget"),
+            i18nCrsPlaceHolder: i18next.t("additional:modules.tools.coordinateTransform.i18nCrsPlaceHolder"),
+            i18nCoordinateInputPlaceHolder: i18next.t("additional:modules.tools.coordinateTransform.i18nCoordinateInputPlaceHolder"),
+            i18nResult: i18next.t("additional:modules.tools.coordinateTransform.i18nResult")
+        });
     }
 });
 

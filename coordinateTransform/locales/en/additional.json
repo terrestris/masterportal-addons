@@ -1,0 +1,16 @@
+{
+  "modules": {
+      "tools": {
+          "coordinateTransform": {
+              "i18nChooseCrsByTyping": "Select the source and target CRS by typing into the fields.<br/>",
+              "i18nChooseCrsBySelecting": "Select the source and target CRS from the lists below.<br/>",
+              "i18nDescription": "Enter coordinates that should get transformed in the textfield on the lower left side.<br/>Coordinates have to be separated by comma, multiple coordinate pairs by semicolon.",
+              "i18nCrsSource": "Source",
+              "i18nCrsTarget": "Target",
+              "i18nCrsPlaceHolder": "Please choose...",
+              "i18nCoordinateInputPlaceHolder": "Enter coordinates...&#10;Example:&#10;50,7;&#10;51.437,6.9234",
+              "i18nResult": "Result:"
+          }
+      }
+  }
+}

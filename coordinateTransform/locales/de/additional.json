@@ -1,0 +1,16 @@
+{
+  "modules": {
+      "tools": {
+          "coordinateTransform": {
+              "i18nChooseCrsByTyping": "Wählen Sie das Quell- und Zielkoordinatensystem durch Texteingabe aus.<br/>",
+              "i18nChooseCrsBySelecting": "Wählen Sie das Quell- und Zielkoordinatensystem in der jeweiligen Liste aus.<br/>",
+              "i18nDescription": "Geben Sie dann im linken unteren Feld Koordinaten ein, die transformiert werden sollen.<br/>Koordinaten werden mittels Komma getrennt, mehrere Paare mittels Semikolon.",
+              "i18nCrsSource": "Quelle",
+              "i18nCrsTarget": "Ziel",
+              "i18nCrsPlaceHolder": "Bitte wählen...",
+              "i18nCoordinateInputPlaceHolder": "Koordinaten eingeben...&#10;Beispiel:&#10;50,7;&#10;51.437,6.9234",
+              "i18nResult": "Ergebnis:"
+          }
+      }
+  }
+}
