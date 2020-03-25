@@ -2,6 +2,10 @@ import Tool from "../../modules/core/modelList/tool/model";
 
 const BackgroundSwitcherModel = Tool.extend({
     defaults: {
+        currentLng: "",
+        i18nTitle: "",
+        i18nShowSwitcher: "",
+        i18nHideSwitcher: "",
         backgroundLayers: [],
         activeLayer: null,
         open: false,
@@ -20,12 +24,15 @@ const BackgroundSwitcherModel = Tool.extend({
      * @property {Object} activeLayer=null The current active layer object
      * @property {Boolean} open=false Flag if switcher is expanded or collapsed
      * @property {Array} previews=[] Array of layerobjects and corresponding example getMap request URL
+     * @listens i18next#RadioTriggerLanguageChanged
      */
     initialize: function () {
         this.superInitialize();
-        const bgLayers = Radio.request("Parser", "getItemsByAttributes",
-                {isBaseLayer: true}) || [],
-            map = Radio.request("Map", "getMap");
+        let bgLayers = Radio.request("Parser", "getItemsByAttributes",
+            {isBaseLayer: true}) || [];
+        const map = Radio.request("Map", "getMap");
+
+        bgLayers = bgLayers.filter(l => l.isNeverVisibleInTree !== true);
 
         this.set("backgroundLayers", bgLayers);
         this.set("activeLayer", bgLayers.find(l => l.isVisibleInMap));
@@ -35,6 +42,11 @@ const BackgroundSwitcherModel = Tool.extend({
         map.getLayerGroup().on("change", this.updatePreviews.bind(this));
 
         this.updatePreviews();
+
+        this.listenTo(Radio.channel("i18next"), {
+            "languageChanged": this.changeLang
+        });
+        this.changeLang(i18next.language);
     },
 
     /**
@@ -96,6 +108,20 @@ const BackgroundSwitcherModel = Tool.extend({
             });
 
         this.set("previews", previews);
+    },
+
+    /**
+     * change language - sets default values for the language
+     * @param {String} lng the language changed to
+     * @returns {Void}  -
+     */
+    changeLang: function (lng) {
+        this.set({
+            currentLng: lng,
+            i18nTitle: i18next.t("additional:backgroundSwitcher.i18nTitle"),
+            i18nShowSwitcher: i18next.t("additional:backgroundSwitcher.i18nShowSwitcher"),
+            i18nHideSwitcher: i18next.t("additional:backgroundSwitcher.i18nHideSwitcher")
+        });
     }
 });
 

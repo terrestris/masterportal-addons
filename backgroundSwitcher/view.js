@@ -8,7 +8,7 @@ const BackgroundSwitcherView = Backbone.View.extend({
     events: {
         "click .expanded .backgroundswitcher-preview > img": "setBackgroundLayer",
         "touchstart .expanded .backgroundswitcher-preview > img": "setBackgroundLayer",
-        "click .titlebar": "toggle",
+        "click .titlebar, .collapsed": "toggle",
         "touchstart .titlebar": "toggle"
     },
 
@@ -26,7 +26,8 @@ const BackgroundSwitcherView = Backbone.View.extend({
         this.listenTo(this.model, {
             "change:activeLayer": this.renderActiveLayer,
             "change:open": this.render,
-            "change:previews": this.renderPreviews
+            "change:previews": this.renderPreviews,
+            "change:currentLng": this.render
         });
         if (this.model.get("backgroundLayers").length < 2) {
             console.warn("You need to have at least 2 background layers to " +
@@ -140,6 +141,8 @@ const BackgroundSwitcherView = Backbone.View.extend({
                 el.parentNode.className = "backgroundswitcher-preview active";
             });
         }
+        // auto close slider after layer selection
+        this.toggle();
     },
 
     /**

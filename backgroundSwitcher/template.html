@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <% if (open) { %>
     <div class="titlebar">
-        <span class="glyphicon glyphicon-chevron-right" title="Ausblenden"></span>
-        <div class="title">Hintergrundkarte</div>
+        <span class="glyphicon glyphicon-chevron-right" title="<%= i18nHideSwitcher %>"></span>
+        <div class="title"><%= i18nTitle %></div>
     </div>
     <div class="expanded">
         <% _.each(previews, function (preview) { %>
@@ -20,8 +20,8 @@
     </div>
 <% } else { %>
     <div class="titlebar">
-        <span class="glyphicon glyphicon-chevron-left" title="Einblenden"></span>
-        <div class="title">Hintergrundkarte</div>
+        <span class="glyphicon glyphicon-chevron-left" title="<%= i18nShowSwitcher %>"></span>
+        <div class="title"><%= i18nTitle %></div>
     </div>
     <div class="collapsed">
         <% _.each(previews, function (preview) { %>

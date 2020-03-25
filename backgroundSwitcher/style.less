@@ -1,9 +1,14 @@
 .background-switcher {
-    max-width: 60%;
+    @media (min-width: 600px) {
+        max-width: 60%;
+    }
+    @media (max-width: 600px) {
+        max-width: 100%;
+    }
+    right: 5px;
     max-height: 60%;
     position: absolute;
     bottom: 30px;
-    right: 25px;
     border: 1px solid gray;
     background-color: #ffffff85;
 
@@ -28,6 +33,9 @@
             img {
                 min-width: 128px;
             }
+        }
+        @media (max-width: 600px) {
+            left: 5px;
         }
     }
 
@@ -74,3 +82,4 @@
         }
     }
 }
+
