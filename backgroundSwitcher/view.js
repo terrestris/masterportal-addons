@@ -53,8 +53,17 @@ const BackgroundSwitcherView = Backbone.View.extend({
             layerCount = this.model.get("backgroundLayers").length;
         let el = $(".background-switcher")[0];
 
+        // try to add background-switcher to map
+        // if no map found add it to the body element
         if (!el) {
-            $("body").append("<div class='background-switcher'></div>");
+            const map = $("#map");
+
+            if (map.length > 0) {
+                map.append("<div class='background-switcher'></div>");
+            }
+            else {
+                $("body").append("<div class='background-switcher'></div>");
+            }
             el = $(".background-switcher")[0];
         }
         this.setElement(el);
