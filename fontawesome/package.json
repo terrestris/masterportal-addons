@@ -1,0 +1,19 @@
+{
+  "name": "fontawesome",
+  "version": "1.0.0",
+  "description": "integration of fontawesome icons",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "node postinstall.js"
+  },
+  "keywords": [
+    "fontawesome"
+  ],
+  "creator": "terrestris GmbH & Co. KG",
+  "author": "terrestris GmbH & Co. KG",
+  "license": "MIT",
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.13.0"
+  }
+}

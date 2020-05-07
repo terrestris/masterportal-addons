@@ -1,4 +1,5 @@
 {
   "backgroundSwitcher": "view.js",
-  "coordinateTransform": "view.js"
+  "coordinateTransform": "view.js",
+  "fontawesome": "index.js"
 }
