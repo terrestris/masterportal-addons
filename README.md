@@ -1,6 +1,21 @@
-# masterportal-addons
-Addons for the masterportal at https://bitbucket.org/geowerkstatt-hamburg/masterportal/
+# Masterportal-addons
 
-Details and setup instructions may be found in the `doc` folder of an addon.
+This repo contains addons for the [Masterportal](https://bitbucket.org/geowerkstatt-hamburg/masterportal/).  
 
-This repo should be mounted / linked / copied to the `addons` folder of your masterportal application.
+## Installation
+
+Please check the `README` or `doc` files within the respective addon folder.
+
+## Overview
+
+| Addon name          | description                                           | Compability | Project Background |
+|---------------------|-------------------------------------------------------|-------------|--------------------|
+| Importer            | Import common geodata formats and OGC services        | > v2.30¹    | [MDI-DE Portal](https://projekt.mdi-de.org/)      |
+| Exporter            | Export WFS and vector layer to common geodata formats | > v2.30¹    | [MDI-DE Portal](https://projekt.mdi-de.org/)      |
+| backgroundSwitcher  | Overviewmap to change background map                  | v2.5²       | [LGB](https://geobasis-bb.de/lgb/de/geodaten/portale-anwendungen/geoportal-brandenburg/#) |
+| coordinateTransform | Transform coordinates using epsg.io API               | v2.5²       | [LGB](https://geobasis-bb.de/lgb/de/geodaten/portale-anwendungen/geoportal-brandenburg/#) |
+| fontawesome         | Add fontawesome as icon library                       | v2.5²       | [LGB](https://geobasis-bb.de/lgb/de/geodaten/portale-anwendungen/geoportal-brandenburg/#) |
+
+¹ Should work on older versions that use the new Vue.js framework.  
+² Last tested version. Should work on more recent versions that still use Backbone.js framework.
+
