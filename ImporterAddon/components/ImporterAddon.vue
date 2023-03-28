@@ -12,7 +12,6 @@ import getters from "../store/gettersImporterAddon";
 import mutations from "../store/mutationsImporterAddon";
 
 import {setLayerTreeFolderTitle} from "../utils/layerTreeFolder";
-import {getWorkflowNames} from "../utils/workflows";
 
 import STEPS from "../constants/steps";
 import {addLayersToMap, applyStyles} from "../utils/layer";
@@ -30,10 +29,6 @@ export default {
     },
     computed: {
         ...mapGetters("Tools/ImporterAddon", Object.keys(getters)),
-
-        workflowNames () {
-            return getWorkflowNames();
-        },
 
         steps () {
             return STEPS;
@@ -146,7 +141,7 @@ export default {
                         v-if="isCurrentWorkflowUndefined"
                     >
                         {{ $t("additional:modules.tools.importerAddon.selectWorkflowText") }}
-                        <WorkflowSelection :workflows="workflowNames" />
+                        <WorkflowSelection :workflows="supportedImportWorkflows" />
                     </div>
                     <div
                         v-if="!isCurrentWorkflowUndefined"

@@ -1,3 +1,5 @@
+import {getWorkflowNames} from "../utils/workflows";
+
 export const DEFAULT_VALUES = {
         currentWorkflow: undefined,
         selectedWorkflow: "wms",
@@ -17,7 +19,8 @@ export const DEFAULT_VALUES = {
         styleStrokeWidth: 5,
         styleCircleRadius: 10,
         inputFile: undefined,
-        onImportFinished: undefined
+        onImportFinished: undefined,
+        supportedImportWorkflows: getWorkflowNames()
     },
 
     /**
