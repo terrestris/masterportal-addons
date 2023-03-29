@@ -29,7 +29,7 @@ For more information, please check the official [Masterportal documentation](htt
    - `sql-wasm.wasm` ➡ `myportal/resources/sql-wasm.wasm`
 2. Add the following import to your `index.html`:
    - `<script src="./resources/geopackage.min.js"></script>`
-3. Verify, that the GeoPackage is defined as `supportedImportWorkflows` in your `config.json.md`.
+3. Verify, that `GeoPackage` is defined as `supportedImportWorkflows` in your `config.json`.
 
 ## Notes
 
