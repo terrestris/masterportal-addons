@@ -17,6 +17,8 @@ import STEPS from "../constants/steps";
 import {addLayersToMap, applyStyles} from "../utils/layer";
 import {layerTreeFolderExists, addLayerTreeFolder} from "../utils/layerTreeFolder";
 
+import isMobile from "../../../src/utils/isMobile";
+
 export default {
     name: "ImporterAddon",
     components: {
@@ -57,6 +59,7 @@ export default {
         ...mapActions("Tools/ImporterAddon", [
         ]),
         ...mapMutations("Tools/ImporterAddon", Object.keys(mutations)),
+        ...mapActions("Alerting", {addSingleAlert: "addSingleAlert"}),
 
         /**
          * Handler for closing the tool.
@@ -109,6 +112,9 @@ export default {
                 addLayerTreeFolder(this.layerTreeFolderTitle, this.layerTreeFolderId);
             }
             addLayersToMap(this.selectedLayers);
+            if (isMobile) {
+                this.addSingleAlert(i18next.t("additional:modules.tools.importerAddon.completeMessage", {count: this.selectedLayers.length}));
+            }
             applyStyles(this.selectedLayers);
             if (this.onImportFinished) {
                 this.onImportFinished();
