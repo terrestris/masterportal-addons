@@ -47,7 +47,7 @@ export const DEFAULT_VALUES = {
     state = {
         active: false,
         deactivateGFI: true,
-        icon: "fa fa-upload",
+        icon: "bi bi-download",
         id: "exporter-addon",
         isVisibleInMenu: true,
         renderToWindow: false,

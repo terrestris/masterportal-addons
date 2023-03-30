@@ -164,6 +164,8 @@ export default {
                         <FileUpload
                             v-if="currentStep === steps.uploadFile"
                             :service-type="currentWorkflow"
+                            :fileupload-icon="fileUploadIcon"
+                            :removefile-icon="removeFileIcon"
                         />
                         <StyleLayers
                             v-if="currentStep === steps.styleLayers"

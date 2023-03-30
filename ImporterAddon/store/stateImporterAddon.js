@@ -20,7 +20,9 @@ export const DEFAULT_VALUES = {
         styleCircleRadius: 10,
         inputFile: undefined,
         onImportFinished: undefined,
-        supportedImportWorkflows: getWorkflowNames()
+        supportedImportWorkflows: getWorkflowNames(),
+        fileUploadIcon: "bi bi-cloud-arrow-up-fill",
+        removeFileIcon: "bi bi-x-circle-fill"
     },
 
     /**
@@ -50,11 +52,14 @@ export const DEFAULT_VALUES = {
      * @property {Number} idCounter The numeric part of the generated layer id. This is used to avoid id collisions.
      * @property {File} inputFile The input file for local uploads.
      * @property {Function} onImportFinished A function that is triggered, when the import has finished.
+     * @property {String[]} supportedImportWorkflows The import workflows that will be supported.
+     * @property {String} fileUploadIcon The icon string for the upload icon.
+     * @property {String} removeFileIcon The icon string for the remove-file icon.
      */
     state = {
         active: false,
         deactivateGFI: true,
-        icon: "fa fa-download",
+        icon: "bi bi-upload",
         id: "importer-addon",
         isVisibleInMenu: true,
         renderToWindow: false,

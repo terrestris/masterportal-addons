@@ -23,6 +23,16 @@ export default {
                     "geopackage"
                 ].includes(value);
             }
+        },
+        fileuploadIcon: {
+            type: String,
+            required: false,
+            default: "bi bi-cloud-arrow-up-fill"
+        },
+        removefileIcon: {
+            type: String,
+            required: false,
+            default: "bi bi-x-circle-fill"
         }
     },
     data () {
@@ -212,7 +222,7 @@ export default {
                     @dragover="onDragOver"
                 >
                     <i
-                        class="fas fa-cloud-arrow-up icon"
+                        :class="`${fileuploadIcon} icon`"
                     />
                     <input
                         type="file"
@@ -235,7 +245,7 @@ export default {
                         @click="onRemoveFileClick"
                     >
                         <span
-                            class="fas fa-circle-xmark"
+                            :class="`${removeFileIcon} icon`"
                             aria-hidden="true"
                         />
                     </button>

@@ -7,3 +7,5 @@ The basic tool configurations apply. Following additional properties can be set 
 |Name|Required|Type|Default|Description|Expert|
 |----|--------|----|-------|-----------|------|
 |supportedExportFormats|no|String[]|["geojson", "gml", "shp", "gpkg"]|List of supported export formats. Only formats that appear in this list will be provided as option. Currently supported formats: "geojson", "gml", "shp", "gpkg".|false|
+|fileUploadIcon|no|String|bi bi-cloud-arrow-up-fill|Icon library string for the file upload icon|false|
+|removeFileIcon|no|String|bi bi-x-circle-fill|Icon library string for the remove file icon|false|
