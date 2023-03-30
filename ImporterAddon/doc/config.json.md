@@ -15,3 +15,5 @@ The basic tool configurations apply. Following additional properties can be set 
 |styleStrokeWidth|no|Array|5|The width in pixels to use as default stroke width|false|
 |styleCircleRadius|no|Array|10|The radius in pixels to use as default circle radius|false|
 |supportedImportWorkflows|no|Array|["wfs", "wms", "geojson", "shapezip", "geopackage"]|The supported workflows/formats that will be provided as import options.|false|
+|fileUploadIcon|no|String|bi bi-cloud-arrow-up-fill|Icon library string for the file upload icon|false|
+|removeFileIcon|no|String|bi bi-x-circle-fill|Icon library string for the remove file icon|false|
