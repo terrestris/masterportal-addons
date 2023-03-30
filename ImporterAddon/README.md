@@ -33,6 +33,8 @@ For more information, please check the official [Masterportal documentation](htt
 
 ## Notes
 
+As present, this plugin will only work for the tree type `custom`. In future, it will be adapted to new tree component (Masterportal Update v3).
+
 This addon has been developed as part of the project `Erneuerung und Entwicklung des MDI-DE Portals`.
 “Marine Data Infrastructure Germany (MDI-DE)” is jointly operated by three federal authorities and five state authorities of the coastal states of Mecklenburg-Vorpommern, Niedersachsen and Schleswig-Holstein.
 
