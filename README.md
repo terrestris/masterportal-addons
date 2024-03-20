@@ -15,6 +15,7 @@ Please check the `README` or `doc` files within the respective addon folder.
 | backgroundSwitcher  | Overviewmap to change background map                  | v2.5²       | [LGB](https://geobasis-bb.de/lgb/de/geodaten/portale-anwendungen/geoportal-brandenburg/#) |
 | coordinateTransform | Transform coordinates using epsg.io API               | v2.5²       | [LGB](https://geobasis-bb.de/lgb/de/geodaten/portale-anwendungen/geoportal-brandenburg/#) |
 | fontawesome         | Add fontawesome as icon library                       | v2.5²       | [LGB](https://geobasis-bb.de/lgb/de/geodaten/portale-anwendungen/geoportal-brandenburg/#) |
+| simpleLineChart     | Renders data points on simple chart.js component      | v2.24       | FOSSGIS   |
 
 ¹ Should work on older versions that use the new Vue.js framework.  
 ² Last tested version. Should work on more recent versions that still use Backbone.js framework.
