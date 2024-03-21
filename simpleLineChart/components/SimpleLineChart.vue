@@ -90,6 +90,7 @@ export default {
                 const featureSDO = feature.getProperties().SDO_NAME;
                 const url = new URL(wfsBaseUrl);
 
+                url.searchParams.append("SERVICE", "WFS");
                 url.searchParams.append("REQUEST", "GetFeature");
                 url.searchParams.append("VERSION", "2.0.0");
                 url.searchParams.append("TYPENAMES", featureType);
