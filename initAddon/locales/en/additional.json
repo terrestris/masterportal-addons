@@ -1,0 +1,8 @@
+{
+  "modules": {
+    "tools": {
+      "initAddon": {
+      }
+    }
+  }
+}

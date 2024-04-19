@@ -1,0 +1,3 @@
+## InitAddon
+
+Template Demo Addon
