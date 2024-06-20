@@ -25,6 +25,9 @@ export default {
 
         this.setCurrentFormValid(isValid);
     },
+    mounted () {
+        this.focusOnWorkflowRadio();
+    },
     methods: {
         ...mapMutations("Tools/ImporterAddon", [
             "setSelectedWorkflow",
@@ -40,6 +43,22 @@ export default {
             const workflowSelected = this.selectedWorkflow !== undefined && this.selectedWorkflow.length > 0;
 
             return workflowSelected;
+        },
+
+        /**
+         * Focus on the workflow radio.
+         *
+         * @returns {void}
+         */
+        focusOnWorkflowRadio () {
+            this.$nextTick(() => {
+                const workflowRef = "importer-addon-workflow-" + this.workflowRadioValue,
+                    workflowRadio = this.$refs[workflowRef][0];
+
+                if (workflowRadio) {
+                    workflowRadio.focus({focusVisible: true});
+                }
+            });
         }
     }
 };
@@ -47,25 +66,24 @@ export default {
 
 <template lang="html">
     <div class="importer-addon-workflow-selection">
-        <form>
-            <div class="form-group">
-                <div
-                    v-for="workflow in workflows"
-                    :key="workflow"
+        <div class="form-group">
+            <div
+                v-for="workflow in workflows"
+                :key="workflow"
+            >
+                <input
+                    :id="'importer-addon-workflow-radio-' + workflow"
+                    :ref="'importer-addon-workflow-' + workflow"
+                    v-model="workflowRadioValue"
+                    type="radio"
+                    name="workflow_selection"
+                    :value="workflow"
                 >
-                    <input
-                        :id="'importer-addon-workflow-radio-' + workflow"
-                        v-model="workflowRadioValue"
-                        type="radio"
-                        name="workflow_selection"
-                        :value="workflow"
-                    >
-                    <label :for="'importer-addon-workflow-radio-' + workflow">
-                        {{ $t("additional:modules.tools.importerAddon.workflows." + workflow) }}
-                    </label>
-                </div>
+                <label :for="'importer-addon-workflow-radio-' + workflow">
+                    {{ $t("additional:modules.tools.importerAddon.workflows." + workflow) }}
+                </label>
             </div>
-        </form>
+        </div>
     </div>
 </template>
 

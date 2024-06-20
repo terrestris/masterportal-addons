@@ -3,7 +3,7 @@ import {mapGetters, mapActions, mapMutations} from "vuex";
 
 import mutations from "../store/mutationsImporterAddon";
 
-import {fetchCapabilities, getLayersFromCapabilities, getVersionFromCapabilities, isValidCapabilitiesUrl} from "../utils/capabilities";
+import {createCapabilitiesUrl, fetchCapabilities, getLayersFromCapabilities, getVersionFromCapabilities, isValidCapabilitiesUrl} from "../utils/capabilities";
 import {createLayerConfigs, generateId} from "../utils/layer";
 
 export default {
@@ -89,7 +89,8 @@ export default {
             this.showErrorMessage = false;
             this.isLoading = true;
             try {
-                const capDocument = await fetchCapabilities(this.capabilitiesUrl);
+                const url = createCapabilitiesUrl(this.capabilitiesUrl, this.serviceType),
+                    capDocument = await fetchCapabilities(url);
 
                 this.loadLayerNames(capDocument);
                 this.loadServiceVersion(capDocument);
@@ -111,6 +112,8 @@ export default {
             const layers = await getLayersFromCapabilities(this.serviceType, capabilitiesDocument);
 
             this.layerSelectionList = layers;
+
+            this.focusOnCheckbox();
         },
 
         /**
@@ -161,6 +164,22 @@ export default {
          */
         isFormValid () {
             return this.selectedLayerNames.length > 0;
+        },
+
+        /**
+         * Focus on the layer select checkbox.
+         *
+         * @returns {void}
+         */
+        focusOnCheckbox () {
+            this.$nextTick(() => {
+                const layerSelectRef = "importer-addon-layer-select",
+                    layerSelect = this.$refs[layerSelectRef];
+
+                if (layerSelect) {
+                    layerSelect.focus({focusVisible: true});
+                }
+            });
         }
     }
 };
@@ -179,43 +198,43 @@ export default {
             <span>
                 {{ $t("additional:modules.tools.importerAddon.layerSelectionText") }}
             </span>
-            <form>
-                <div class="checkbox">
-                    <label class="layer-select-all">
-                        <input
-                            type="checkbox"
-                            value="all"
-                            @change="onSelectAllCheckboxChange"
-                        >
-                        {{ $t("additional:modules.tools.importerAddon.layerSelectionSelectAllText") }}
-                    </label>
-                </div>
-                <div
-                    v-for="layer in layerSelectionList"
-                    :key="layer.name"
-                    class="checkbox"
-                >
-                    <label>
-                        <input
-                            v-model="selectedLayerNames"
-                            type="checkbox"
-                            class="layer-checkbox"
-                            name="layer-checkbox"
-                            :value="layer.name"
-                            @change="onCheckboxChange"
-                        >
-                        {{ layer.title }}
-                    </label>
-                </div>
-                <div :class="[{['has-error']: !inputValid}]">
-                    <span
-                        v-if="!inputValid"
-                        class="help-block"
+            <div class="checkbox">
+                <label class="layer-select-all">
+                    <input
+                        ref="importer-addon-layer-select"
+                        type="checkbox"
+                        value="all"
+                        @change="onSelectAllCheckboxChange"
                     >
-                        {{ $t("additional:modules.tools.importerAddon.layerSelectionRequiredText") }}
-                    </span>
-                </div>
-            </form>
+                    {{ $t("additional:modules.tools.importerAddon.layerSelectionSelectAllText") }}
+                </label>
+            </div>
+            <div
+                v-for="layer in layerSelectionList"
+                :key="layer.name"
+                class="checkbox"
+            >
+                <input
+                    :id="'importer-addon-layer-selection-checkbox-' + layer.name"
+                    v-model="selectedLayerNames"
+                    type="checkbox"
+                    class="layer-checkbox"
+                    name="layer-checkbox"
+                    :value="layer.name"
+                    @change="onCheckboxChange"
+                >
+                <label :for="'importer-addon-layer-selection-checkbox-' + layer.name">
+                    {{ layer.title }}
+                </label>
+            </div>
+            <div :class="[{['has-error']: !inputValid}]">
+                <span
+                    v-if="!inputValid"
+                    class="help-block"
+                >
+                    {{ $t("additional:modules.tools.importerAddon.layerSelectionRequiredText") }}
+                </span>
+            </div>
         </div>
     </div>
 </template>

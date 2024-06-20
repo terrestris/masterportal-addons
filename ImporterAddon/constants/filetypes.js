@@ -1,6 +1,6 @@
 const fileTypes = {
     geojson: [".json", ".geojson"],
-    zip: [".zip"],
+    shapezip: [".zip"],
     geopackage: [".gpkg"]
 };
 

@@ -69,6 +69,11 @@ export default {
 
         this.setCurrentFormValid(isValid);
     },
+    mounted () {
+        if (this.currentFormValid) {
+            this.focusOnHiddenInput();
+        }
+    },
     methods: {
         ...mapActions("Tools/ImporterAddon", [
             "setSelectedLayerFromFile"
@@ -103,6 +108,7 @@ export default {
             this.handleFileUpload(file);
             this.inputValid = isValid;
             this.setCurrentFormValid(this.isFormValid());
+            this.focusOnHiddenInput();
         },
 
         /**
@@ -130,6 +136,24 @@ export default {
             this.handleFileUpload(file);
             this.inputValid = true;
             this.setCurrentFormValid(this.isFormValid());
+            this.focusOnHiddenInput();
+        },
+
+        /**
+         * Focus on the hidden input field.
+         * This is needed in order to submit via Enter-button.
+         *
+         * @returns {void}
+         */
+        focusOnHiddenInput () {
+            this.$nextTick(() => {
+                const hiddenInputRef = "importer-addon-hidden-input",
+                    hiddenInput = this.$refs[hiddenInputRef];
+
+                if (hiddenInput) {
+                    hiddenInput.focus();
+                }
+            });
         },
 
         /**
@@ -212,54 +236,59 @@ export default {
                 {{ $t("additional:modules.tools.importerAddon.provideGeoPackageText") }}
             </span>
         </div>
-        <form>
-            <div :class="['form-group', {['has-error']: !inputValid, ['has-success']: inputValid && inputFile}]">
-                <div
-                    class="drop-zone"
-                    @click="onUploadIconClick"
-                    @keyup="onKeyUp"
-                    @drop="onFileDrop"
-                    @dragover="onDragOver"
+        <div :class="['form-group', {['has-error']: !inputValid, ['has-success']: inputValid && inputFile}]">
+            <div
+                class="drop-zone"
+                @click="onUploadIconClick"
+                @keyup="onKeyUp"
+                @drop="onFileDrop"
+                @dragover="onDragOver"
+            >
+                <i
+                    :class="`${fileuploadIcon} icon`"
+                />
+                <input
+                    type="file"
+                    class="hidden-input"
+                    name="hidden-input"
+                    aria-label="hidden input"
+                    :accept="acceptedMimeTypes"
+                    @input="onFileInput"
                 >
-                    <i
-                        :class="`${fileuploadIcon} icon`"
-                    />
-                    <input
-                        type="file"
-                        class="hidden-input"
-                        name="hidden-input"
-                        aria-label="hidden input"
-                        :accept="acceptedMimeTypes"
-                        @input="onFileInput"
-                    >
-                </div>
-                <span
-                    v-if="inputValid && inputFile"
-                    id="file-upload-help-block"
-                    class="help-block"
-                >
-                    <button
-                        type="button"
-                        class="btn btn-link remove-file"
-                        :aria-label="$t('additional:modules.tools.importerAddon.removeFileText')"
-                        @click="onRemoveFileClick"
-                    >
-                        <span
-                            :class="`${removeFileIcon} icon`"
-                            aria-hidden="true"
-                        />
-                    </button>
-                    {{ inputFile.name }}
-                </span>
-                <span
-                    v-if="!inputValid"
-                    id="file-upload-help-block"
-                    class="help-block"
-                >
-                    {{ $t("additional:modules.tools.importerAddon.fileUploadRequiredText") }}
-                </span>
             </div>
-        </form>
+            <span
+                v-if="inputValid && inputFile"
+                id="file-upload-help-block"
+                class="help-block"
+            >
+                <button
+                    type="button"
+                    class="btn btn-link remove-file"
+                    :aria-label="$t('additional:modules.tools.importerAddon.removeFileText')"
+                    @click="onRemoveFileClick"
+                >
+                    <span
+                        :class="`${removeFileIcon} icon`"
+                        aria-hidden="true"
+                    />
+                </button>
+                {{ inputFile.name }}
+            </span>
+            <span
+                v-if="!inputValid"
+                id="file-upload-help-block"
+                class="help-block"
+            >
+                {{ $t("additional:modules.tools.importerAddon.fileUploadRequiredText") }}
+            </span>
+            <!-- This input is only used as focus target so that we can submit when pressing enter -->
+            <!-- eslint-disable-next-line vuejs-accessibility/form-control-has-label -->
+            <input
+                ref="importer-addon-hidden-input"
+                type="text"
+                class="hidden-text-input"
+            >
+        </div>
     </div>
 </template>
 
@@ -311,6 +340,15 @@ export default {
         .hidden-input {
             display: none;
         }
+    }
+
+    .hidden-text-input {
+        width: 0;
+        height: 0;
+        opacity: 0;
+        position: fixed;
+        top: -10000px;
+        left: -10000px;
     }
 }
 </style>

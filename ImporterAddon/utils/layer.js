@@ -1,4 +1,4 @@
-import VectorStyleModel from "../../../modules/vectorStyle/styleModel";
+import createStyle from "@masterportal/masterportalapi/src/vectorStyle/createStyle";
 import {readGeoJsonFile, readShapeZipFile, readGeoPackageFile} from "./file";
 import isMobile from "../../../src/utils/isMobile";
 
@@ -268,11 +268,10 @@ export function addLayersToMap (layerConfigs) {
  */
 export function applyStyles (layerConfigs) {
     layerConfigs.forEach(layerConfig => {
-        if (layerConfig.style) {
-            const style = new VectorStyleModel(layerConfig.style),
-                layerModel = Radio.request("ModelList", "getModelByAttributes", {id: layerConfig.id});
+        if (layerConfig.importedStyle) {
+            const layerModel = Radio.request("ModelList", "getModelByAttributes", {id: layerConfig.id});
 
-            layerModel.layer.setStyle((feat) => style.createStyle(feat, false));
+            layerModel.layer.setStyle((feat) => createStyle.createStyle(layerConfig.importedStyle, feat, false, Config.wfsImgPath));
         }
     });
 }

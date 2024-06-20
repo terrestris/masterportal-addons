@@ -14,9 +14,8 @@
                     "geopackage": "GeoPackage"
                 },
                 "selectWorkflowText": "Was möchten Sie importieren?",
-                "provideOgcServiceExample": "z.B.",
-                "provideWFSText": "Bitte geben Sie eine vollständige WFS-GetCapabilities URL ein.",
-                "provideWMSText": "Bitte geben Sie eine vollständige WMS-GetCapabilities URL ein.",
+                "provideWFSText": "Bitte geben Sie eine WFS-GetCapabilities URL ein.",
+                "provideWMSText": "Bitte geben Sie eine WMS-GetCapabilities URL ein.",
                 "capabilitiesUrlPlaceholder": "Capabilities URL",
                 "capabilitiesUrlRequiredText": "Bitte geben Sie eine GetCapabilities URL ein.",
                 "loadingText": "Lädt…",
@@ -35,7 +34,7 @@
                 "provideShapeZipText": "Auf Icon klicken, oder per Drag&Drop das gezippte Shapefile hochladen.",
                 "provideGeoPackageText": "Auf Icon klicken, oder per Drag&Drop GeoPackage Datei hochladen.",
                 "completeMessage": "Der importierte Layer wurde dem Themenbaum unter <strong>Importierte Fachdaten</strong> hinzugefügt!",
-                "completeMessage_other": "Die importierten Layer wurde dem Themenbaum unter <strong>Importierte Fachdaten</strong> hinzugefügt!"
+                "completeMessage_other": "Die importierten Layer wurden dem Themenbaum unter <strong>Importierte Fachdaten</strong> hinzugefügt!"
             }
         }
     }
