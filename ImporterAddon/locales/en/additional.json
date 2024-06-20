@@ -14,9 +14,8 @@
                     "geopackage": "GeoPackage"
                 },
                 "selectWorkflowText": "What kind of data would you like to import?",
-                "provideOgcServiceExample": "e.g.",
-                "provideWFSText": "Please provide a full WFS-GetCapabilities URL.",
-                "provideWMSText": "Please provide a full WMS-GetCapabilities URL.",
+                "provideWFSText": "Please provide a WFS-GetCapabilities URL.",
+                "provideWMSText": "Please provide a WMS-GetCapabilities URL.",
                 "capabilitiesUrlPlaceholder": "Capabilities URL",
                 "capabilitiesUrlRequiredText": "Please provide a GetCapabilities URL.",
                 "loadingText": "Loading…",

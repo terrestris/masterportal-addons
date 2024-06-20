@@ -39,6 +39,9 @@ export default {
 
         this.setCurrentFormValid(isValid);
     },
+    mounted () {
+        this.focusOnCapabilitiesInput();
+    },
     methods: {
         ...mapActions("Tools/ImporterAddon", [
         ]),
@@ -65,6 +68,22 @@ export default {
          */
         isFormValid () {
             return isValidCapabilitiesUrl(this.capabilitiesUrl);
+        },
+
+        /**
+         * Focus on the capabilities input field.
+         *
+         * @returns {void}
+         */
+        focusOnCapabilitiesInput () {
+            this.$nextTick(() => {
+                const capabilitiesInputRef = "importer-addon-capabilities-input",
+                    capabilitiesInput = this.$refs[capabilitiesInputRef];
+
+                if (capabilitiesInput) {
+                    capabilitiesInput.focus({focusVisible: true});
+                }
+            });
         }
     }
 };
@@ -76,52 +95,32 @@ export default {
             <span>
                 {{ $t("additional:modules.tools.importerAddon.provideWMSText") }}
             </span>
-            <span class="example">
-                {{ $t("additional:modules.tools.importerAddon.provideOgcServiceExample") }}
-                <br>
-                {{ wmsExampleBase }}<span class="query">{{ wmsExampleQuery }}</span>
-            </span>
         </div>
         <div v-if="serviceType === 'wfs'">
             <span>
                 {{ $t("additional:modules.tools.importerAddon.provideWFSText") }}
             </span>
-            <span class="example">
-                {{ $t("additional:modules.tools.importerAddon.provideOgcServiceExample") }}
-                <br>
-                {{ wfsExampleBase }}<span class="query">{{ wfsExampleQuery }}</span>
+        </div>
+        <div :class="['form-group', {['has-error']: !inputValid}]">
+            <input
+                ref="importer-addon-capabilities-input"
+                v-model="capabilitiesUrlValue"
+                :class="['form-control', {['has-error']: !inputValid}]"
+                :placeholder="$t('additional:modules.tools.importerAddon.capabilitiesUrlPlaceholder')"
+                aria-describedby="capabilities-url-help-block"
+                @input="onInputChange"
+                @blur="onInputChange"
+            >
+            <span
+                v-if="!inputValid"
+                id="capabilities-url-help-block"
+                class="help-block"
+            >
+                {{ $t("additional:modules.tools.importerAddon.capabilitiesUrlRequiredText") }}
             </span>
         </div>
-        <form>
-            <div :class="['form-group', {['has-error']: !inputValid}]">
-                <input
-                    v-model="capabilitiesUrlValue"
-                    :class="['form-control', {['has-error']: !inputValid}]"
-                    :placeholder="$t('additional:modules.tools.importerAddon.capabilitiesUrlPlaceholder')"
-                    aria-describedby="capabilities-url-help-block"
-                    @input="onInputChange"
-                    @blur="onInputChange"
-                >
-                <span
-                    v-if="!inputValid"
-                    id="capabilities-url-help-block"
-                    class="help-block"
-                >
-                    {{ $t("additional:modules.tools.importerAddon.capabilitiesUrlRequiredText") }}
-                </span>
-            </div>
-        </form>
     </div>
 </template>
 
 <style lang="scss" scoped>
-.importer-addon-provide-ogc-service {
-    .example {
-        font-style: italic;
-
-        .query {
-            font-weight: bold;
-        }
-    }
-}
 </style>

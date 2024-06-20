@@ -60,6 +60,7 @@ export default {
         ]),
         ...mapMutations("Tools/ImporterAddon", Object.keys(mutations)),
         ...mapActions("Alerting", {addSingleAlert: "addSingleAlert"}),
+        ...mapActions("Tools", ["setToolActive"]),
 
         /**
          * Handler for closing the tool.
@@ -68,13 +69,7 @@ export default {
          */
         close () {
             this.resetImporterAddon();
-            this.setActive(false);
-
-            const model = Radio.request("ModelList", "getModelByAttributes", {id: this.$store.state.Tools.ImporterAddon.id});
-
-            if (model) {
-                model.set("isActive", false);
-            }
+            this.setToolActive({id: "ImporterAddon", active: false});
         },
 
         /**
@@ -116,11 +111,15 @@ export default {
                 this.addSingleAlert(i18next.t("additional:modules.tools.importerAddon.completeMessage", {count: this.selectedLayers.length}));
             }
             applyStyles(this.selectedLayers);
+            this.close();
             if (this.onImportFinished) {
                 this.onImportFinished();
                 this.setOnImportFinished(undefined);
             }
-            this.close();
+        },
+
+        onFormSubmit (evt) {
+            evt.preventDefault();
         }
     }
 };
@@ -142,65 +141,69 @@ export default {
                 v-if="active"
                 id="importer-addon"
             >
-                <div class="importer-addon-wizard-content">
-                    <div
-                        v-if="isCurrentWorkflowUndefined"
-                    >
-                        {{ $t("additional:modules.tools.importerAddon.selectWorkflowText") }}
-                        <WorkflowSelection :workflows="supportedImportWorkflows" />
+                <form @submit="onFormSubmit">
+                    <div class="importer-addon-wizard-content">
+                        <div
+                            v-if="isCurrentWorkflowUndefined"
+                        >
+                            {{ $t("additional:modules.tools.importerAddon.selectWorkflowText") }}
+                            <WorkflowSelection :workflows="supportedImportWorkflows" />
+                        </div>
+                        <div
+                            v-if="!isCurrentWorkflowUndefined"
+                        >
+                            <ProvideOgcService
+                                v-if="currentStep === steps.provideOgcService"
+                                :service-type="currentWorkflow"
+                            />
+                            <LayerSelection
+                                v-if="currentStep === steps.selectLayers"
+                                :service-type="currentWorkflow"
+                                :capabilities-url="capabilitiesUrl"
+                            />
+                            <FileUpload
+                                v-if="currentStep === steps.uploadFile"
+                                :service-type="currentWorkflow"
+                                :fileupload-icon="fileUploadIcon"
+                                :removefile-icon="removeFileIcon"
+                            />
+                            <StyleLayers
+                                v-if="currentStep === steps.styleLayers"
+                                :layers="selectedLayers"
+                            />
+                        </div>
                     </div>
-                    <div
-                        v-if="!isCurrentWorkflowUndefined"
-                    >
-                        <ProvideOgcService
-                            v-if="currentStep === steps.provideOgcService"
-                            :service-type="currentWorkflow"
-                        />
-                        <LayerSelection
-                            v-if="currentStep === steps.selectLayers"
-                            :service-type="currentWorkflow"
-                            :capabilities-url="capabilitiesUrl"
-                        />
-                        <FileUpload
-                            v-if="currentStep === steps.uploadFile"
-                            :service-type="currentWorkflow"
-                            :fileupload-icon="fileUploadIcon"
-                            :removefile-icon="removeFileIcon"
-                        />
-                        <StyleLayers
-                            v-if="currentStep === steps.styleLayers"
-                            :layers="selectedLayers"
-                        />
+                    <div class="importer-addon-wizard-navigation">
+                        <button
+                            v-if="!isCurrentWorkflowUndefined"
+                            type="button"
+                            class="btn btn-default"
+                            @click="onPrevClick"
+                        >
+                            {{ $t("additional:modules.tools.importerAddon.prev") }}
+                        </button>
+                        <button
+                            v-if="!isLastStep"
+                            ref="importer-addon-next-btn"
+                            type="submit"
+                            :class="{btn: true, 'btn-default': !currentFormValid, 'btn-primary': currentFormValid}"
+                            :disabled="!currentFormValid"
+                            @click="onNextClick"
+                        >
+                            {{ $t("additional:modules.tools.importerAddon.next") }}
+                        </button>
+                        <button
+                            v-if="isLastStep"
+                            ref="importer-addon-finish-btn"
+                            type="submit"
+                            :class="{btn: true, 'btn-default': !currentFormValid, 'btn-primary': currentFormValid}"
+                            :disabled="!currentFormValid"
+                            @click="onFinishClick"
+                        >
+                            {{ $t("additional:modules.tools.importerAddon.finish") }}
+                        </button>
                     </div>
-                </div>
-                <div class="importer-addon-wizard-navigation">
-                    <button
-                        v-if="!isCurrentWorkflowUndefined"
-                        type="button"
-                        class="btn btn-default"
-                        @click="onPrevClick"
-                    >
-                        {{ $t("additional:modules.tools.importerAddon.prev") }}
-                    </button>
-                    <button
-                        v-if="!isLastStep"
-                        type="button"
-                        class="btn btn-default"
-                        :disabled="!currentFormValid"
-                        @click="onNextClick"
-                    >
-                        {{ $t("additional:modules.tools.importerAddon.next") }}
-                    </button>
-                    <button
-                        v-if="isLastStep"
-                        type="button"
-                        class="btn btn-default"
-                        :disabled="!currentFormValid"
-                        @click="onFinishClick"
-                    >
-                        {{ $t("additional:modules.tools.importerAddon.finish") }}
-                    </button>
-                </div>
+                </form>
             </div>
         </template>
     </ToolTemplate>

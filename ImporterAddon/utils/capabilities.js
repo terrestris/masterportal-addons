@@ -122,18 +122,43 @@ function getFlatLayers (layer) {
  * @returns {boolean} True, if url is valid. False otherwise.
  */
 export function isValidCapabilitiesUrl (capabilitiesUrl) {
-    if (!capabilitiesUrl || capabilitiesUrl.length === 0) {
-        return false;
+    return URL.canParse(capabilitiesUrl);
+}
+
+/**
+ * Create a capabilities url from a base url.
+ *
+ * @param {string} baseUrl The base url.
+ * @param {string} serviceType The service type.
+ * @returns {string} The capabilities url.
+ */
+export function createCapabilitiesUrl (baseUrl, serviceType) {
+    const url = new URL(baseUrl);
+    let hasService = false,
+        hasRequest = false;
+
+    for (const [key, value] of url.searchParams) {
+        if (key.toLowerCase() === "service") {
+            if (!["wms", "wfs"].includes(value.toLowerCase())) {
+                url.searchParams.set(key, serviceType.toUpperCase());
+            }
+            hasService = true;
+        }
+        if (key.toLocaleLowerCase() === "request") {
+            if (value.toLowerCase() !== "getcapabilities") {
+                url.searchParams.set(key, "GetCapabilities");
+            }
+            hasRequest = true;
+        }
+    }
+    if (!hasService) {
+        url.searchParams.set("service", serviceType.toUpperCase());
+    }
+    if (!hasRequest) {
+        url.searchParams.set("request", "GetCapabilities");
     }
 
-    const url = new URL(capabilitiesUrl),
-        params = [];
-
-    for (const k of url.searchParams.keys()) {
-        params.push(k.toLowerCase());
-    }
-
-    return params.includes("service") && params.includes("request");
+    return url.toString();
 }
 
 export default {
