@@ -1,6 +1,8 @@
 <script>
-import LinechartItem from "../../../src/share-components/charts/components/LinechartItem.vue";
+import LinechartItem from "../../../src/shared/modules/charts/components/LinechartItem.vue";
 import dayjs from "dayjs";
+// Info: Time adapter for chart.js
+import 'chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm';
 
 export default {
     name: "SimpleLineChart",
@@ -23,7 +25,7 @@ export default {
                     display: false
                 },
                 scales: {
-                    x: {
+                    xAxis: {
                         type: 'time'
                     }
                 }
@@ -58,6 +60,9 @@ export default {
          * @returns {Object} chart.js dataset
          */
         createChartData (features) {
+            // cf. https://www.chartjs.org/docs/latest/samples/line/segments.html
+            const skipped = (ctx, value) => ctx.p0.skip || ctx.p1.skip ? value : undefined;
+            const down = (ctx, value) => ctx.p0.parsed.y > ctx.p1.parsed.y ? value : undefined;
             const dataPoints = 
                 features.map(
                     f => [
