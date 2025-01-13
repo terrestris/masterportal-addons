@@ -39,7 +39,7 @@ If you want to test the addon, please check the  for instructions.
       "name": "simpleLineChart",
       "params": {
         "wfs": {
-          "url": "https://localhost:9001/dwd/ows",
+          "url": "https://cdc.dwd.de/geoserver/ows",
           "featureType": "CDC:OBS_DEU_P1M_T2M",
           "attributes": {
             "timestamp": "ZEITSTEMPEL",
