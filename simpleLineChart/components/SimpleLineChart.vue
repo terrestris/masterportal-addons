@@ -1,8 +1,6 @@
 <script>
 import LinechartItem from "../../../src/shared/modules/charts/components/LinechartItem.vue";
 import dayjs from "dayjs";
-// Info: Time adapter for chart.js
-import 'chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm';
 
 export default {
     name: "SimpleLineChart",
@@ -23,11 +21,6 @@ export default {
             linechartDataOptions: {
                 legend: {
                     display: false
-                },
-                scales: {
-                    xAxis: {
-                        type: 'time'
-                    }
                 }
             }
         }
