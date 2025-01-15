@@ -4,6 +4,10 @@ This provides an `gfiTheme` addon for Masterportal that displays time series dat
 
 If you want to test the addon, please check the  for instructions.
 
+## Disclaimer
+
+This addon is a demonstration addon (not intended for production environments). Please contact the repository maintainer, if you want to use and develop this addon.
+
 ## Supported Masterportal Versions
 
 - [v3.3.3](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src/v3.3.3/)
@@ -14,9 +18,8 @@ If you want to test the addon, please check the  for instructions.
 
 ## Installation
 
-1. Install the `chartjs-adapter-dayjs-4` package that is not provided via masterportal core: `npm ci`
-2. Register the addon on your `config.js`: `addons: ["simpleLineChart"]`
-3. Use the gfiTheme in a layer definition. Example:
+1. Register the addon on your `config.js`: `addons: ["simpleLineChart"]`
+2. Use the gfiTheme in a layer definition. Example:
 
 ```json
   {
@@ -39,7 +42,7 @@ If you want to test the addon, please check the  for instructions.
       "name": "simpleLineChart",
       "params": {
         "wfs": {
-          "url": "https://cdc.dwd.de/geoserver/ows",
+          "url": "https://localhost:9001/dwd/ows",
           "featureType": "CDC:OBS_DEU_P1M_T2M",
           "attributes": {
             "timestamp": "ZEITSTEMPEL",
