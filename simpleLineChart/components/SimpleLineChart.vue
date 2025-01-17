@@ -56,9 +56,15 @@ export default {
             // cf. https://www.chartjs.org/docs/latest/samples/line/segments.html
             const skipped = (ctx, value) => ctx.p0.skip || ctx.p1.skip ? value : undefined;
             const down = (ctx, value) => ctx.p0.parsed.y > ctx.p1.parsed.y ? value : undefined;
-            const dataPoints = 
-                features.map(
-                    f => [
+            const dataPoints =
+                features
+                    .sort((a, b) => {
+                        const aDate = dayjs(a.properties[this.config.wfs.attributes.timestamp]);
+                        const bDate = dayjs(b.properties[this.config.wfs.attributes.timestamp]);
+
+                        return aDate.isBefore(bDate) ? -1 : aDate.isAfter(bDate) ? 1 : 0;
+                    })
+                    .map(f => [
                         dayjs(f.properties[this.config.wfs.attributes.timestamp]).format("YYYY-MM"),
                         f.properties[this.config.wfs.attributes.value]
                     ]);
@@ -79,7 +85,7 @@ export default {
         /**
          * Fetch features from WFS
          * @param {Object} feature - Feature from Get Feature Info Request
-         * @returns {Array.<Object>} Feature collection 
+         * @returns {Array.<Object>} Feature collection
          */
         async getData (feature) {
             try {
