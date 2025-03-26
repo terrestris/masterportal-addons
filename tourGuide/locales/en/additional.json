@@ -1,0 +1,13 @@
+{
+  "modules": {
+    "tools": {
+      "tourGuide": {
+        "button": {
+          "done": "Done",
+          "next": "Next",
+          "prev": "Previous"
+        }
+      }
+    }
+  }
+}
