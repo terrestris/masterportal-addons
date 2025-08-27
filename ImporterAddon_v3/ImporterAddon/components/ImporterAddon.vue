@@ -14,6 +14,7 @@ import {applyStyles} from "../utils/layer";
 import FlatButton from "@shared/modules/buttons/components/FlatButton.vue";
 import buildTreeStructure from "@appstore/js/buildTreeStructure";
 import {processLayersForAdding} from "../utils/processLayersForAdding";
+
 /**
  * ImporterAddon
  * @vue-prop {String} side - The side in which the menu component is being rendered.
@@ -30,6 +31,7 @@ export default {
     },
     computed: {
         ...mapGetters("Modules/ImporterAddon", Object.keys(getters)),
+        ...mapGetters("Menu", ["mainMenu", "secondaryMenu"]),
 
         steps () {
             return STEPS;
@@ -58,6 +60,17 @@ export default {
                     this.setImportedFolderCounter();
                     return this.$t("additional:modules.tools.importerAddon.layerTreeFolderTitle", {count: this.importedFolderCounter});
             }
+        },
+        currentMenuSide () {
+            let menu = null;
+
+            if (this.isModuleInSections(this.mainMenu?.sections, this.type)) {
+                menu = "mainMenu";
+            }
+            else if (this.isModuleInSections(this.secondaryMenu?.sections, this.type)) {
+                menu = "secondaryMenu";
+            }
+            return menu;
         }
     },
     mounted () {
@@ -70,6 +83,35 @@ export default {
         ...mapActions("Menu", ["resetMenu"]),
         applyStyles,
         processLayersForAdding,
+        /**
+         * Recursively searches for a module type in menu sections
+         * @param {Array} sections - The menu sections to search in
+         * @param {String} moduleType - The module type to search for
+         * @returns {Boolean} True if module is found
+        */
+        isModuleInSections (sections, moduleType) {
+            if (!Array.isArray(sections)) {
+                return false;
+            }
+
+            return sections.some(section => {
+                if (Array.isArray(section)) {
+                    return this.isModuleInSections(section, moduleType);
+                }
+                if (section && typeof section === "object") {
+                    if (section.type === moduleType) {
+                        return true;
+                    }
+                    if (section.type === "folder" && section.elements) {
+                        return this.isModuleInSections(section.elements, moduleType);
+                    }
+                    if (section.elements) {
+                        return this.isModuleInSections(section.elements, moduleType);
+                    }
+                }
+                return false;
+            });
+        },
 
         /**
          * Handler for closing the tool.
@@ -78,7 +120,7 @@ export default {
          */
         close () {
             this.resetImporterAddon();
-            this.resetMenu("secondaryMenu"); // TODO "secondaryMenu" dynamisch!!!
+            this.resetMenu(this.currentMenuSide);
         },
 
         /**
@@ -129,10 +171,6 @@ export default {
             }
             this.applyStyles(processedLayers);
             this.close();
-            if (this.onImportFinished) {
-                this.onImportFinished();
-                this.setOnImportFinished(undefined);
-            }
         }
     }
 };
@@ -144,65 +182,63 @@ export default {
         class="row"
     >
         <hr>
-        <form @submit.prevent>
-            <div class="importer-addon-wizard-content">
-                <div
-                    v-if="isCurrentWorkflowUndefined"
-                >
-                    <WorkflowSelection
-                        :workflows="supportedImportWorkflows"
-                    />
-                </div>
-                <div
-                    v-if="!isCurrentWorkflowUndefined"
-                >
-                    <ProvideOgcService
-                        v-if="currentStep === steps.provideOgcService"
-                        :service-type="currentWorkflow"
-                    />
-                    <LayerSelection
-                        v-if="currentStep === steps.selectLayers"
-                        :service-type="currentWorkflow"
-                        :capabilities-url="capabilitiesUrl"
-                    />
-                    <FileUpload
-                        v-if="currentStep === steps.uploadFile"
-                        :service-type="currentWorkflow"
-                    />
-                    <StyleLayers
-                        v-if="currentStep === steps.styleLayers"
-                        :layers="selectedLayers"
-                    />
-                </div>
-            </div>
-            <div class="importer-addon-wizard-navigation mt-3">
-                <FlatButton
-                    v-if="!isCurrentWorkflowUndefined"
-                    type="button"
-                    :text="$t('additional:modules.tools.importerAddon.prev')"
-                    class="btn btn-default"
-                    @click="onPrevClick"
-                />
-                <FlatButton
-                    v-if="!isLastStep"
-                    ref="importer-addon-next-btn"
-                    type="submit"
-                    :text="$t('additional:modules.tools.importerAddon.next')"
-                    :class="{btn: true, 'btn-default': !currentFormValid, 'btn-primary': currentFormValid}"
-                    :disabled="!currentFormValid"
-                    @click="onNextClick"
-                />
-                <FlatButton
-                    v-if="isLastStep"
-                    ref="importer-addon-finish-btn"
-                    type="submit"
-                    :text="$t('additional:modules.tools.importerAddon.finish')"
-                    :class="{btn: true, 'btn-default': !currentFormValid, 'btn-primary': currentFormValid}"
-                    :disabled="!currentFormValid"
-                    @click="onFinishClick"
+        <div class="importer-addon-wizard-content">
+            <div
+                v-if="isCurrentWorkflowUndefined"
+            >
+                <WorkflowSelection
+                    :workflows="supportedImportWorkflows"
                 />
             </div>
-        </form>
+            <div
+                v-if="!isCurrentWorkflowUndefined"
+            >
+                <ProvideOgcService
+                    v-if="currentStep === steps.provideOgcService"
+                    :service-type="currentWorkflow"
+                />
+                <LayerSelection
+                    v-if="currentStep === steps.selectLayers"
+                    :service-type="currentWorkflow"
+                    :capabilities-url="capabilitiesUrl"
+                />
+                <FileUpload
+                    v-if="currentStep === steps.uploadFile"
+                    :service-type="currentWorkflow"
+                />
+                <StyleLayers
+                    v-if="currentStep === steps.styleLayers"
+                    :layers="selectedLayers"
+                />
+            </div>
+        </div>
+        <div class="importer-addon-wizard-navigation mt-3">
+            <FlatButton
+                v-if="!isCurrentWorkflowUndefined"
+                type="button"
+                :text="$t('additional:modules.tools.importerAddon.prev')"
+                class="btn btn-default"
+                @click="onPrevClick"
+            />
+            <FlatButton
+                v-if="!isLastStep"
+                ref="importer-addon-next-btn"
+                type="submit"
+                :text="$t('additional:modules.tools.importerAddon.next')"
+                :class="{btn: true, 'btn-default': !currentFormValid, 'btn-primary': currentFormValid}"
+                :disabled="!currentFormValid"
+                @click="onNextClick"
+            />
+            <FlatButton
+                v-if="isLastStep"
+                ref="importer-addon-finish-btn"
+                type="submit"
+                :text="$t('additional:modules.tools.importerAddon.finish')"
+                :class="{btn: true, 'btn-default': !currentFormValid, 'btn-primary': currentFormValid}"
+                :disabled="!currentFormValid"
+                @click="onFinishClick"
+            />
+        </div>
     </div>
 </template>
 
