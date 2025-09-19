@@ -15,8 +15,6 @@ Please check the `README` or `doc` files within the respective addon folder.
 | backgroundSwitcher  | Overviewmap to change background map                  | v2.5²       | [LGB](https://geobasis-bb.de/lgb/de/geodaten/portale-anwendungen/geoportal-brandenburg/#) |
 | coordinateTransform | Transform coordinates using epsg.io API               | v2.5²       | [LGB](https://geobasis-bb.de/lgb/de/geodaten/portale-anwendungen/geoportal-brandenburg/#) |
 | fontawesome         | Add fontawesome as icon library                       | v2.5²       | [LGB](https://geobasis-bb.de/lgb/de/geodaten/portale-anwendungen/geoportal-brandenburg/#) |
-| simpleLineChart     | Renders data points on simple chart.js component      | v3.8.0       | [FOSSGIS WS](https://github.com/terrestris/masterportal-ws)  |
-| tourGuide     | This addon enables a customised tour through the masterportal. Elements can be highlighted and provided with descriptions and graphics. Technically, it is basically a wrapper for [intro.js](https://introjs.com/) with minor adaptions to fit the masterportal design.      | v3.8.0       | [Meckenheim Geoportal](https://geoportal.meckenheim.de)  |
 
 ¹ Should work on older versions that use the new Vue.js framework.  
 ² Last tested version. Should work on more recent versions that still use Backbone.js framework.
