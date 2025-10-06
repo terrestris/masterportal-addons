@@ -38,7 +38,7 @@ export default {
         };
     },
     computed: {
-        ...mapGetters("Modules/ImporterAddon", [
+        ...mapGetters("Modules/Importer", [
             "idCounter",
             "capabilitiesBaseUrl",
             "capabilitiesVersion",
@@ -62,7 +62,7 @@ export default {
         this.setCurrentFormValid(isValid);
     },
     methods: {
-        ...mapMutations("Modules/ImporterAddon", Object.keys(mutations)),
+        ...mapMutations("Modules/Importer", Object.keys(mutations)),
 
         async handleCapabilitiesDocument () {
             this.showErrorMessage = false;
