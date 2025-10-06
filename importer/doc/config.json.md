@@ -1,6 +1,6 @@
-#### Portalconfig.menu.tool.importerAddon
+#### Portalconfig.menu.tool.importer
 
-The importerAddon tool allows importing layer from different sources, i.e. WMS, WFS.
+The importer tool allows importing layer from different sources, i.e. WMS, WFS.
 
 The basic tool configurations apply. Following additional properties can be set in config.json:
 
