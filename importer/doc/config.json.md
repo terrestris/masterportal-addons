@@ -20,7 +20,7 @@ The basic tool configurations apply. Following additional properties can be set 
 ```json
 {
   "type": "importer",
-  "name": "additional:modules.tools.importerAddon.title",
+  "name": "additional:modules.tools.importer.title",
   "icon": "bi-upload",
   "fileUploadIcon": "bi-cloud-arrow-up",
   "removeFileIcon": "bi bi-x-circle-fill",
