@@ -1,0 +1,40 @@
+{
+    "modules": {
+        "tools": {
+            "importer": {
+                "title": "Import",
+                "prev": "Zurück",
+                "next": "Weiter",
+                "finish": "Abschließen",
+                "workflows": {
+                    "wms": "WMS",
+                    "wfs": "WFS",
+                    "geojson": "GeoJSON",
+                    "shapezip": "Shapefile (gezipped)",
+                    "geopackage": "GeoPackage"
+                },
+                "selectWorkflowText": "Was möchten Sie importieren?",
+                "provideWFSText": "Bitte geben Sie eine WFS URL ein.",
+                "provideWMSText": "Bitte geben Sie eine WMS URL ein.",
+                "capabilitiesUrlPlaceholder": "Capabilities URL",
+                "loadingText": "Lädt…",
+                "layerLoadingErrorText": "Layer konnten nicht geladen werden. Bitte stellen Sie sicher, dass Sie eine valide URL angegeben haben.",
+                "layerSelectionText": "Welche Layer sollen importiert werden?",
+                "layerSelectionSelectAllText": "Alle Layer",
+                "layerSelectionRequiredText": "Bitte selektieren Sie mindestens einen Layer.",
+                "layerTreeFolderTitle": "Importierte Fachdaten {{count}}",
+                "setStyleMessage": "Legen Sie den Stil fest für den Layer",
+                "styleSelectFillColor": "Füllfarbe",
+                "styleSelectStrokeColor": "Linienfarbe",
+                "styleSelectStrokeWidth": "Linienstärke",
+                "fileUploadRequiredText": "Bitte laden Sie eine Datei hoch.",
+                "provideGeoJsonText": "Auf Icon klicken, oder per Drag&Drop GeoJSON Datei hochladen.",
+                "removeFileText": "Datei entfernen",
+                "provideShapeZipText": "Auf Icon klicken, oder per Drag&Drop das gezippte Shapefile hochladen.",
+                "provideGeoPackageText": "Auf Icon klicken, oder per Drag&Drop GeoPackage Datei hochladen.",
+                "completeMessage": "Der importierte Layer wurde dem Themenbaum hinzugefügt.",
+                "completeMessage_other": "Die importierten Layer wurden dem Themenbaum hinzugefügt."
+            }
+        }
+    }
+}
