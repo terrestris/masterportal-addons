@@ -18,7 +18,7 @@ Please check the `README` or `doc` files within the respective addon folder.
 | simpleLineChart     | Renders data points on simple chart.js component      | v3.8.0       | [FOSSGIS WS](https://github.com/terrestris/masterportal-ws)  |
 | tourGuide     | This addon enables a customised tour through the masterportal. Elements can be highlighted and provided with descriptions and graphics. Technically, it is basically a wrapper for [intro.js](https://introjs.com/) with minor adaptions to fit the masterportal design.      | v3.8.0       | [Meckenheim Geoportal](https://geoportal.meckenheim.de)  |
 | importer (v3)       | Import common geodata formats and OGC services        | v3.13.0    |      |
-| exporter (v3)       | Export WFS and vector layer to common geodata formats | v.3.13.0    |      |
+| exporter (v3)       | Export WFS and vector layer to common geodata formats | v3.13.0    |      |
 
 ¹ Should work on older versions that use the new Vue.js framework.  
 ² Last tested version. Should work on more recent versions that still use Backbone.js framework.
