@@ -1,0 +1,18 @@
+{
+  "name": "exporter",
+  "version": "2.0.0",
+  "description": "A generic exporter addon for Masterportal",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "terrestris GmbH & Co. KG, Dataport AöR",
+  "license": "MIT",
+  "dependencies": {
+    "@crmackey/shp-write": "^0.4.5"
+  }
+}
