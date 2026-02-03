@@ -87,7 +87,7 @@ export default {
         },
 
         /**
-         * Removes attribute row from the local attributes array and removes the attribute from the feature.
+         * Removes a layer from the selected layers array.
          * @param {Number} layerId The layer ID.
          * @returns {void}
          */

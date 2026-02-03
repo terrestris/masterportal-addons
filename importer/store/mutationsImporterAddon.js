@@ -28,7 +28,7 @@ const mutations = {
      * Removes the given layer from state.selectedLayers
      *
      * @param {Object} state of this component
-     * @param {Number} id layer id to be removed
+     * @param {Number} id ID of the layer to be removed
      * @returns {void}
      */
     removeLayer: (state, id) => {
