@@ -235,7 +235,7 @@ export default {
                 type="submit"
                 :text="$t('additional:modules.tools.importer.finish')"
                 :class="{btn: true, 'btn-default': !currentFormValid, 'btn-primary': currentFormValid}"
-                :disabled="!currentFormValid"
+                :disabled="!currentFormValid || selectedLayers?.length === 0"
                 @click="onFinishClick"
             />
         </div>
