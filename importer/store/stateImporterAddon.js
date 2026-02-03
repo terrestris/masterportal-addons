@@ -53,7 +53,7 @@ export const DEFAULT_VALUES = {
         icon: "bi-upload",
         id: "importerAddon",
         type: "importerAddon",
-        name: "additional:modules.tools.importerAddon.title",
+        name: "additional:modules.tools.importer.title",
         ...DEFAULT_VALUES
     };
 
