@@ -31,9 +31,9 @@ export function isMimeTypeAccepted (mimeType, serviceType) {
 }
 
 /**
- * Reads a geoJSON file and returns its content as JSON.
+ * Reads a GeoJSON file and returns its content as JSON.
  *
- * @param {File} file The GeoJson file to read.
+ * @param {File} file The GeoJSON file to read.
  * @returns {Object} The content of the file as JSON.
  */
 export async function readGeoJsonFile (file) {
@@ -44,7 +44,7 @@ export async function readGeoJsonFile (file) {
 
 /**
  * Parses a zipped shapefile (File API object) and returns
- * geoJSON file(s) as JSON.
+ * GeoJSON file(s) as JSON.
  *
  * @param {File} file The zipped shapefile file to read.
  * @returns {Object[]} List of geojson objects.
@@ -53,15 +53,23 @@ export async function readShapeZipFile (file) {
     const arrayBuffer = await file.arrayBuffer(),
         shape = await parseZip(arrayBuffer);
 
-    // allways return array
+    if (Array.isArray(shape) && shape.length > 1 && shape.every(e => e.fileName === shape[0].fileName)) {
+        console.warn("Warning: Shape file contains more than one layer with the same name.");
+        return shape.map((e, index) => ({
+            ...e,
+            fileName: `${e.fileName}_${index}`
+        }));
+    }
+
+    // always return array
     return !Array.isArray(shape) ? [shape] : shape;
 }
 
 /**
- * Reads a GeoPackage file and returns its content as GeoJson.
+ * Reads a GeoPackage file and returns its content as GeoJSON.
  *
- * @param {File} file The GeoJson file to read.
- * @returns {Object} List of feature tables as GeoJson FeatureCollections
+ * @param {File} file The GeoJSON file to read.
+ * @returns {Object} List of feature tables as GeoJSON FeatureCollections
  */
 export async function readGeoPackageFile (file) {
     // create array buffer

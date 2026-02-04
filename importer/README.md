@@ -3,9 +3,11 @@
 ## Installation
 
 ### Basic
+
 1. Copy the folder to your `addons` folder within your masterportal project.
 2. Run `npm i` within the specific addon folder: `addons/importer`
-3. Adapt the `addons/addons.conf` by adding:
+3. Adapt the `addons/addonsConf.json` by adding:
+
 ```json
 {
   "importer": {
@@ -24,6 +26,7 @@ addons: [
 For more information, please check the official [Masterportal documentation](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src/dev/doc/addOnsVue.md).
 
 ### GeoPackage Support
+
 1. Download and safe the GeoPackage library code and Web Assembly version of `Sql.js` to your portals resource folder, cf. `https://www.npmjs.com/package/@ngageoint/geopackage`.
    - `geopackage.min.js` ➡ `myportal/resources/geopackage.min.js`
    - `sql-wasm.wasm` ➡ `myportal/resources/sql-wasm.wasm`
@@ -33,4 +36,4 @@ For more information, please check the official [Masterportal documentation](htt
 
 ## Notes
 
-This plugin was developed for Masterportal v3.13.0.
+This plugin was developed and tested for Masterportal v3.15.1 (LTS).
