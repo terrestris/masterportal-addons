@@ -34,7 +34,8 @@
                 "provideGeoPackageText": "Click on icon or use Drag&Drop to upload GeoPackage.",
                 "completeMessage": "The layer has been added to the layer tree.",
                 "completeMessage_other": "The layers have been added to the layer tree.",
-                "removeLayer": "Remove layer"
+                "removeLayer": "Remove layer",
+                "importFailed": "Import failed. Please make sure to upload valid files only."
             }
         }
     }

@@ -73,22 +73,29 @@ export async function readShapeZipFile (file) {
  */
 export async function readGeoPackageFile (file) {
     // create array buffer
-    const buffer = await file.arrayBuffer(),
-        // create Uint8Array
-        uint8Array = new Uint8Array(buffer),
-        gpkg = await prepareGPKG(uint8Array),
-        // get tables
-        featureTables = gpkg.getFeatureTables(),
-        // iterate over feature tables, query features and store in feature collection
-        featureCollections = featureTables.map(table => {
-            const features = gpkg.queryForGeoJSONFeaturesInTable(table);
+    const buffer = await file.arrayBuffer();
+    // create Uint8Array
+    const uint8Array = new Uint8Array(buffer);
+    const gpkg = await prepareGPKG(uint8Array);
 
-            return {
-                "type": "FeatureCollection",
-                "tableName": table,
-                "features": [... features]
-            };
-        });
+    if (gpkg === null) {
+        // abort file import
+        return [];
+    }
+
+    // get tables
+    const featureTables = gpkg.getFeatureTables();
+
+    // iterate over feature tables, query features and store in feature collection
+    const featureCollections = featureTables.map(table => {
+        const features = gpkg.queryForGeoJSONFeaturesInTable(table);
+
+        return {
+            "type": "FeatureCollection",
+            "tableName": table,
+            "features": [... features]
+        };
+    });
 
     return featureCollections;
 }
@@ -99,9 +106,20 @@ export async function readGeoPackageFile (file) {
  * @returns {object} - The GeoPackage database connection
     */
 export async function prepareGPKG (uint8Array) {
-    window.GeoPackage.setSqljsWasmLocateFile(file => "./resources/" + file);
+    const gp = require("@ngageoint/geopackage/dist/geopackage.min");
+
+    gp.setSqljsWasmLocateFile(filename => "https://unpkg.com/@ngageoint/geopackage@4.2.6/dist/" + filename);
+    window.GeoPackage = gp;
+
     // create GeoPackage database connection
     const gpkg = await window.GeoPackage.GeoPackageAPI.open(uint8Array);
+    const tables = gpkg.getFeatureTables();
+    const projections = tables.map((tableName) => gpkg.getFeatureDao(tableName).projection);
+
+    if (projections.some(proj => proj === null)) {
+        console.error("The CRS information is missing in one or more GeoPackage tables. File import will be aborted.");
+        return null;
+    }
 
     return gpkg;
 }
