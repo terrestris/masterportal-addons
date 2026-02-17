@@ -171,7 +171,7 @@
         "no-whitespace-before-property": "error",
         "object-curly-spacing": "error",
         "object-property-newline": 0,
-        "one-var": "error",
+        "one-var": "off",
         "one-var-declaration-per-line": "error",
         "quotes": "error",
         "require-jsdoc": ["error", {
