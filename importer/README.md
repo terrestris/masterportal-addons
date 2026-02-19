@@ -39,4 +39,4 @@ For more information, please check the official [Masterportal documentation](htt
 
 ## Notes
 
-This plugin was developed and tested for Masterportal v3.15.1 (LTS).
+This plugin was developed and tested for Masterportal v3.15.2 (LTS).
