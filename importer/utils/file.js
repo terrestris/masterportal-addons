@@ -106,11 +106,7 @@ export async function readGeoPackageFile (file) {
  * @returns {object} - The GeoPackage database connection
     */
 export async function prepareGPKG (uint8Array) {
-    const gp = require("@ngageoint/geopackage/dist/geopackage.min");
-
-    gp.setSqljsWasmLocateFile(filename => "https://unpkg.com/@ngageoint/geopackage@4.2.6/dist/" + filename);
-    window.GeoPackage = gp;
-
+    window.GeoPackage.setSqljsWasmLocateFile(file => "./resources/" + file);
     // create GeoPackage database connection
     const gpkg = await window.GeoPackage.GeoPackageAPI.open(uint8Array);
     const tables = gpkg.getFeatureTables();

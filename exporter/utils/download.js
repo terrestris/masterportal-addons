@@ -446,11 +446,8 @@ function filterFeaturePropertiesForGpkg (geojson) {
  * @returns {object} - The geopackage
  */
 async function prepareGPKG (properties) {
-    const gp = require("@ngageoint/geopackage/dist/geopackage.min");
-
-    gp.setSqljsWasmLocateFile(filename => "https://unpkg.com/@ngageoint/geopackage@4.2.6/dist/" + filename);
-    window.GeoPackage = gp;
-
+    // es-lint-disable-next-line no-undef
+    window.GeoPackage.setSqljsWasmLocateFile(file => "./resources/" + file);
     // es-lint-disable-next-line no-undef
     const gpkg = await window.GeoPackage.GeoPackageAPI.create(),
         tableProperties = [];
