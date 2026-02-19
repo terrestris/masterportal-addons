@@ -60,14 +60,17 @@ async function downloadDrawLayer (drawLayer, format) {
             break;
     }
 
-    // eslint-disable-next-line one-var
     const url = URL.createObjectURL(blob);
 
     performDownload(url, fileName);
 }
 
 /**
+ * Download a vector layer.
  *
+ * @param {Object} vectorBaseLayer The vector layer to download.
+ * @param {String} format The requested output format.
+ * @returns {void}
  */
 async function downloadVectorBaseLayer (vectorBaseLayer, format) {
     const fileEnding = getFileEndingForFormat(format),
@@ -97,7 +100,6 @@ async function downloadVectorBaseLayer (vectorBaseLayer, format) {
             break;
     }
 
-    // eslint-disable-next-line one-var
     const url = URL.createObjectURL(blob);
 
     performDownload(url, fileName);
@@ -134,7 +136,6 @@ async function downloadGeoJsonLayer (geoJsonLayer, format) {
             blob = geojsonToBlob(data, format, geoJsonLayer.type, geoJsonLayer.name);
             break;
     }
-    // eslint-disable-next-line one-var
     const blobUrl = URL.createObjectURL(blob);
 
     performDownload(blobUrl, fileName);
@@ -342,7 +343,6 @@ async function downloadWfsLayer (wfsLayer, format) {
     url.searchParams.append("srsName", dataProjection);
     url.searchParams.append(typeNameString, wfsLayer.featureType);
 
-    // eslint-disable-next-line one-var
     const wfsData = await fetchData(url.toString()),
         wfsFormat = new WFS({version: wfsLayer.version}),
         projection = wfsFormat.readProjection(wfsData),
@@ -353,7 +353,6 @@ async function downloadWfsLayer (wfsLayer, format) {
 
     // respect axis orientation from gml output to avoid flipped coordinates
     addEquivalentProjections([get(dataProjection), proj]);
-    // eslint-disable-next-line one-var
     const features = wfsFormat.readFeatures(wfsData, {
             proj
         }),
@@ -389,7 +388,6 @@ async function downloadWfsLayer (wfsLayer, format) {
             break;
     }
 
-    // eslint-disable-next-line one-var
     const blobUrl = URL.createObjectURL(blob);
 
     performDownload(blobUrl, fileName);
@@ -412,7 +410,6 @@ async function createGeoPackage (geojson) {
         }
     });
     // Create and prepare geopackage
-    // es-lint-disable-next-line one-var
     const gpkg = await prepareGPKG(geojson.features[0].properties),
         tableName = "export";
 
