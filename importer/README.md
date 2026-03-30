@@ -30,7 +30,7 @@ For more information, please check the official [Masterportal documentation](htt
 
 ### GeoPackage Support
 
-1. Download and save the GeoPackage library code and Web Assembly version of `Sql.js` to your portals resource folder, cf. `https://www.npmjs.com/package/@ngageoint/geopackage`.
+1. Download and save the GeoPackage library code and WebAssembly version of `Sql.js` to your portals resource folder, cf. `https://www.npmjs.com/package/@ngageoint/geopackage`.
    - `geopackage.min.js` ➡ `myportal/resources/geopackage.min.js`
    - `sql-wasm.wasm` ➡ `myportal/resources/sql-wasm.wasm`
 2. Add the following import to your `index.html`:

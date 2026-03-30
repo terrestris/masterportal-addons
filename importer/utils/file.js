@@ -69,14 +69,15 @@ export async function readShapeZipFile (file) {
  * Reads a GeoPackage file and returns its content as GeoJSON.
  *
  * @param {File} file The GeoJSON file to read.
+ * @param {string} resourcesPath - Path to the Sql.js wasm file.
  * @returns {Object} List of feature tables as GeoJSON FeatureCollections
  */
-export async function readGeoPackageFile (file) {
+export async function readGeoPackageFile (file, resourcesPath) {
     // create array buffer
     const buffer = await file.arrayBuffer();
     // create Uint8Array
     const uint8Array = new Uint8Array(buffer);
-    const gpkg = await prepareGPKG(uint8Array);
+    const gpkg = await prepareGPKG(uint8Array, resourcesPath);
 
     if (gpkg === null) {
         // abort file import
@@ -103,10 +104,11 @@ export async function readGeoPackageFile (file) {
 /**
  * Prepare a GeoPackage instance from uint8Array
  * @param {object} uint8Array - The File Api object of the geopackage
+ * @param {string} resourcesPath - Path to the Sql.js wasm file.
  * @returns {object} - The GeoPackage database connection
     */
-export async function prepareGPKG (uint8Array) {
-    window.GeoPackage.setSqljsWasmLocateFile(file => "./resources/" + file);
+export async function prepareGPKG (uint8Array, resourcesPath) {
+    window.GeoPackage.setSqljsWasmLocateFile(file => resourcesPath + file);
     // create GeoPackage database connection
     const gpkg = await window.GeoPackage.GeoPackageAPI.open(uint8Array);
     const tables = gpkg.getFeatureTables();
