@@ -212,7 +212,7 @@ export default {
                 />
             </div>
         </div>
-        <div class="importer-addon-wizard-navigation mt-3">
+        <div class="importer-addon-wizard-navigation mt-3 d-flex">
             <FlatButton
                 v-if="!isCurrentWorkflowUndefined"
                 type="button"
@@ -243,5 +243,7 @@ export default {
 </template>
 
 <style lang="scss">
-
+.importer-addon-wizard-navigation {
+    gap: .5rem;
+}
 </style>
