@@ -331,11 +331,11 @@ function gmlToBlob (gml, outputFormat, formatter, gmlMime) {
  * @returns {void}
  */
 async function downloadWfsLayer (wfsLayer, format) {
-    const url = new URL(wfsLayer.url),
-        fileEnding = getFileEndingForFormat(format),
-        fileName = `${wfsLayer.name}.${fileEnding}`,
-        typeNameString = getTypeNameStringFromServiceVersion(wfsLayer.version),
-        dataProjection = "EPSG:4326";
+    const url = new URL(wfsLayer.url);
+    const fileEnding = getFileEndingForFormat(format);
+    const fileName = `${wfsLayer.name}.${fileEnding}`;
+    const typeNameString = getTypeNameStringFromServiceVersion(wfsLayer.version);
+    const dataProjection = "EPSG:4326";
 
     url.searchParams.append("service", "WFS");
     url.searchParams.append("request", "GetFeature");
@@ -343,24 +343,27 @@ async function downloadWfsLayer (wfsLayer, format) {
     url.searchParams.append("srsName", dataProjection);
     url.searchParams.append(typeNameString, wfsLayer.featureType);
 
-    const wfsData = await fetchData(url.toString()),
-        wfsFormat = new WFS({version: wfsLayer.version}),
-        projection = wfsFormat.readProjection(wfsData),
-        proj = new Projection({
-            code: projection.getCode(),
-            axis: projection.getAxisOrientation()
-        });
+    const wfsData = await fetchData(url.toString());
+    const wfsFormat = new WFS({version: wfsLayer.version});
+    const projection = wfsFormat.readProjection(wfsData) ?? get(dataProjection);
+
+    const proj = new Projection({
+        code: projection.getCode(),
+        axis: projection.getAxisOrientation()
+    });
 
     // respect axis orientation from gml output to avoid flipped coordinates
     addEquivalentProjections([get(dataProjection), proj]);
+
     const features = wfsFormat.readFeatures(wfsData, {
-            proj
-        }),
-        geojson = new GeoJSON().writeFeaturesObject(features, {
-            dataProjection
-        }),
-        containsMultiPolygons = geojson.features.find(
-            f => f.geometry.type.toLowerCase() === "multipolygon");
+        proj
+    });
+    const geojson = new GeoJSON().writeFeaturesObject(features, {
+        dataProjection
+    });
+    const containsMultiPolygons = geojson.features.find(
+        f => f.geometry.type.toLowerCase() === "multipolygon"
+    );
 
     let blob, gpkg, gpkgBytes, gmlMime;
 
