@@ -7,3 +7,19 @@ The basic tool configurations apply. Following additional properties can be set 
 |Name|Required|Type|Default|Description|Expert|
 |----|--------|----|-------|-----------|------|
 |supportedExportFormats|no|String[]|["geojson", "gml", "shp", "gpkg"]|List of supported export formats. Only formats that appear in this list will be provided as option. Currently supported formats: "geojson", "gml", "shp", "gpkg".|false|
+
+**Example:**
+
+```json
+{
+  "type": "exporter",
+  "name": "additional:modules.tools.exporter.title",
+  "icon": "bi-download",
+  "supportedExportFormats": [
+    "geojson",
+    "gml",
+    "shp",
+    "gpkg"
+  ]
+}
+```
