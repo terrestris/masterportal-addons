@@ -1,4 +1,0 @@
-/**
- * @namespace BackgroundSwitcher
- * @memberof Addons
- */
