@@ -1,4 +1,0 @@
-/**
- * @namespace CoordinateTransform
- * @memberof Addons
- */
