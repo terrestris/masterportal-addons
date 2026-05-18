@@ -1,26 +1,15 @@
 {
-  "name": "masterportal-addons",
+  "name": "masterportal-addons-e2e",
   "version": "1.0.0",
-  "type": "code",
-  "creator": "terrestris GmbH & Co. KG",
-  "author": "terrestris GmbH & Co. KG",
-  "description": "Several addons for the masterportal of geowerkstatt hamburg",
-  "title": "masterportal-addons",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/terrestris/masterportal-addons.git"
-  },
+  "description": "E2E tests for masterportal-addons against the Masterportal LTS build",
+  "private": true,
   "scripts": {
-    "lint": "eslint --max-warnings 0 \"./**/*.js\""
+    "test:e2e": "playwright test --config=playwright.config.js",
+    "test:e2e:addon": "ADDON_NAME=${ADDON_NAME} playwright test --config=playwright.config.js",
+    "test:e2e:report": "playwright show-report playwright-report"
   },
-  "dependencies": {},
   "devDependencies": {
-    "babel-eslint": "^10.1.0",
-    "eslint": "^6.8.0",
-    "eslint-plugin-backbone": "^2.1.1",
-    "eslint-plugin-chai-friendly": "^0.5.0",
-    "eslint-plugin-vue": "^6.2.2",
-    "vue-eslint-parser": "^7.0.0"
+    "@playwright/test": "^1.44.0",
+    "wait-on": "^7.2.0"
   }
 }

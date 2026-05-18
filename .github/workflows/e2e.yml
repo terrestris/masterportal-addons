@@ -1,0 +1,202 @@
+name: E2E Addon Tests (Masterportal LTS)
+
+on:
+  # push:
+  #   branches: [main]
+  # pull_request:
+  #   branches: [main]
+  workflow_dispatch:
+    inputs:
+      addon:
+        description: 'Run tests for a specific addon (leave empty for all)'
+        required: false
+        default: ''
+
+env:
+  # Masterportal LTS tag on Bitbucket
+  MASTERPORTAL_REPO: https://bitbucket.org/geowerkstatt-hamburg/masterportal
+  MASTERPORTAL_TAG: 3.15.2
+  # Dev server port used by Masterportal
+  DEV_SERVER_PORT: 9001
+  DEV_SERVER_HOST: localhost
+
+jobs:
+  # ── 1. Discover which addons exist ─────────────────────────────────────────
+  discover-addons:
+    name: Discover addons
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout masterportal-addons
+        uses: actions/checkout@v4
+        with:
+          path: masterportal-addons
+
+      - name: Build addon matrix
+        id: set-matrix
+        run: |
+          INPUT_ADDON="${{ github.event.inputs.addon }}"
+
+          if [ -n "$INPUT_ADDON" ]; then
+            # Single addon requested via workflow_dispatch
+            echo "matrix={\"addon\":[\"$INPUT_ADDON\"]}" >> "$GITHUB_OUTPUT"
+          else
+            # Auto-detect: every top-level directory that contains an index.js
+            addons=$(find masterportal-addons -maxdepth 2 -name "index.js" \
+              | sed 's|masterportal-addons/||' \
+              | sed 's|/index.js||' \
+              | grep -v node_modules \
+              | sort -u \
+              | jq -Rc '[.,inputs]' \
+              | jq -sc '.[0]')
+            echo "matrix={\"addon\":$addons}" >> "$GITHUB_OUTPUT"
+          fi
+
+          echo "Discovered addons: $(cat "$GITHUB_OUTPUT" | grep matrix)"
+
+  # ── 2. Build + E2E test for each addon ────────────────────────────────────
+  test-addon:
+    name: Test addon – ${{ matrix.addon }}
+    needs: discover-addons
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.discover-addons.outputs.matrix) }}
+
+    steps:
+      # ── Checkout repos ─────────────────────────────────────────────────────
+      - name: Checkout masterportal-addons
+        uses: actions/checkout@v4
+        with:
+          path: masterportal-addons
+
+      - name: Clone Masterportal (LTS tag)
+        run: |
+          git clone \
+            --branch "$MASTERPORTAL_TAG" \
+            --depth 1 \
+            "$MASTERPORTAL_REPO" \
+            masterportal
+
+      # ── Node.js ─────────────────────────────────────────────────────────────
+      - name: Setup Node.js (LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+          cache-dependency-path: masterportal/package-lock.json
+
+      # ── Install Masterportal deps ──────────────────────────────────────────
+      - name: Install Masterportal dependencies
+        working-directory: masterportal
+        run: npm ci
+
+      # ── Copy addon into Masterportal ────────────────────────────────────────
+      - name: Copy addon into masterportal/addons/
+        run: |
+          ADDON="${{ matrix.addon }}"
+          ADDON_SRC="masterportal-addons/$ADDON"
+          ADDON_DEST="masterportal/addons/$ADDON"
+
+          if [ ! -d "$ADDON_SRC" ]; then
+            echo "::error::Addon directory not found: $ADDON_SRC"
+            exit 1
+          fi
+
+          mkdir -p "masterportal/addons"
+          cp -r "$ADDON_SRC" "$ADDON_DEST"
+          echo "Copied $ADDON_SRC → $ADDON_DEST"
+
+          # Install addon-specific npm dependencies if a package.json exists
+          if [ -f "$ADDON_DEST/package.json" ]; then
+            echo "Installing addon-specific dependencies…"
+            (cd "masterportal" && npm install --legacy-peer-deps)
+          fi
+
+      # ── Patch addonsConf.json ────────────────────────────────────────────
+      - name: Patch addonsConf.json
+        run: |
+          node scripts/patch-addons-conf.js \
+            --masterportal masterportal \
+            --addon "${{ matrix.addon }}"
+        working-directory: ${{ github.workspace }}
+
+      # ── Build test ──────────────────────────────────────────────────────────
+      - name: Build Masterportal with addon (npm run build)
+        working-directory: masterportal
+        run: npm run build
+        timeout-minutes: 15
+
+      - name: Upload build artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs-${{ matrix.addon }}
+          path: |
+            masterportal/dist/
+            masterportal/npm-debug.log*
+          retention-days: 7
+
+      # ── Playwright ──────────────────────────────────────────────────────────
+      - name: Setup test dependencies
+        working-directory: masterportal-addons
+        run: |
+          if [ ! -f "package.json" ]; then
+            npm init -y
+          fi
+          npm install --save-dev \
+            @playwright/test \
+            wait-on
+
+      - name: Install Playwright browsers
+        working-directory: masterportal-addons
+        run: npx playwright install --with-deps chromium
+
+      # ── Start dev server ────────────────────────────────────────────────────
+      - name: Start Masterportal dev server
+        working-directory: masterportal
+        run: |
+          # Masterportal's dev server uses a self-signed cert; tell Node to accept it
+          export NODE_TLS_REJECT_UNAUTHORIZED=0
+          npm run dev &
+          echo "DEV_PID=$!" >> "$GITHUB_ENV"
+
+      - name: Wait for dev server to be ready
+        run: |
+          export NODE_TLS_REJECT_UNAUTHORIZED=0
+          npx wait-on \
+            --timeout 120000 \
+            --interval 2000 \
+            "https://${{ env.DEV_SERVER_HOST }}:${{ env.DEV_SERVER_PORT }}/portal/basic"
+        working-directory: masterportal-addons
+
+      # ── Run Playwright tests ────────────────────────────────────────────────
+      - name: Run Playwright E2E tests for ${{ matrix.addon }}
+        working-directory: masterportal-addons
+        env:
+          ADDON_NAME: ${{ matrix.addon }}
+          BASE_URL: https://${{ env.DEV_SERVER_HOST }}:${{ env.DEV_SERVER_PORT }}
+          # Accept self-signed cert in Playwright
+          NODE_TLS_REJECT_UNAUTHORIZED: '0'
+        run: |
+          npx playwright test \
+            --config=playwright.config.js \
+            --reporter=list \
+            tests/e2e/
+
+      # ── Artifacts ───────────────────────────────────────────────────────────
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ matrix.addon }}
+          path: masterportal-addons/playwright-report/
+          retention-days: 14
+
+      - name: Stop dev server
+        if: always()
+        run: |
+          if [ -n "$DEV_PID" ]; then
+            kill "$DEV_PID" || true
+          fi
