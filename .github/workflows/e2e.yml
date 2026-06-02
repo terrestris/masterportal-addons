@@ -90,6 +90,13 @@ jobs:
             npm install --ignore-scripts
           fi
 
+      - name: Copy e2e config into masterportal/portal
+        run: |
+          rm -rf masterportal/portal/*
+          cp -r masterportal-addons/tests/e2e/config masterportal/portal/e2e
+
+          echo "Copied e2e portal config"
+
       - name: Copy addon into masterportal/addons/
         run: |
           ADDON_SRC="masterportal-addons/$ADDON_NAME"
