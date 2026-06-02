@@ -1,7 +1,7 @@
 // playwright.config.js
 const { defineConfig, devices } = require("@playwright/test");
 
-const BASE_URL = "https://localhost:9001";
+const BASE_URL = process.env.BASE_URL || "https://localhost:8443";
 
 // Optional override for custom Chromium binary
 const CHROMIUM_EXECUTABLE =

@@ -206,48 +206,45 @@ jobs:
 
           npx playwright install --with-deps chromium
 
-  #     - name: Serve built Masterportal
-  #       working-directory: masterportal-addons
-  #       run: |
-  #         npx serve \
-  #           --listen ${{ env.SERVE_PORT }} \
-  #           --no-clipboard \
-  #           --no-port-switching \
-  #           ../masterportal-dist &
+      - name: Serve built Masterportal
+        working-directory: masterportal-addons
+        run: |
+          npx serve \
+            --listen ${{ env.SERVE_PORT }} \
+            --no-clipboard \
+            --no-port-switching \
+            ../masterportal-dist &
 
-  #         echo "SERVE_PID=$!" >> "$GITHUB_ENV"
+          echo "SERVE_PID=$!" >> "$GITHUB_ENV"
 
-  #     - name: Wait for static server to be ready
-  #       working-directory: masterportal-addons
-  #       run: |
-  #         npx wait-on \
-  #           --timeout 30000 \
-  #           --interval 1000 \
-  #           "http://${{ env.SERVE_HOST }}:${{ env.SERVE_PORT }}"
+      - name: Wait for static server to be ready
+        working-directory: masterportal-addons
+        run: |
+          npx wait-on \
+            --timeout 30000 \
+            --interval 1000 \
+            "http://${{ env.SERVE_HOST }}:${{ env.SERVE_PORT }}"
 
-  #     - name: Run Playwright E2E tests
-  #       working-directory: masterportal-addons
-  #       env:
-  #         BASE_URL: http://${{ env.SERVE_HOST }}:${{ env.SERVE_PORT }}
-  #         DEBUG: 'pw:masterportal'
-  #         PLAYWRIGHT_TRACE: 'on'
-  #       run: |
-  #         npx playwright test \
-  #           --config=playwright.config.js \
-  #           --reporter=list \
-  #           tests/e2e/
+      - name: Run Playwright E2E tests
+        working-directory: masterportal-addons
+        env:
+          BASE_URL: http://${{ env.SERVE_HOST }}:${{ env.SERVE_PORT }}
+        run: |
+          npx playwright test \
+            --config=playwright.config.js \
+            --reporter=list \
 
-  #     - name: Upload Playwright report
-  #       if: always()
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: playwright-report-${{ env.ADDON_NAME }}
-  #         path: masterportal-addons/playwright-report/
-  #         retention-days: 14
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ env.ADDON_NAME }}
+          path: masterportal-addons/playwright-report/
+          retention-days: 14
 
-  #     - name: Stop static server
-  #       if: always()
-  #       run: |
-  #         if [ -n "$SERVE_PID" ]; then
-  #           kill "$SERVE_PID" || true
-  #         fi
+      - name: Stop static server
+        if: always()
+        run: |
+          if [ -n "$SERVE_PID" ]; then
+            kill "$SERVE_PID" || true
+          fi
