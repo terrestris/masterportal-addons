@@ -8,23 +8,20 @@ const { expect } = require("@playwright/test");
 // ── Constants ────────────────────────────────────────────────────────────────
 
 /** Portal path that has a minimal config and is always available */
-const PORTAL_PATH = "/portal/e2e";
+const PORTAL_PATH = "/e2e?&CONFIGJS=e2e/config.js";
 
 // ── Page helpers ─────────────────────────────────────────────────────────────
 
 /**
- * Navigate to the Masterportal basic portal and wait until the map canvas
+ * Navigate to the Masterportal basic portal and wait until the master container
  * is visible (= the application has fully bootstrapped).
  *
  * @param {import('@playwright/test').Page} page
  * @param {string} [portalPath] - override the default portal path
  */
 async function openPortal(page, portalPath = PORTAL_PATH) {
-    await page.goto(portalPath, { waitUntil: "networkidle" });
-    // Wait for the OpenLayers canvas that proves the map rendered
-    await page.waitForSelector(".ol-unselectable>.ol-layer>canvas", {
-        timeout: 5000,
-    });
+    await page.goto(portalPath);
+    await page.waitForSelector("#masterportal-container");
 }
 
 /**
@@ -36,7 +33,7 @@ async function openPortal(page, portalPath = PORTAL_PATH) {
 async function openMainMenu(page) {
     const menuButton = page.locator("#mainMenu-toggle-button").first();
 
-    if (await menuButton.isVisible({ timeout: 5_000 }).catch(() => false)) {
+    if (await menuButton.isVisible({ timeout: 5000 }).catch(() => false)) {
         await menuButton.click();
     }
     // Give the sidebar animation time to finish

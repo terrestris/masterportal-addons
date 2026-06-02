@@ -2,15 +2,16 @@
 const Config = {
     addons: ["exporter"],
     alerting: {
-        fetchBroadcastUrl: "./resources/newsFeedPortalAlerts.json"
+        fetchBroadcastUrl: "/e2e/resources/newsFeedPortalAlerts.json"
     },
     namedProjections: [
         ["EPSG:25832", "+title=ETRS89/UTM 32N +proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"]
     ],
-    layerConf: "./resources/services.json",
-    restConf: "./resources/rest-services.json",
-    styleConf: "./resources/style_v3.json",
-    wfsImgPath: "./resources/img/",
+    portalConf: "/e2e/config.json",
+    layerConf: "/e2e/resources/services.json",
+    restConf: "/e2e/resources/rest-services.json",
+    styleConf: "/e2e/resources/style_v3.json",
+    wfsImgPath: "/e2e/resources/img/",
     portalLanguage: {
         enabled: true,
         debug: false,

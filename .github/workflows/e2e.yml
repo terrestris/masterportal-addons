@@ -90,13 +90,6 @@ jobs:
             npm install --ignore-scripts
           fi
 
-      - name: Copy e2e config into masterportal/portal
-        run: |
-          rm -rf masterportal/portal/*
-          cp -r masterportal-addons/tests/e2e/config masterportal/portal/e2e
-
-          echo "Copied e2e portal config"
-
       - name: Copy addon into masterportal/addons/
         run: |
           ADDON_SRC="masterportal-addons/$ADDON_NAME"
@@ -140,6 +133,12 @@ jobs:
             --masterportal ../masterportal \
             --addon "$ADDON_NAME"
 
+      - name: Copy e2e config into masterportal/portal
+        working-directory: masterportal
+        run: |
+          rm -rf portal/*
+          cp -r ../masterportal-addons/tests/e2e/config portal/e2e
+
       - name: Build Masterportal
         working-directory: masterportal
         env:
@@ -147,6 +146,8 @@ jobs:
         run: |
           set -x
           echo "" | npm run build
+          sed -i 's|"\.\./mastercode|"/mastercode|g' dist/e2e/index.html
+          cat dist/e2e/index.html
 
       - name: Upload dist artifact
         uses: actions/upload-artifact@v4
@@ -215,8 +216,6 @@ jobs:
             --no-port-switching \
             ../masterportal-dist &
 
-          echo "SERVE_PID=$!" >> "$GITHUB_ENV"
-
       - name: Wait for static server to be ready
         working-directory: masterportal-addons
         run: |
@@ -224,6 +223,12 @@ jobs:
             --timeout 30000 \
             --interval 1000 \
             "http://${{ env.SERVE_HOST }}:${{ env.SERVE_PORT }}"
+
+      - name: Verify static server is running
+        run: |
+          echo "Verifying server at http://${{ env.SERVE_HOST }}:${{ env.SERVE_PORT }}"
+          curl -s -L "http://${{ env.SERVE_HOST }}:${{ env.SERVE_PORT }}/e2e/index.html" | cat
+          echo "Server verification complete"
 
       - name: Run Playwright E2E tests
         working-directory: masterportal-addons

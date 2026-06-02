@@ -9,64 +9,67 @@
 // Extend this file with addon-specific assertions only if the behaviour
 // is truly shared across all addons; otherwise create a per-addon spec.
 
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require("@playwright/test");
 const {
-  openPortal,
-  waitForVueApp,
-  watchConsoleErrors,
-} = require('../../helpers/masterportal');
+    openPortal,
+    waitForVueApp,
+    watchConsoleErrors,
+} = require("../../helpers/masterportal");
 
-const ADDON_NAMES = ['exporter'];
+const ADDON_NAMES = ["exporter"];
 
-console.log(`[DEBUG] Starting tests for addons: ${ADDON_NAMES.join(', ')}`);
+console.log(`[DEBUG] Starting tests for addons: ${ADDON_NAMES.join(", ")}`);
 
 for (const ADDON_NAME of ADDON_NAMES) {
+    test.describe(`[${ADDON_NAME}] Generic smoke-tests`, () => {
+        test("portal loads and map canvas is rendered", async ({ page }) => {
+            await openPortal(page);
 
-  test.describe(`[${ADDON_NAME}] Generic smoke-tests`, () => {
+            // The OpenLayers canvas must be present
+            await expect(
+                page.locator(".ol-unselectable>.ol-layer>canvas").first(),
+            ).toBeVisible({ timeout: 1000 });
+        });
 
-    test('portal loads and map canvas is rendered', async ({ page }) => {
-      await openPortal(page);
-      console.log(`[DEBUG] Portal opened successfully`);
+        test("Vue application mounts without errors", async ({ page }) => {
+            await openPortal(page);
+            await waitForVueApp(page);
+            await watchConsoleErrors(page);
 
-      // The OpenLayers canvas must be present
-      await expect(page.locator('.ol-unselectable>.ol-layer>canvas').first())
-        .toBeVisible({ timeout: 100 });
+            // Check for "error" in console messages
+            const consoleErrors = await page.evaluate(() => {
+                return (
+                    window.__consoleMessages?.filter((msg) =>
+                        msg.toLowerCase().includes("error"),
+                    ) || []
+                );
+            });
+            await expect(consoleErrors).toHaveLength(0);
+        });
+
+        test(`addon "${ADDON_NAME}" is registered in the Vuex modules tree`, async ({
+            page,
+        }) => {
+            await openPortal(page);
+            await waitForVueApp(page);
+
+            const addonRegistered = await page.evaluate((addonName) => {
+                const root = document.querySelector("#masterportal-root");
+                if (!root || !root.__vue_app__) return false;
+                const store = root.__vue_app__.config.globalProperties.$store;
+                if (!store) return false;
+                const state = store.state;
+                const modules = state.Modules || {};
+                const addons = state.Addons || {};
+
+                // Case-insensitive key look-up
+                const key = addonName.toLowerCase();
+                return Object.keys({ ...modules, ...addons }).some(
+                    (k) => k.toLowerCase() === key,
+                );
+            }, ADDON_NAME);
+
+            expect(addonRegistered).toBeTruthy();
+        });
     });
-
-    test('Vue application mounts without errors', async ({ page }) => {
-      await openPortal(page);
-      await waitForVueApp(page);
-      await watchConsoleErrors(page);
-
-      // Check for "error" in console messages
-      const consoleErrors = await page.evaluate(() => {
-        return window.__consoleMessages?.filter(msg => msg.toLowerCase().includes('error')) || [];
-      });
-      await expect(consoleErrors).toHaveLength(0);
-    });
-
-    test(`addon "${ADDON_NAME}" is registered in the Vuex modules tree`, async ({ page }) => {
-      await openPortal(page);
-      await waitForVueApp(page);
-
-      const addonRegistered = await page.evaluate((addonName) => {
-        const root = document.querySelector('#masterportal-root');
-        if (!root || !root.__vue_app__) return false;
-        const store = root.__vue_app__.config.globalProperties.$store;
-        if (!store) return false;
-        const state = store.state;
-        const modules  = (state.Modules  || {});
-        const addons   = (state.Addons   || {});
-
-        // Case-insensitive key look-up
-        const key = addonName.toLowerCase();
-        return Object.keys({ ...modules, ...addons }).some(
-          (k) => k.toLowerCase() === key
-        );
-      }, ADDON_NAME);
-
-      expect(addonRegistered).toBeTruthy();
-    });
-
-  });
 }

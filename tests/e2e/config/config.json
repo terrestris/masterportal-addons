@@ -48,7 +48,7 @@
         },
         {
           "id": "basemapde_farbe",
-          "visibility": true
+          "visibility": false
         }
       ]
     },
