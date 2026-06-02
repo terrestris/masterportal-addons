@@ -17,10 +17,6 @@ const {
 const TOOL_LABEL = "Exporter"; // visible label in the menu
 
 test.describe("[exporter] Tool smoke-tests", () => {
-    test.skip(
-        process.env.ADDON_NAME !== "exporter",
-        "Skipped: not testing the exporter addon in this run",
-    );
 
     test("portal loads without errors when exporter addon is present", async ({
         page,
@@ -45,13 +41,13 @@ test.describe("[exporter] Tool smoke-tests", () => {
         await openMainMenu(page);
         // make test wfs layer visible
         console.debug(page.url());
-        const layerButton = page.locator('button[title="Gymnasien"]').first();
+        const layerButton = page.locator('button[title="Mobilfunkmasten (OSM)"]').first();
 
         await layerButton.click();
         // open exporter tool
         await clickTool(page, TOOL_LABEL);
         const exporterWfsLayer = page
-            .locator('button[title="Gymnasien"]')
+            .locator('button[title="Mobilfunkmasten (OSM)"]')
             .first();
 
         if (

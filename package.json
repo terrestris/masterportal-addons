@@ -1,11 +1,10 @@
 {
-  "name": "masterportal-addons-e2e",
+  "name": "masterportal-addons",
   "version": "1.0.0",
-  "description": "E2E tests for masterportal-addons against the Masterportal LTS build",
-  "private": true,
+  "description": "Masterportal Addons by terestris GmbH & Co. KG",
+  "private": false,
   "scripts": {
     "test:e2e": "playwright test --config=playwright.config.js",
-    "test:e2e:addon": "ADDON_NAME=${ADDON_NAME} playwright test --config=playwright.config.js",
     "test:e2e:report": "playwright show-report playwright-report"
   },
   "devDependencies": {
