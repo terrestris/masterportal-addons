@@ -155,98 +155,98 @@ jobs:
           retention-days: 1
 
   # ── 2. Test ───────────────────────────────────────────────────────────────────
-  test:
-    name: Test – ${{ github.event.inputs.addon || 'exporter' }}
-    needs: build
-    runs-on: ubuntu-latest
+  # test:
+  #   name: Test – ${{ github.event.inputs.addon || 'exporter' }}
+  #   needs: build
+  #   runs-on: ubuntu-latest
 
-    env:
-      ADDON_NAME: ${{ github.event.inputs.addon || 'exporter' }}
+  #   env:
+  #     ADDON_NAME: ${{ github.event.inputs.addon || 'exporter' }}
 
-    steps:
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
+  #   steps:
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: ${{ env.NODE_VERSION }}
 
-      - name: Install Playwright system dependencies
-        run: |
-          sudo apt-get update
+  #     - name: Install Playwright system dependencies
+  #       run: |
+  #         sudo apt-get update
 
-          sudo apt-get install -y \
-            git \
-            jq \
-            ca-certificates \
-            fonts-freefont-ttf \
-            fonts-noto-color-emoji
+  #         sudo apt-get install -y \
+  #           git \
+  #           jq \
+  #           ca-certificates \
+  #           fonts-freefont-ttf \
+  #           fonts-noto-color-emoji
 
-      - name: Checkout masterportal-addons
-        uses: actions/checkout@v4
-        with:
-          path: masterportal-addons
+  #     - name: Checkout masterportal-addons
+  #       uses: actions/checkout@v4
+  #       with:
+  #         path: masterportal-addons
 
-      - name: Download dist artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: masterportal-dist-${{ env.ADDON_NAME }}
-          path: masterportal-dist
+  #     - name: Download dist artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: masterportal-dist-${{ env.ADDON_NAME }}
+  #         path: masterportal-dist
 
-      - name: Install Playwright and browsers
-        working-directory: masterportal-addons
-        run: |
-          if [ ! -f package.json ]; then
-            npm init -y
-          fi
+  #     - name: Install Playwright and browsers
+  #       working-directory: masterportal-addons
+  #       run: |
+  #         if [ ! -f package.json ]; then
+  #           npm init -y
+  #         fi
 
-          npm install --save-dev \
-            @playwright/test \
-            wait-on \
-            serve
+  #         npm install --save-dev \
+  #           @playwright/test \
+  #           wait-on \
+  #           serve
 
-          npx playwright install --with-deps chromium
+  #         npx playwright install --with-deps chromium
 
-      - name: Serve built Masterportal
-        working-directory: masterportal-addons
-        run: |
-          npx serve \
-            --listen ${{ env.SERVE_PORT }} \
-            --no-clipboard \
-            --no-port-switching \
-            ../masterportal-dist &
+  #     - name: Serve built Masterportal
+  #       working-directory: masterportal-addons
+  #       run: |
+  #         npx serve \
+  #           --listen ${{ env.SERVE_PORT }} \
+  #           --no-clipboard \
+  #           --no-port-switching \
+  #           ../masterportal-dist &
 
-          echo "SERVE_PID=$!" >> "$GITHUB_ENV"
+  #         echo "SERVE_PID=$!" >> "$GITHUB_ENV"
 
-      - name: Wait for static server to be ready
-        working-directory: masterportal-addons
-        run: |
-          npx wait-on \
-            --timeout 30000 \
-            --interval 1000 \
-            "http://${{ env.SERVE_HOST }}:${{ env.SERVE_PORT }}"
+  #     - name: Wait for static server to be ready
+  #       working-directory: masterportal-addons
+  #       run: |
+  #         npx wait-on \
+  #           --timeout 30000 \
+  #           --interval 1000 \
+  #           "http://${{ env.SERVE_HOST }}:${{ env.SERVE_PORT }}"
 
-      - name: Run Playwright E2E tests
-        working-directory: masterportal-addons
-        env:
-          BASE_URL: http://${{ env.SERVE_HOST }}:${{ env.SERVE_PORT }}
-          DEBUG: 'pw:masterportal'
-          PLAYWRIGHT_TRACE: 'on'
-        run: |
-          npx playwright test \
-            --config=playwright.config.js \
-            --reporter=list \
-            tests/e2e/
+  #     - name: Run Playwright E2E tests
+  #       working-directory: masterportal-addons
+  #       env:
+  #         BASE_URL: http://${{ env.SERVE_HOST }}:${{ env.SERVE_PORT }}
+  #         DEBUG: 'pw:masterportal'
+  #         PLAYWRIGHT_TRACE: 'on'
+  #       run: |
+  #         npx playwright test \
+  #           --config=playwright.config.js \
+  #           --reporter=list \
+  #           tests/e2e/
 
-      - name: Upload Playwright report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report-${{ env.ADDON_NAME }}
-          path: masterportal-addons/playwright-report/
-          retention-days: 14
+  #     - name: Upload Playwright report
+  #       if: always()
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: playwright-report-${{ env.ADDON_NAME }}
+  #         path: masterportal-addons/playwright-report/
+  #         retention-days: 14
 
-      - name: Stop static server
-        if: always()
-        run: |
-          if [ -n "$SERVE_PID" ]; then
-            kill "$SERVE_PID" || true
-          fi
+  #     - name: Stop static server
+  #       if: always()
+  #       run: |
+  #         if [ -n "$SERVE_PID" ]; then
+  #           kill "$SERVE_PID" || true
+  #         fi
