@@ -14,6 +14,9 @@ on:
         required: true
         default: 'exporter'
 
+permissions:
+  contents: read
+
 env:
   MASTERPORTAL_REPO: https://bitbucket.org/geowerkstatt-hamburg/masterportal
   MASTERPORTAL_TAG: v3.15.2

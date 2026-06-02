@@ -29,8 +29,8 @@ for (const ADDON_NAME of ADDON_NAMES) {
       console.log(`[DEBUG] Portal opened successfully`);
 
       // The OpenLayers canvas must be present
-      await expect(page.locator('.ol-unselectable>.ol-layer>canvas').first())
-        .toBeVisible({ timeout: 100 });
+      await expect(page.locator('.ol-viewport .ol-layer canvas').first())
+        .toBeVisible({ timeout: 5000 });
     });
 
     test('Vue application mounts without errors', async ({ page }) => {

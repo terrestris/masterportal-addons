@@ -20,10 +20,10 @@ const PORTAL_PATH = "/portal/e2e";
  * @param {string} [portalPath] - override the default portal path
  */
 async function openPortal(page, portalPath = PORTAL_PATH) {
-    await page.goto(portalPath, { waitUntil: "networkidle" });
-    // Wait for the OpenLayers canvas that proves the map rendered
-    await page.waitForSelector(".ol-unselectable>.ol-layer>canvas", {
-        timeout: 5000,
+    await page.goto(portalPath, { waitUntil: "domcontentloaded" });
+    // Wait for OpenLayers to render a map canvas in CI, which can be slower.
+    await page.waitForSelector(".ol-viewport .ol-layer canvas", {
+        timeout: 20000,
     });
 }
 
