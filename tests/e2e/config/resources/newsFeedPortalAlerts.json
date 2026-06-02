@@ -1,0 +1,140 @@
+{
+  "globalAlerts": ["wartungsarbeiten"],
+
+  "restrictedAlerts": {
+    "https://geofos.fhhnet.stadt.hamburg.de/atlas-innere-sicherheit-mp/": ["news-ais"],
+    "https://qs-geofos.fhhnet.stadt.hamburg.de/atlas_innere_sicherheit/": ["news-ais"],
+    "https://qs-geofos.fhhnet.stadt.hamburg.de/fhh-atlas/": ["oblique_2020", "fhh-atlas-ie11"],
+    "https://geofos.fhhnet.stadt.hamburg.de/fhh-atlas/": ["oblique_2020", "fhh-atlas-ie11", "news_fhh-atlas"],
+    "https://geofos/fhh-atlas/": ["oblique_2020", "fhh-atlas-ie11", "news_fhh-atlas"],
+    "https://geoportal.metropolregion.hamburg.de/mrhportal_abnahme/": ["qs-release"],
+    "https://geoportal.metropolregion.hamburg.de/mrhportal_elmshorn_abnahme/": ["qs-release"],
+    "https://geoportal.metropolregion.hamburg.de/roads_abnahme/": ["qs-release"],
+    "https://geoportal.metropolregion.hamburg.de/mrh_erreichbarkeitsanalysen_abnahme/": ["qs-release"],
+    "https://geoportal.metropolregion.hamburg.de/mrh_lieblingsplaetze_abnahme/": ["qs-release"],
+    "https://geoportal-hamburg.de/boris_abnahme/": ["qs-release"],
+    "https://geoportal-hamburg.de/boris/": ["boris-fme"],
+    "https://test.geoportal-hamburg.de/boris/": ["boris-fme"],
+    "https://geoportal-hamburg.de/klimaplan_stadtbild_abnahme/": ["qs-release"],
+    "https://geoportal-hamburg.de/waermekataster_abnahme/": ["qs-release"],
+    "https://geoportal-hamburg.de/wohnzimmerhh_abnahme/": ["qs-release"],
+    "https://geoportal-hamburg.de/verkehrsportal_abnahme/": ["qs-release"],
+    "https://geoportal-hamburg.de/iot_abnahme/": ["qs-release"],
+    "https://geoportal-hamburg.de/schulinfosystem_abnahme/": ["qs-release"],
+    "https://geoportal-hamburg.de/geo-online/": ["info_vt"],
+    "https://qs-geofos.fhhnet.stadt.hamburg.de/oktagonKartenportal_abnahme/": ["qs-release"],
+    "https://geoportal-hamburg.de/bohrdaten/": ["bohrdaten-alert"],
+    "https://geofos.fhhnet.stadt.hamburg.de/geoportal-eimsbuettel-abnahme/":["qs-release"]
+  },
+
+  "alerts": {
+	 "fhh-panorama": {
+      "category": "info",
+      "title": "Nutzerumfrage 360°-Panoramabilder",
+      "content": "Wie nutzen Sie die 360°-Panoramabilder? Das möchten wir von Ihnen erfahren!<br> Nehmen Sie gerne an unserer Umfrage teil. Die Befragung dauert ca. 5 Minuten.<br><br>Folgen Sie direkt diesem Link:<br><a href='https://geowerkstatthamburg.limesurvey.net/982796?lang=de'>https://geowerkstatthamburg.limesurvey.net/982796?lang=de</a><br><br><img src='https://geofos.fhhnet.stadt.hamburg.de/Mastercode/2_24_1/img/Streetsmart.jpg' alt='LGV Panoramabild' width='250' height='226'><br>Ihre Daten werden anonym erfasst und nicht an Dritte weitergegeben.<br><br>Ihr Team LGV Befahrungsdaten",
+      "displayFrom": "2022-08-24 05:00",
+      "displayUntil": "2024-09-28 23:59",
+      "creationDate": "01/09/22",
+      "mustBeConfirmed": true,
+      "once": true
+    },
+    "news-ais": {
+      "title": "Das ist ein sehr langer Titel Das ist ein sehr langer Titel Das ist ein sehr langer Titel",
+      "category": "info",
+      "content": "Hier geht es zum <a target='_blank' href='https://geofos.fhhnet.stadt.hamburg.de/atlas-innere-sicherheit/'>alten Atlas Innere Sicherheit</a>, der<br> Ihnen noch für kurze Zeit zur Verfügung steht.<br> Für Fragen wenden Sie sich an die Fachliche Leiststelle <br>AIS unter <a href='mailto:referatA44@bis.hamburg.de'>referatA44@bis.hamburg.de</a>",
+      "once": false
+    },
+    "qs-release": {
+      "displayClass": "info",
+      "category": "Portal zur Abnahme!",
+      "content": "Dieses Geoportal dient der Qualitätskontrolle durch den Kunden.<br>Es ist aufgrund von möglichen Fehlern <b>nicht</b> zur Nutzung für alltägliche oder berufliche Aufgaben geeignet!<br><br>",
+	    "mustBeConfirmed": true,
+      "once": false
+    },
+    "failing-service": {
+      "displayClass": "info",
+      "category": "Info zum Thema Starkregengefahrenkarte",
+      "content": "Es kommt zurzeit zu Problemen bei der Darstellung der Starkregengefahrenkarte. An der Behebung des Problems wird gearbeitet",
+      "displayFrom": "2021-07-20 08:00",
+      "displayUntil": "2021-07-20 23:00",
+      "mustBeConfirmed": true,
+      "once": true
+    },
+    "info": {
+      "displayClass": "info",
+      "category": "Performance-Probleme",
+      "content": "Liebe Nutzerinnen und Nutzer,</br></br>Es treten aktuell Performance-Probleme bei der Nutzung der Geobasiskarten und der DOPs auf.</br>Dataport arbeitet derzeit mit hoher Priorität an der Lösungsfindung bzw. Problembehebung.</br></br>Ihr UDP-Team",
+      "displayFrom": "2021-11-23 11:00",
+      "mustBeConfirmed": true,
+      "once": true
+    },
+    "bohrdaten-planned-maintenance": {
+      "displayClass": "info",
+      "category": "Wartungsarbeiten am 09.02.2022",
+      "content": "Wartungsarbeiten am 09.02.2022; ab 13 Uhr kann es zu Ausfällen und Störungen im Bohrdatenportal kommen.<br>Wir versuchen die Ausfallzeit auf ein Minimum zu begrenzen und bitten die Unannehmlichkeiten zu entschuldigen.",
+      "displayFrom": "2022-02-03 11:00",
+      "displayUntil": "2022-02-09 18:00",
+      "mustBeConfirmed": true,
+      "once": true
+    },
+    "umfrage": {
+      "displayClass": "info",
+      "category": "Zufriedenheitsumfrage",
+      "content": "Liebe Nutzerinnen und Nutzer,<br><br>Wir hätten gerne ihre Meinung! Was ist gut, was kann besser werden, was wünschen sie sich? Beteiligen sie sich an unserer Nutzerbefragung und helfen sie mit ihrem Feedback Geo-Online besser zu machen!<br><br>Die Umfrage dauert ca. 10 min. Wir würden uns freuen wenn sie sich die Zeit nehmen.<br><a href='https://geowerkstatthamburg.limesurvey.net/871348'>Hier gehts zur Umfrage.</a><br><br>Ihr Team Geodatenanwendungen im LGV",
+      "displayFrom": "2022-03-10 00:00",
+      "displayUntil": "2022-03-25 23:59",
+      "mustBeConfirmed": true,
+      "once": true
+    },
+    "info_vt": {
+      "displayClass": "info",
+      "category": "Entwickler aufgepasst!",
+      "content": "Wir stellen die Daten der Urban Data Platform im Rahmen eines Beta Tests als Vector Tiles bereit. Vector Tiles machen große Geodatensätze schnell und ermöglichen flexibles Styling.<br> Jetzt ist Eure Meinung gefragt! Wir freuen uns über Euer Feedback. <br>Hier gibt es die Daten und alle weiteren Infos: <a href='http://www.urbandataplatform.hamburg/16066008/vector-tiles-beta-test/'>http://www.urbandataplatform.hamburg/16066008/vector-tiles-beta-test/</a>",
+      "displayFrom": "2022-05-01 00:00",
+      "displayUntil": "2022-05-15 23:59",
+      "mustBeConfirmed": true,
+      "once": true
+    },
+    "bohrdaten-alert": {
+      "displayClass": "info",
+      "category": "Willkommen beim neuen Bohrdatenportal",
+      "content": "<dt>Sehr geehrte Anwenderin,</dt> <dt>sehr geehrter Anwender,</dt> </br> <dd>willkommen beim neuen Bohrdatenportal. Das Bohrdatenportal wurde grundlegend überarbeitet im Design, in den Funktionen und in dem Themenbaum mit seinen verschiedenen Themen.</dd> </br> <dt>Responsive Layout</dt> <dd>Eine der wichtigsten Neuerungen im neuen Bohrdatenportal ist wohl sein neues Design mit der Möglichkeit das Portal sowohl auf dem Desktop-PC, als auch unterwegs und überall auf dem Smartphone verwenden zu können. Das Layout vom Bohrdatenportal passt sich an das jeweilige Benutzergerät des Anwenders an. Dies ist vor allem beim Themenbaum zu sehen in der Navigation durch die Themen. Die Internetadresse „Bohrdaten mobil“ ist nicht mehr aktiv.</dd> </br> <dt>Themenbaum</dt> <dd>Im Themenbaum können sie auswählen, welche Themen sie in der Karte sichtbar schalten wollen. Zu jeder Kartenebene kann über den Infobutton der zugehörige Datensatzeintrag aus dem MetaVer aufgerufen werden. <br> Im Themenbaum haben sie zudem die Möglichkeit den Hintergrund der Karte von grau auf weiß zu stellen. Sie können über die Checkboxen im Themenbaum an den Ordnern alle Kartenebenen innerhalb des Ordners sichtbar schalten und einzelnen ausgewählten Kartenebenen transparent schalten. Die von Ihnen erzeugte Kartenansicht können Sie sich über „Auswahl speichern“ in Form eines Links sichern. Bei Bedarf können Sie über den Link Ihr erstelltes Kartenbild mit den ausgewählten Kartenebenen wiederherstellen oder anderen zur Verfügung stellen. <br> In der oberen rechten Ecke finden Sie unser Suchfeld. Über dieses Suchfeld können Sie wie gewohnt die Adresse suchen. Zudem bieten wir Ihnen aber auch an hier direkt Flurstücke über den Gemarkungsschlüssel zu finden, Stadtteile zu suchen oder aber Themen aus dem Themenbaum sichtbar zu schalten.</dd> </br> <dt>Werkzeuge</dt> <dd>Das neue Bohrdatenportal hat die wichtigen Werkzeuge, wie Maßstabsanzeige, Navigationselemente auf der Karte, Kontakt oder Legende auf der Karte behalten. Weitere Werkzeuge sind im Bereich „Werkzeuge“ in der Menüleiste enthalten, wie z.B. „Informationen abfragen“, „Koordinatensuche“ oder die „Strecke/Fläche messen“. Mit dem neuen Werkzeug „Koordinatensuche“ können Sie jeden Punkt in der Karte lokalisieren. <br> Dieses Informationsfenster dient der Erstinformation aller Nutzer und wird nach einiger Zeit ersetzt durch eine Infobox auf der Karte mit den wichtigsten Neuerungen.</dd> </br> <dd>Bei Fragen und Anmerkungen können Sie sich gerne über den Kontakt-Button an uns wenden.</dd>",
+      "mustBeConfirmed": true,
+      "once": true
+    },
+    "boris-fme": {
+      "displayClass": "info",
+      "category": "Aktuelle Informationen",
+      "content": "Sehr geehrte Anwender und Anwenderinnen,<br><br>aufgrund von Problemen bei einem Softwareupdate arbeitet BORIS.HH derzeit leider nicht stabil. Die Erreichbarkeit der Bodenrichtwerte ist jedoch gegeben. Sofern die Umrechnungsfunktion nicht zur Verfügung steht, können Sie nach der Anleitung in den Erläuterungen zu den Bodenrichtwerten auch eine „händische“ Umrechnung nach den Formeln, die auch im Immobilienmarktbericht veröffentlich sind, vornehmen. Wir bedauern die Unannehmlichkeiten sehr und bemühen uns um kurzfristige Abhilfe.<br><br>Ihr LGV",
+      "mustBeConfirmed": true,
+      "once": {"days": 1}
+    },
+    "fhh-atlas-ie11": {
+      "displayClass": "info",
+      "category": "Aktuelle Informationen",
+      "content": "Liebe Nutzer,<br><br>es kann seit einiger Zeit zu Problemen im FHH-Atlas bei Benutzung des Internet-Explorers kommen.<br>Bitte nutzen sie künftig den Edge oder andere aktuelle Browser.<br><br>Ihr Team<br>LGV Geodatenanwendungen",
+      "displayFrom": "2022-01-19 05:00",
+      "displayUntil": "2022-02-19 23:59",
+      "mustBeConfirmed": true,
+      "once": true
+    },
+    "wartungsarbeiten": {
+      "displayClass": "info",
+      "category": "Aktuelle Informationen",
+      "content": "Liebe Nutzer,<br><br>am Mittwoch den 23.02.2022 und Donnerstag den 24.02.2022 finden umfangreiche Wartungsarbeiten an unseren Servern durch Dataport statt. Es kann daher jeweils ab 15:00Uhr zu Einschränkungen kommen. Wir bitten um Verständnis und entschuldigen uns für entstehende Unannehmlichkeiten.<br><br>Ihr Team<br>LGV Geodatenanwendungen",
+      "displayFrom": "2022-02-18 13:00",
+      "displayUntil": "2022-02-25 18:00",
+      "mustBeConfirmed": true,
+      "once": true
+    },
+    "news_fhh-atlas": {
+      "displayClass": "info",
+      "category": "Aktuelle Informationen",
+      "content": "Liebe Nutzer,<br><br>ab sofort steht Ihnen hier im FHH-Atlas ein neues Werkzeug zur Verfügung: es erlaubt die Benutzung von 360°-Panoramabildern, die im letzten Jahr für unsere Stadt erhoben wurden.<br>Es findet sich auf der rechten Seite hinter diesem Knopf: <img src='./img/start_streetsmart.jpg'/> .<br><br>Bei den 360°-Panoramabildern handelt es sich den Datenschutz betreffend um sensible Daten. Bitte beachten Sie die Hinweise zum Datenschutz auf dem <a target='_blank' href='https://fhhportal.ondataport.de/websites/befahrungsdaten/_layouts/15/start.aspx#/'>Sharepoint der Befahrungsdaten</a>.<br>Hier finden Sie auch weiterführende Informationen zu den Befahrungsdaten.<br><br>Wie immer freuen wir uns über Hinweise und Feedback unter <a href='mailto:geodatenanwendungen@gv.hamburg.de'>geodatenanwendungen@gv.hamburg.de</a> oder in diesem Fall auch unter <a href='mailto:befahrungsdaten@gv.hamburg.de'>befahrungsdaten@gv.hamburg.de</a>.<br><br>",
+      "displayFrom": "2022-05-05 12:00",
+      "displayUntil": "2022-06-02 20:00",
+      "mustBeConfirmed": true,
+      "once": true
+    }
+  }
+}

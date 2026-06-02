@@ -1,0 +1,394 @@
+[
+  {
+    "styleId": "1711",
+    "rules": [
+      {
+        "style": {
+          "type": "icon",
+          "clusterType": "icon",
+          "imageName": "krankenhaus.png",
+          "imageScale": 0.7,
+          "clusterImageName": "krankenhaus.png",
+          "clusterTextOffsetX": 30,
+          "clusterTextOffsetY": 0,
+          "clusterTextFillColor": [
+            0,
+            0,
+            255,
+            1
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "styleId": "2003",
+    "rules": [
+      {
+        "style": {
+          "polygonStrokeColor": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "polygonStrokeWidth": 1,
+          "polygonFillColor": [
+            10,
+            200,
+            0,
+            0.2
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "styleId": "8712",
+    "rules": [
+      {
+        "conditions": {
+          "properties": {
+            "kapitelbezeichnung": "Grundschulen"
+          }
+        },
+        "style": {
+          "type": "icon",
+          "imageName": "grundschulen.svg",
+          "imageWidth": 40,
+          "imageHeight": 40,
+          "imageScale": 0.6
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "kapitelbezeichnung": "Gymnasien"
+          }
+        },
+        "style": {
+          "type": "icon",
+          "imageName": "gymnasien.svg",
+          "imageWidth": 40,
+          "imageHeight": 40,
+          "imageScale": 0.6
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "kapitelbezeichnung": "Stadtteilschulen"
+          }
+        },
+        "style": {
+          "type": "icon",
+          "imageName": "stadtteilschulen.svg",
+          "imageWidth": 40,
+          "imageHeight": 40,
+          "imageScale": 0.6
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "kapitelbezeichnung": "Sonderschulen"
+          }
+        },
+        "style": {
+          "type": "icon",
+          "imageName": "sonderschulen.svg",
+          "imageWidth": 40,
+          "imageHeight": 40,
+          "imageScale": 0.6
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "kapitelbezeichnung": "Berufliche Schulen"
+          }
+        },
+        "style": {
+          "type": "icon",
+          "imageName": "berufliche_schulen.svg",
+          "imageWidth": 40,
+          "imageHeight": 40,
+          "imageScale": 0.6
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "kapitelbezeichnung": "Langformschulen"
+          }
+        },
+        "style": {
+          "type": "icon",
+          "imageName": "langformschulen.svg",
+          "imageWidth": 40,
+          "imageHeight": 40,
+          "imageScale": 0.6
+        }
+      }
+    ]
+  },
+  {
+    "styleId": "8712.1",
+    "rules": [
+      {
+        "conditions": {
+          "properties": {
+            "kapitelbezeichnung": "Grundschulen"
+          }
+        },
+        "style": {
+          "type": "icon",
+          "imageName": "grundschulen.svg",
+          "imageWidth": 40,
+          "imageHeight": 40,
+          "imageScale": 0.6
+        }
+      }
+    ]
+  },
+  {
+    "styleId": "8712.2",
+    "rules": [
+      {
+        "conditions": {
+          "properties": {
+            "kapitelbezeichnung": "Stadtteilschulen"
+          }
+        },
+        "style": {
+          "type": "icon",
+          "imageName": "stadtteilschulen.svg",
+          "imageWidth": 40,
+          "imageHeight": 40,
+          "imageScale": 0.6
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "kapitelbezeichnung": "Langformschulen"
+          }
+        },
+        "style": {
+          "type": "icon",
+          "imageName": "langformschulen.svg",
+          "imageWidth": 40,
+          "imageHeight": 40,
+          "imageScale": 0.6
+        }
+      }
+    ]
+  },
+  {
+    "styleId": "8712.3",
+    "rules": [
+      {
+        "conditions": {
+          "properties": {
+            "kapitelbezeichnung": "Gymnasien"
+          }
+        },
+        "style": {
+          "type": "icon",
+          "imageName": "gymnasien.svg",
+          "imageWidth": 40,
+          "imageHeight": 40,
+          "imageScale": 0.6
+        }
+      }
+    ]
+  },
+  {
+    "styleId": "8712.4",
+    "rules": [
+      {
+        "conditions": {
+          "properties": {
+            "kapitelbezeichnung": "Sonderschulen"
+          }
+        },
+        "style": {
+          "type": "icon",
+          "imageName": "sonderschulen.svg",
+          "imageWidth": 40,
+          "imageHeight": 40,
+          "imageScale": 0.6
+        }
+      }
+    ]
+  },
+  {
+    "styleId": "10882",
+    "rules": [
+      {
+        "conditions": {
+          "properties": {
+            "symbol": "SFA"
+          }
+        },
+        "style": {
+          "type": "icon",
+          "clusterType": "icon",
+          "imageName": "sfa.png",
+          "imageScale": 0.7,
+          "clusterImageName": "br.png",
+          "clusterImageScale": 0.7,
+          "clusterImageOffsetX": 0.9,
+          "clusterImageOffsetY": 0.1,
+          "clusterTextFillColor": [
+            69,
+            96,
+            166,
+            1
+          ],
+          "clusterTextStrokeColor": [
+            240,
+            240,
+            240,
+            1
+          ],
+          "clusterTextType": "none"
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "symbol": "FSSA"
+          }
+        },
+        "style": {
+          "type": "icon",
+          "clusterType": "icon",
+          "imageName": "fssa.png",
+          "imageScale": 0.7,
+          "clusterImageName": "br.png",
+          "clusterImageScale": 0.7,
+          "clusterImageOffsetX": 0.9,
+          "clusterImageOffsetY": 0.1,
+          "clusterTextFillColor": [
+            69,
+            96,
+            166,
+            1
+          ],
+          "clusterTextStrokeColor": [
+            240,
+            240,
+            240,
+            1
+          ],
+          "clusterTextType": "none"
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "symbol": "Stpd"
+          }
+        },
+        "style": {
+          "type": "icon",
+          "clusterType": "icon",
+          "imageName": "stpd.png",
+          "imageScale": 0.7,
+          "clusterImageName": "br.png",
+          "clusterImageScale": 0.7,
+          "clusterImageOffsetX": 0.9,
+          "clusterImageOffsetY": 0.1,
+          "clusterTextFillColor": [
+            69,
+            96,
+            166,
+            1
+          ],
+          "clusterTextStrokeColor": [
+            240,
+            240,
+            240,
+            1
+          ],
+          "clusterTextType": "none"
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "symbol": "Stp"
+          }
+        },
+        "style": {
+          "type": "icon",
+          "clusterType": "icon",
+          "imageName": "stp.png",
+          "imageScale": 0.7,
+          "clusterImageName": "br.png",
+          "clusterImageScale": 0.7,
+          "clusterImageOffsetX": 0.9,
+          "clusterImageOffsetY": 0.1,
+          "clusterTextFillColor": [
+            69,
+            96,
+            166,
+            1
+          ],
+          "clusterTextStrokeColor": [
+            240,
+            240,
+            240,
+            1
+          ],
+          "clusterTextType": "none"
+        }
+      }
+    ]
+  },
+  {
+    "styleId": "18105",
+    "rules": [
+      {
+        "conditions": {
+          "properties": {
+            "@Datastreams.0.Observations.0.result": [
+              1,
+              1000
+            ]
+          }
+        },
+        "style": {
+          "legendValue": "StadtRäder verfügbar",
+          "type": "icon",
+          "imageName": "stadtrad.png",
+          "clusterImageName": "stadtrad.png",
+          "imageScale": 0.8,
+          "imageOffsetY": 12,
+          "imageOffsetYUnit": "pixel",
+          "clusterImageScale": 0.4,
+          "clusterImageOffsetY": 0.48
+        }
+      },
+      {
+        "conditions": {
+          "properties": {
+            "@Datastreams.0.Observations.0.result": 0
+          }
+        },
+        "style": {
+          "legendValue": "kein StadtRad verfügbar",
+          "type": "icon",
+          "imageName": "stadtrad_grau.png",
+          "clusterImageName": "stadtrad_grau.png",
+          "imageScale": 0.8,
+          "imageOffsetY": 12,
+          "imageOffsetYUnit": "pixel",
+          "clusterImageScale": 0.4,
+          "clusterImageOffsetY": 0.48
+        }
+      }
+    ]
+  }
+]

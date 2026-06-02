@@ -1,0 +1,63 @@
+{
+  "portalConfig": {
+    "map": {
+      "controls": {
+        "zoom": true,
+        "orientation": {
+          "zoomMode": "once"
+        }
+      },
+      "mapView": {
+        "startCenter": [366972, 5618579],
+        "extent": [348412, 5600130, 384869, 5640342],
+        "startZoomLevel": 1
+      }
+    },
+    "tree": {
+    },
+    "mainMenu": {
+      "expanded": false,
+      "title": {
+        "text": "Test e2e",
+        "link": "https://terrestris.de",
+        "toolTip": "Masterportal"
+      },
+      "sections": [
+        [
+          {
+            "type": "exporter",
+            "name": "Exporter"
+          }
+        ]
+      ]
+    },
+    "secondaryMenu": {
+      "expanded": false,
+      "sections": [
+        [
+        ]
+      ]
+    }
+  },
+  "layerConfig": {
+    "baselayer": {
+      "elements": [
+        {
+          "id": "topplusopen",
+          "visibility": false
+        },
+        {
+          "id": "basemapde_farbe",
+          "visibility": true
+        }
+      ]
+    },
+    "subjectlayer": {
+      "elements": [
+        {
+          "id": "mobile_communication_tower"
+        }
+      ]
+    }
+  }
+}
