@@ -3,7 +3,6 @@ name: E2E Addon Tests (Masterportal LTS)
 on:
   push:
     branches: [main]
-
   pull_request:
     branches: [main]
 
@@ -21,14 +20,18 @@ defaults:
 jobs:
   # ── 1. Build ──────────────────────────────────────────────────────────────────
   build:
-    name: Build – ${{ github.event.inputs.addon || 'exporter' }}
+    name: Build – ${{ matrix.addon }}
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        addon: [exporter, importer, tourGuide, simpleLineChart]
+
     env:
-      ADDON_NAME: ${{ github.event.inputs.addon || 'exporter' }}
+      ADDON_NAME: ${{ matrix.addon }}
 
     steps:
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -144,12 +147,17 @@ jobs:
 
   # ── 2. Test ───────────────────────────────────────────────────────────────────
   test:
-    name: Test – ${{ github.event.inputs.addon || 'exporter' }}
+    name: Test – ${{ matrix.addon }}
     needs: build
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        addon: [exporter, importer, tourGuide, simpleLineChart]
+
     env:
-      ADDON_NAME: ${{ github.event.inputs.addon || 'exporter' }}
+      ADDON_NAME: ${{ matrix.addon }}
 
     steps:
       - name: Setup Node.js
