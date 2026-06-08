@@ -7,13 +7,6 @@ on:
   pull_request:
     branches: [main]
 
-  workflow_dispatch:
-    inputs:
-      addon:
-        description: 'Run tests for a specific addon'
-        required: true
-        default: 'exporter'
-
 env:
   MASTERPORTAL_REPO: https://bitbucket.org/geowerkstatt-hamburg/masterportal
   MASTERPORTAL_TAG: v3.15.2
@@ -71,13 +64,6 @@ jobs:
             --depth 1 \
             "$MASTERPORTAL_REPO" \
             masterportal
-
-      - name: Print environment info
-        run: |
-          echo "Node:  $(node --version)"
-          echo "npm:   $(npm --version)"
-          echo "nproc: $(nproc)"
-          free -h || true
 
       - name: Install Masterportal dependencies
         working-directory: masterportal
@@ -223,12 +209,6 @@ jobs:
             --timeout 30000 \
             --interval 1000 \
             "http://${{ env.SERVE_HOST }}:${{ env.SERVE_PORT }}"
-
-      - name: Verify static server is running
-        run: |
-          echo "Verifying server at http://${{ env.SERVE_HOST }}:${{ env.SERVE_PORT }}"
-          curl -s -L "http://${{ env.SERVE_HOST }}:${{ env.SERVE_PORT }}/e2e/index.html" | cat
-          echo "Server verification complete"
 
       - name: Run Playwright E2E tests
         working-directory: masterportal-addons
