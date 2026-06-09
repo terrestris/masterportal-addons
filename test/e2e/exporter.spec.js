@@ -2,9 +2,6 @@
 //
 // E2E tests specific to the "exporter" addon.
 //
-// The portal must be configured with the exporter tool in its config.json.
-// The CI setup script (scripts/patch-addons-conf.js) handles addonsConf.json;
-// for config.json you may need a fixture (see fixtures/config.exporter.json).
 
 const { test, expect } = require("@playwright/test");
 const {
