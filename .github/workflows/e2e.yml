@@ -12,6 +12,7 @@ env:
   SERVE_PORT: 8080
   SERVE_HOST: localhost
   NODE_VERSION: 22.22.3
+  ADDONS: "exporter importer tourGuide simpleLineChart"
 
 defaults:
   run:
@@ -20,16 +21,8 @@ defaults:
 jobs:
   # ── 1. Build ──────────────────────────────────────────────────────────────────
   build:
-    name: Build – ${{ matrix.addon }}
+    name: Build – all addons
     runs-on: ubuntu-latest
-
-    strategy:
-      fail-fast: false
-      matrix:
-        addon: [exporter, importer, tourGuide, simpleLineChart]
-
-    env:
-      ADDON_NAME: ${{ matrix.addon }}
 
     steps:
       - name: Setup Node.js
@@ -79,48 +72,54 @@ jobs:
             npm install --ignore-scripts
           fi
 
-      - name: Copy addon into masterportal/addons/
+      - name: Copy all addons into masterportal/addons/
         run: |
-          ADDON_SRC="masterportal-addons/$ADDON_NAME"
-          ADDON_DEST="masterportal/addons/$ADDON_NAME"
-
-          if [ ! -d "$ADDON_SRC" ]; then
-            echo "::error::Addon directory not found: $ADDON_SRC"
-            exit 1
-          fi
-
           mkdir -p masterportal/addons
 
-          cp -r "$ADDON_SRC" "$ADDON_DEST"
+          for ADDON_NAME in ${{ env.ADDONS }}; do
+            ADDON_SRC="masterportal-addons/$ADDON_NAME"
+            ADDON_DEST="masterportal/addons/$ADDON_NAME"
 
-          echo "Copied $ADDON_SRC -> $ADDON_DEST"
+            if [ ! -d "$ADDON_SRC" ]; then
+              echo "::error::Addon directory not found: $ADDON_SRC"
+              exit 1
+            fi
+
+            cp -r "$ADDON_SRC" "$ADDON_DEST"
+            echo "Copied $ADDON_SRC -> $ADDON_DEST"
+          done
 
       - name: Install addon dependencies
         run: |
-          ADDON_DEST="masterportal/addons/$ADDON_NAME"
+          for ADDON_NAME in ${{ env.ADDONS }}; do
+            ADDON_DEST="masterportal/addons/$ADDON_NAME"
 
-          if [ -f "$ADDON_DEST/package.json" ]; then
-            echo "package.json found for addon: $ADDON_NAME"
+            if [ -f "$ADDON_DEST/package.json" ]; then
+              echo "package.json found for addon: $ADDON_NAME"
+              cd "$ADDON_DEST"
 
-            cd "$ADDON_DEST"
+              if [ -f package-lock.json ]; then
+                echo "Running npm ci for $ADDON_NAME..."
+                npm ci
+              else
+                echo "Running npm install for $ADDON_NAME..."
+                npm install
+              fi
 
-            if [ -f package-lock.json ]; then
-              echo "Running npm ci..."
-              npm ci
+              cd -
             else
-              echo "Running npm install..."
-              npm install
+              echo "No package.json found for addon: $ADDON_NAME"
             fi
-          else
-            echo "No package.json found for addon: $ADDON_NAME"
-          fi
+          done
 
       - name: Patch addonsConf.json
         working-directory: masterportal-addons
         run: |
-          node scripts/patch-addons-conf.js \
-            --masterportal ../masterportal \
-            --addon "$ADDON_NAME"
+          for ADDON_NAME in ${{ env.ADDONS }}; do
+            node scripts/patch-addons-conf.js \
+              --masterportal ../masterportal \
+              --addon "$ADDON_NAME"
+          done
 
       - name: Copy e2e config into masterportal/portal
         working-directory: masterportal
@@ -141,7 +140,7 @@ jobs:
       - name: Upload dist artifact
         uses: actions/upload-artifact@v4
         with:
-          name: masterportal-dist-${{ env.ADDON_NAME }}
+          name: masterportal-dist
           path: masterportal/dist/
           retention-days: 1
 
@@ -184,7 +183,7 @@ jobs:
       - name: Download dist artifact
         uses: actions/download-artifact@v4
         with:
-          name: masterportal-dist-${{ env.ADDON_NAME }}
+          name: masterportal-dist
           path: masterportal-dist
 
       - name: Install Playwright and browsers
