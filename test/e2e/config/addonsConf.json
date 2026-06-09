@@ -1,0 +1,11 @@
+{
+  "exporter": {
+    "type": "tool"
+  },
+  "importer": {
+    "type": "tool"
+  },
+  "tourGuide": {
+    "type": "javascript"
+  }
+}

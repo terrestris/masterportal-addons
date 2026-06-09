@@ -112,20 +112,12 @@ jobs:
             fi
           done
 
-      - name: Patch addonsConf.json
-        working-directory: masterportal-addons
-        run: |
-          for ADDON_NAME in ${{ env.ADDONS }}; do
-            node scripts/patch-addons-conf.js \
-              --masterportal ../masterportal \
-              --addon "$ADDON_NAME"
-          done
-
       - name: Copy e2e config into masterportal/portal
         working-directory: masterportal
         run: |
           rm -rf portal/*
           cp -r ../masterportal-addons/test/e2e/config portal/e2e
+          cp -r ../masterportal-addons/test/e2e/config/addonsConf.json addons/addonsConf.json
 
       - name: Build Masterportal
         working-directory: masterportal
