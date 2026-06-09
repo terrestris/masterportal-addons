@@ -126,7 +126,7 @@ jobs:
         working-directory: masterportal
         run: |
           rm -rf portal/*
-          cp -r ../masterportal-addons/tests/e2e/config portal/e2e
+          cp -r ../masterportal-addons/test/e2e/config portal/e2e
 
       - name: Build Masterportal
         working-directory: masterportal
@@ -223,9 +223,7 @@ jobs:
         env:
           BASE_URL: http://${{ env.SERVE_HOST }}:${{ env.SERVE_PORT }}
         run: |
-          npx playwright test \
-            --config=playwright.config.js \
-            --reporter=list \
+          ADDON_NAME=${{ env.ADDON_NAME }} npm run test:e2e -- --reporter=html --output=playwright-report
 
       - name: Upload Playwright report
         if: always()

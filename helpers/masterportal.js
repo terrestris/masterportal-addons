@@ -8,7 +8,7 @@ const { expect } = require("@playwright/test");
 // ── Constants ────────────────────────────────────────────────────────────────
 
 /** Portal path that has a minimal config and is always available */
-const PORTAL_PATH = "/e2e?&CONFIGJS=e2e/config.js";
+const PORTAL_PATH = "/e2e/";
 
 // ── Page helpers ─────────────────────────────────────────────────────────────
 
