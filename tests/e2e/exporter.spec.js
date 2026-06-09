@@ -26,7 +26,7 @@ test.describe("[exporter] Tool smoke-tests", () => {
         await assertNoErrors();
     });
 
-    test("exporter tool opens without crashing", async ({ page }) => {
+    test("exporter tool opens correctly", async ({ page }) => {
         await openPortal(page);
         await openMainMenu(page);
         await clickTool(page, TOOL_LABEL);
@@ -40,7 +40,6 @@ test.describe("[exporter] Tool smoke-tests", () => {
         await openPortal(page);
         await openMainMenu(page);
         // make test wfs layer visible
-        console.debug(page.url());
         const layerButton = page.locator('button[title="Mobilfunkmasten (OSM)"]').first();
 
         await layerButton.click();
