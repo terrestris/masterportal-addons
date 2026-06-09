@@ -19,8 +19,8 @@ module.exports = defineConfig({
     use: {
         baseURL: BASE_URL,
         ignoreHTTPSErrors: true,
-        actionTimeout: 15_000,
-        navigationTimeout: 30_000,
+        actionTimeout: 5_000,
+        navigationTimeout: 10_000,
         screenshot: "only-on-failure",
         trace: "on-first-retry",
     },

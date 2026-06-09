@@ -27,6 +27,10 @@
           {
             "type": "exporter",
             "name": "Exporter"
+          },
+          {
+            "type": "importer",
+            "name": "Importer"
           }
         ]
       ]

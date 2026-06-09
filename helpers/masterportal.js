@@ -22,6 +22,7 @@ const PORTAL_PATH = "/e2e?&CONFIGJS=e2e/config.js";
 async function openPortal(page, portalPath = PORTAL_PATH) {
     await page.goto(portalPath);
     await page.waitForSelector("#masterportal-container");
+    await page.waitForSelector("#mainMenu-toggle-button");
 }
 
 /**

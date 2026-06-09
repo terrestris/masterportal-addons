@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 const Config = {
-    addons: ["exporter"],
+    addons: ["exporter", "importer"],
     alerting: {
         fetchBroadcastUrl: "/e2e/resources/newsFeedPortalAlerts.json"
     },
