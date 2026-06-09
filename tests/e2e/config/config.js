@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 const Config = {
-    addons: ["exporter", "importer"],
+    addons: ["exporter", "importer", "tourGuide"],
     alerting: {
         fetchBroadcastUrl: "/e2e/resources/newsFeedPortalAlerts.json"
     },
@@ -34,5 +34,19 @@ const Config = {
                 }
             }
         }
+    },
+    tourGuide: {
+        steps: [
+            {
+                intro: {
+                    de: `
+                        <p>Es müssen mindestens drei Buchstaben in die Suchmaske eingegeben werden.</p>
+                        `,
+                    en: `
+                        <p>At least three letters must be entered in the search mask in order to receive suggestions.</p>
+                        `
+                }
+            }
+        ]
     }
 };
