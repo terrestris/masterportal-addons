@@ -1,0 +1,14 @@
+{
+  "exporter": {
+    "type": "tool"
+  },
+  "importer": {
+    "type": "tool"
+  },
+  "tourGuide": {
+    "type": "javascript"
+  },
+  "simpleLineChart": {
+    "type": "gfiTheme"
+  }
+}

@@ -1,0 +1,232 @@
+name: E2E Addon Tests (Masterportal LTS)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  MASTERPORTAL_REPO: https://bitbucket.org/geowerkstatt-hamburg/masterportal
+  MASTERPORTAL_TAG: v3.15.2
+  SERVE_PORT: 8080
+  SERVE_HOST: localhost
+  NODE_VERSION: 22.22.3
+  ADDONS: "exporter importer tourGuide simpleLineChart"
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  # ── 1. Build ──────────────────────────────────────────────────────────────────
+  build:
+    name: Build – all addons
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+
+          sudo apt-get install -y \
+            git \
+            jq \
+            python3 \
+            make \
+            g++ \
+            pkg-config \
+            libcairo2-dev \
+            libpango1.0-dev \
+            libpixman-1-dev \
+            libjpeg-dev \
+            libgif-dev \
+            librsvg2-dev
+
+      - name: Checkout masterportal-addons
+        uses: actions/checkout@v4
+        with:
+          path: masterportal-addons
+
+      - name: Clone Masterportal
+        run: |
+          git clone \
+            --branch "$MASTERPORTAL_TAG" \
+            --depth 1 \
+            "$MASTERPORTAL_REPO" \
+            masterportal
+
+      - name: Install Masterportal dependencies
+        working-directory: masterportal
+        env:
+          npm_config_build_from_source: 'false'
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci --ignore-scripts
+          else
+            npm install --ignore-scripts
+          fi
+
+      - name: Copy all addons into masterportal/addons/
+        run: |
+          mkdir -p masterportal/addons
+
+          for ADDON_NAME in ${{ env.ADDONS }}; do
+            ADDON_SRC="masterportal-addons/$ADDON_NAME"
+            ADDON_DEST="masterportal/addons/$ADDON_NAME"
+
+            if [ ! -d "$ADDON_SRC" ]; then
+              echo "::error::Addon directory not found: $ADDON_SRC"
+              exit 1
+            fi
+
+            cp -r "$ADDON_SRC" "$ADDON_DEST"
+            echo "Copied $ADDON_SRC -> $ADDON_DEST"
+          done
+
+      - name: Install addon dependencies
+        run: |
+          for ADDON_NAME in ${{ env.ADDONS }}; do
+            ADDON_DEST="masterportal/addons/$ADDON_NAME"
+
+            if [ -f "$ADDON_DEST/package.json" ]; then
+              echo "package.json found for addon: $ADDON_NAME"
+              cd "$ADDON_DEST"
+
+              if [ -f package-lock.json ]; then
+                echo "Running npm ci for $ADDON_NAME..."
+                npm ci
+              else
+                echo "Running npm install for $ADDON_NAME..."
+                npm install
+              fi
+
+              cd -
+            else
+              echo "No package.json found for addon: $ADDON_NAME"
+            fi
+          done
+
+      - name: Copy e2e config into masterportal/portal
+        working-directory: masterportal
+        run: |
+          rm -rf portal/*
+          cp -r ../masterportal-addons/test/e2e/config portal/e2e
+          cp -r ../masterportal-addons/test/e2e/config/addonsConf.json addons/addonsConf.json
+
+      - name: Build Masterportal
+        working-directory: masterportal
+        env:
+          NODE_OPTIONS: '--max-old-space-size=3072'
+        run: |
+          set -x
+          echo "" | npm run build
+          sed -i 's|"\.\./mastercode|"/mastercode|g' dist/e2e/index.html
+          cat dist/e2e/index.html
+
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: masterportal-dist
+          path: masterportal/dist/
+          retention-days: 1
+
+  # ── 2. Test ───────────────────────────────────────────────────────────────────
+  test:
+    name: Test – ${{ matrix.addon }}
+    needs: build
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        addon: [exporter, importer, tourGuide, simpleLineChart]
+
+    env:
+      ADDON_NAME: ${{ matrix.addon }}
+
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Playwright system dependencies
+        run: |
+          sudo apt-get update
+
+          sudo apt-get install -y \
+            git \
+            jq \
+            ca-certificates \
+            fonts-freefont-ttf \
+            fonts-noto-color-emoji
+
+      - name: Checkout masterportal-addons
+        uses: actions/checkout@v4
+        with:
+          path: masterportal-addons
+
+      - name: Download dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: masterportal-dist
+          path: masterportal-dist
+
+      - name: Install Playwright and browsers
+        working-directory: masterportal-addons
+        run: |
+          if [ ! -f package.json ]; then
+            npm init -y
+          fi
+
+          npm install --save-dev \
+            @playwright/test \
+            wait-on \
+            serve
+
+          npx playwright install --with-deps chromium
+
+      - name: Serve built Masterportal
+        working-directory: masterportal-addons
+        run: |
+          npx serve \
+            --listen ${{ env.SERVE_PORT }} \
+            --no-clipboard \
+            --no-port-switching \
+            ../masterportal-dist &
+
+      - name: Wait for static server to be ready
+        working-directory: masterportal-addons
+        run: |
+          npx wait-on \
+            --timeout 30000 \
+            --interval 1000 \
+            "http://${{ env.SERVE_HOST }}:${{ env.SERVE_PORT }}"
+
+      - name: Run Playwright E2E tests
+        working-directory: masterportal-addons
+        env:
+          BASE_URL: http://${{ env.SERVE_HOST }}:${{ env.SERVE_PORT }}
+        run: |
+          ADDON_NAME=${{ env.ADDON_NAME }} npm run test:e2e -- --reporter=html --output=playwright-report
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ env.ADDON_NAME }}
+          path: masterportal-addons/playwright-report/
+          retention-days: 14
+
+      - name: Stop static server
+        if: always()
+        run: |
+          if [ -n "$SERVE_PID" ]; then
+            kill "$SERVE_PID" || true
+          fi

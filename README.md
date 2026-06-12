@@ -20,3 +20,13 @@ Please check the `README` or `doc` files within the respective addon folder.
 
 ¹ Code Repository: https://github.com/citysciencelab/cut-dana-platform-addon
 ² Code Repository: https://github.com/formcapture/masterportal-addons
+
+## Testing
+
+### Unit Tests
+
+The unit tests run together with the Masterportal core module tests. They can be found within the `tests`folder of the respective addon. [Documentation](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src/dev/docs/Dev/unitTestVue.md).
+
+### E2E
+
+The E2E tests are triggered automatically on pull requests against the `main` branch. Since the Masterportal core does not support e2e tests, the test files can be found in `test/e2e` on the project root. The tests can be run locally, just adjust the adress and port for your local setup.
