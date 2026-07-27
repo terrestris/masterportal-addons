@@ -8,7 +8,7 @@ on:
 
 env:
   MASTERPORTAL_REPO: https://bitbucket.org/geowerkstatt-hamburg/masterportal
-  MASTERPORTAL_TAG: v3.15.2
+  MASTERPORTAL_TAG: v3.15.3
   SERVE_PORT: 8080
   SERVE_HOST: localhost
   NODE_VERSION: 22.22.3

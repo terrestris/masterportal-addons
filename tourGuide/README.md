@@ -4,7 +4,7 @@ This addon enables a customised tour through the masterportal. Elements can be h
 
 ## Supported Masterportal Versions
 
-- [v3.15.2](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src/v3.15.2/)
+- [v3.15.3](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src/v3.15.3/)
 
 ## Installation
 
