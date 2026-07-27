@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 const Config = {
-    addons: ["exporter", "importer", "tourGuide", "simpleLineChart"],
+    addons: ["exporter", "importer", "tourGuide", "simpleLineChart", "iconTheme"],
     alerting: {
         fetchBroadcastUrl: "./resources/news.json"
     },
