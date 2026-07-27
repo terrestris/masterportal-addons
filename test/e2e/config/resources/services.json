@@ -1,5 +1,36 @@
 [
   {
+    "id": "bonn_admin",
+    "name": "Bonn Stadtgebiet",
+    "url": "https://masterportal.terrestris.de/geoserver/DEMO/ows",
+    "typ": "WMS",
+    "layers": "DEMO:bonn_stadtgrenze",
+    "format": "image/png",
+    "version": "1.3.0",
+    "singleTile": true,
+    "gfiAttributes": {
+      "full_id": "ID",
+      "geom": "Geometrie"
+    },
+    "gfiTheme": {
+      "name": "iconTheme",
+      "params": {
+        "iconMapping": {
+          "Geometrie": {
+            "aria": "Geometrie",
+            "icon": "./resources/img/location.svg"
+          }
+        },
+        "links": [
+          {
+            "name": "Weitere Informationen",
+            "url": "https://terrestris.de"
+          }
+        ]
+      }
+    }
+  },
+  {
     "id": "mobile_communication_tower",
     "name": "Mobilfunkmasten (OSM)",
     "url": "https://masterportal.terrestris.de/geoserver/DEMO/ows",
