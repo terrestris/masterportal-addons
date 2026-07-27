@@ -15,6 +15,7 @@ Bitte lesen Sie die `README`- oder `doc`-Dateien im jeweiligen Addon-Ordner.
 | embedit² | Integriert den voll anpassbaren formbasierten Geo-Editor zum Erstellen/Aktualisieren/Löschen Ihrer Daten. | v3.15.x (LTS) | [terrestris Masterportal](https://masterportal.terrestris.de) |
 | exporter | Exportiert WFS- und Vektorschichten in gängige Geodatenformate. | v3.15.x (LTS) | [terrestris Masterportal](https://masterportal.terrestris.de) |
 | importer | Importiert gängige Geodatenformate und OGC-Dienste. | v3.15.x (LTS) | [terrestris Masterportal](https://masterportal.terrestris.de) |
+| iconTheme | Benutzerdefiniertes GFI-Theme mit Icon-Darstellung für ausgewählte Attribute und optionalen zusätzlichen Links. | v3.15.x (LTS) | [Meckenheim Geoportal](https://geoportal.meckenheim.de) |
 | simpleLineChart | Rendert Datenpunkte auf einer einfachen chart.js-Komponente. | v3.15.x (LTS) | [FOSSGIS WS](https://github.com/terrestris/masterportal-ws) |
 | tourGuide | Dieses Addon ermöglicht eine angepasste Tour durch das Masterportal. Elemente können hervorgehoben und mit Beschreibungen sowie Grafiken versehen werden. Technisch gesehen ist es im Wesentlichen ein Wrapper für [intro.js](https://introjs.com/) mit kleinen Anpassungen, um es an das Masterportal-Design anzupassen. | v3.15.x (LTS) | [Meckenheim Geoportal](https://geoportal.meckenheim.de) |
 
