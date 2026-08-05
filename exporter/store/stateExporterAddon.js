@@ -8,15 +8,15 @@ export const DEFAULT_VALUES = {
         currentFormValid: false,
         onExportFinished: undefined,
         selectedLayer: undefined,
-        layerSelectionList: [],
         supportedExportFormats: [
             EXPORTFORMATS.geoJson,
             EXPORTFORMATS.gml,
             EXPORTFORMATS.shp,
             EXPORTFORMATS.gpkg
         ],
+        downloadProjection: "EPSG:4326",
         selectedExportFormat: undefined
-    },
+    };
 
     /**
      * @property {Boolean} active Current status of the Tool.
@@ -29,9 +29,10 @@ export const DEFAULT_VALUES = {
      * @property {Function} onExportFinished A function that is triggered, when the export has finished.
      * @property {Object} selectedLayer The currently selected layer to export.
      * @property {String[]} supportedExportFormats List of supported export formats.
+     * @property {String} downloadProjection Optional projection mode used for shp/gpkg export.
      * @property {String} selectedExportFormat The currently selected export format.
      */
-    state = {
+    const state = {
         active: false,
         icon: "bi-download",
         id: "exporter",
