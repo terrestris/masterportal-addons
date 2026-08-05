@@ -34,6 +34,9 @@ export default {
     mounted () {
         this.applyTranslationKey(this.name);
     },
+    unmounted () {
+        this.resetExporterAddon();
+    },
     methods: {
         ...mapActions("Modules/Exporter", [
         ]),
