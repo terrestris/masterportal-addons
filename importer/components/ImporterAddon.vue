@@ -76,6 +76,9 @@ export default {
     mounted () {
         this.applyTranslationKey(this.name);
     },
+    unmounted () {
+        this.resetImporterAddon();
+    },
     methods: {
         ...mapMutations("Modules/Importer", Object.keys(mutations)),
         ...mapActions("Alerting", {addSingleAlert: "addSingleAlert"}),

@@ -1,6 +1,7 @@
 import axios from "axios";
 import {GeoJSON, WFS} from "ol/format";
 import GML32 from "ol/format/GML32";
+import {parse} from "ol/xml.js";
 import {Projection, addEquivalentProjections, get} from "ol/proj";
 import {download as shpdownload} from "@crmackey/shp-write";
 
@@ -25,85 +26,93 @@ function performDownload (url, fileName) {
 }
 
 /**
- * Download a draw layer.
+ * Get the current project projection code.
  *
- * @param {Object} drawLayer The draw layer to download.
- * @param {String} format The requested output format.
- * @returns {void}
+ * @returns {String} The projection code.
  */
-async function downloadDrawLayer (drawLayer, format) {
-    const fileEnding = getFileEndingForFormat(format),
-        fileName = `${drawLayer.name}.${fileEnding}`,
-        features = drawLayer.layer.layer.getSource().getFeatures(),
-        map = mapCollection.getMap("2D"),
-        mapView = map.getView(),
-        featureProjection = drawLayer.epsg || mapView.getProjection().getCode(),
-        geojson = new GeoJSON().writeFeaturesObject(features, {
-            featureProjection
-        });
-    let blob, gpkg, gpkgBytes;
+function getProjectProjectionCode () {
+    return mapCollection.getMap("2D")?.getView()?.getProjection()?.getCode() || "EPSG:4326";
+}
 
-    switch (format) {
-
-        case "shp":
-            // download as zipped shapefile will be triggered automatically by this function
-            shpdownload(geojson);
-            return;
-        case "gpkg":
-            gpkg = await createGeoPackage(geojson);
-            gpkgBytes = await gpkg.export();
-
-            blob = new Blob([gpkgBytes], {type: "octet/stream"});
-            break;
-        default:
-            blob = geojsonToBlob(geojson, format, drawLayer.type, drawLayer.name);
-            break;
+/**
+ * Resolve configured download projection for shp/gpkg exports.
+ *
+ * @param {String} downloadProjection The configured projection mode.
+ * @returns {String} Projection code.
+ */
+function getConfiguredDownloadProjection (downloadProjection) {
+    if (downloadProjection === "EPSG:4326") {
+        return downloadProjection;
     }
 
+    return getProjectProjectionCode();
+}
+
+/**
+ * Handle format-specific download logic.
+ * Converts geojson to the requested format and performs download.
+ *
+ * @param {Object} geojson The geojson object or data.
+ * @param {String} format The export format.
+ * @param {String} fileName The filename for download.
+ * @param {String} layerType The layer type (for blob conversion).
+ * @param {String} layerName The layer name (for blob conversion).
+ * @param {String} downloadProjection Optional download projection config.
+ * @returns {Promise<void>}
+ */
+async function handleFormatDownload (geojson, format, fileName, layerType, layerName, downloadProjection) {
+    const exportProjection = getConfiguredDownloadProjection(downloadProjection);
+
+    if (format === "shp") {
+        const features = new GeoJSON().readFeatures(geojson);
+        const projectedGeojson = new GeoJSON().writeFeaturesObject(features, {
+                featureProjection: exportProjection,
+                dataProjection: exportProjection
+            });
+
+        shpdownload(projectedGeojson);
+        return;
+    }
+
+    if (format === "gpkg") {
+        const features = new GeoJSON().readFeatures(geojson);
+        const projectedGeojson = new GeoJSON().writeFeaturesObject(features, {
+                featureProjection: exportProjection,
+                dataProjection: exportProjection
+            });
+        const gpkg = await createGeoPackage(projectedGeojson);
+        const gpkgBytes = await gpkg.export();
+        const blob = new Blob([gpkgBytes], {type: "octet/stream"});
+        const url = URL.createObjectURL(blob);
+
+        performDownload(url, fileName);
+        return;
+    }
+
+    const blob = geojsonToBlob(geojson, format, layerType, layerName);
     const url = URL.createObjectURL(blob);
 
     performDownload(url, fileName);
 }
 
 /**
- * Download a vector layer.
+ * Download a vector layer (draw or vector base layer).
  *
- * @param {Object} vectorBaseLayer The vector layer to download.
+ * @param {Object} layer The vector layer to download (draw or vectorBase type).
  * @param {String} format The requested output format.
+ * @param {String} downloadProjection Optional download projection config.
  * @returns {void}
  */
-async function downloadVectorBaseLayer (vectorBaseLayer, format) {
+async function downloadVectorLayer (layer, format, downloadProjection) {
     const fileEnding = getFileEndingForFormat(format),
-        fileName = `${vectorBaseLayer.name}.${fileEnding}`,
-        features = vectorBaseLayer.layer.layer.getSource().getFeatures(),
+        fileName = `${layer.name}.${fileEnding}`,
+        features = layer.layer.getSource().getFeatures(),
         map = mapCollection.getMap("2D"),
         mapView = map.getView(),
-        featureProjection = vectorBaseLayer.epsg || mapView.getProjection().getCode(),
-        geojson = new GeoJSON().writeFeaturesObject(features, {
-            featureProjection
-        });
-    let blob, gpkg, gpkgBytes;
+        featureProjection = layer.epsg || layer.srsName || mapView.getProjection().getCode(),
+        geojson = new GeoJSON().writeFeaturesObject(features, {featureProjection});
 
-    switch (format) {
-        case "shp":
-            // download as zipped shapefile will be triggered automatically by this function
-            shpdownload(geojson);
-            return;
-        case "gpkg":
-            gpkg = await createGeoPackage(geojson);
-            gpkgBytes = await gpkg.export();
-
-            blob = new Blob([gpkgBytes], {type: "octet/stream"});
-            break;
-        default:
-            blob = geojsonToBlob(geojson, format, vectorBaseLayer.type, vectorBaseLayer.name);
-            break;
-    }
-
-    const url = URL.createObjectURL(blob);
-
-    performDownload(url, fileName);
-
+    await handleFormatDownload(geojson, format, fileName, layer.type, layer.name, downloadProjection);
 }
 
 /**
@@ -111,34 +120,15 @@ async function downloadVectorBaseLayer (vectorBaseLayer, format) {
  *
  * @param {Object} geoJsonLayer The geojson layer to download.
  * @param {String} format The requested output format.
+ * @param {String} downloadProjection Optional download projection config.
  * @returns {void}
  */
-async function downloadGeoJsonLayer (geoJsonLayer, format) {
+async function downloadGeoJsonLayer (geoJsonLayer, format, downloadProjection) {
     const fileEnding = getFileEndingForFormat(format),
         fileName = `${geoJsonLayer.name}.${fileEnding}`,
         data = await fetchBlob(geoJsonLayer.url, "application/json");
-    let blob,
-        gpkg,
-        gpkgBytes;
 
-    switch (format) {
-        case "shp":
-            // download as zipped shapefile will be triggered automatically by this function
-            shpdownload(data);
-            return;
-        case "gpkg":
-            gpkg = await createGeoPackage(data);
-            gpkgBytes = await gpkg.export();
-
-            blob = new Blob([gpkgBytes], {type: "octet/stream"});
-            break;
-        default:
-            blob = geojsonToBlob(data, format, geoJsonLayer.type, geoJsonLayer.name);
-            break;
-    }
-    const blobUrl = URL.createObjectURL(blob);
-
-    performDownload(blobUrl, fileName);
+    await handleFormatDownload(data, format, fileName, geoJsonLayer.type, geoJsonLayer.name, downloadProjection);
 }
 
 /**
@@ -148,18 +138,14 @@ async function downloadGeoJsonLayer (geoJsonLayer, format) {
  * @returns {String} The file ending.
  */
 function getFileEndingForFormat (format) {
-    switch (format) {
-        case EXPORTFORMATS.geoJson:
-            return "json";
-        case EXPORTFORMATS.gml:
-            return "gml";
-        case EXPORTFORMATS.shp:
-            return "zip";
-        case EXPORTFORMATS.gpkg:
-            return "gpkg";
-        default:
-            return "";
-    }
+    const fileEndings = {
+        [EXPORTFORMATS.geoJson]: "json",
+        [EXPORTFORMATS.gml]: "gml",
+        [EXPORTFORMATS.shp]: "zip",
+        [EXPORTFORMATS.gpkg]: "gpkg"
+    };
+
+    return fileEndings[format] || "";
 }
 
 /**
@@ -177,16 +163,7 @@ async function fetchBlob (blobUrl, mimeType) {
         }
     });
 
-    let data;
-
-    if (mimeType === "application/json") {
-        data = await response.json();
-    }
-    else {
-        data = await response.text();
-    }
-
-    return data;
+    return mimeType === "application/json" ? response.json() : response.text();
 }
 
 /**
@@ -206,35 +183,57 @@ async function fetchData (url) {
 }
 
 /**
+ * Normalizes various srsName formats to EPSG:XXXX format.
+ * Supports multiple formats like:
+ * - EPSG:4326 (already normalized)
+ * - urn:ogc:def:crs:EPSG::4326 (OGC URN)
+ * - http://www.opengis.net/gml/srs/epsg.xml#4326 (URL format)
+ *
+ * @param {String} srsName The srsName in various formats.
+ * @returns {String|null} Normalized EPSG reference or null if not recognized.
+ */
+function normalizeSrsName (srsName) {
+    if (!srsName) {
+        return null;
+    }
+
+    if (srsName.match(/^EPSG:\d+$/i)) {
+        return srsName;
+    }
+
+    // URN format: urn:ogc:def:crs:EPSG::4326 or urn:ogc:def:crs:EPSG:0:4326
+    const urnMatch = srsName.match(/EPSG::?(\d+)/i);
+
+    if (urnMatch) {
+        return `EPSG:${urnMatch[1]}`;
+    }
+
+    // URL format: http://www.opengis.net/gml/srs/epsg.xml#4326
+    const urlMatch = srsName.match(/[#/](\d+)$/);
+
+    if (urlMatch) {
+        return `EPSG:${urlMatch[1]}`;
+    }
+
+    return null;
+}
+
+/**
  * Retuns the name of the typeName parameter based on service version.
  *
  * @param {String} version The service version.
  * @returns {String} The name of the TypeName parameter;
  */
 function getTypeNameStringFromServiceVersion (version) {
-    let typeNameString;
+    const typeNameMap = {
+        "1.0.0": "typeName",
+        "1.1.0": "typeName",
+        "1.1.3": "typeName",
+        "2.0.0": "typeNames",
+        "2.0.2": "typeNames"
+    };
 
-    switch (version) {
-        case "1.0.0":
-            typeNameString = "typeName";
-            break;
-        case "1.1.0":
-            typeNameString = "typeName";
-            break;
-        case "1.1.3":
-            typeNameString = "typeName";
-            break;
-        case "2.0.0":
-            typeNameString = "typeNames";
-            break;
-        case "2.0.2":
-            typeNameString = "typeNames";
-            break;
-        default:
-            break;
-    }
-
-    return typeNameString;
+    return typeNameMap[version];
 }
 
 /**
@@ -244,27 +243,13 @@ function getTypeNameStringFromServiceVersion (version) {
  * @returns {String} The gml mime type.
  */
 function getGmlMimeFromVersion (version) {
-    let gmlMime;
+    const gmlMimeMap = {
+        "1.1.0": "text/xml; subtype=gml/3.1.1",
+        "1.1.3": "application/gml+xml; version=3.1",
+        "2.0.0": "application/gml+xml; version=3.2"
+    };
 
-    switch (version) {
-        case "1.1.0":
-            gmlMime = "text/xml; subtype=gml/3.1.1";
-            break;
-        case "1.1.3":
-            gmlMime = "application/gml+xml; version=3.1";
-            break;
-        case "2.0.0":
-            gmlMime = "application/gml+xml; version=3.2";
-            break;
-        // openlayers does not support wfs 2.0.2 yet
-        // case "2.0.2":
-        //     gmlMime = "application/gml+xml; version=3.2";
-        //     break;
-        default:
-            break;
-    }
-
-    return gmlMime;
+    return gmlMimeMap[version];
 }
 
 /**
@@ -277,15 +262,15 @@ function getGmlMimeFromVersion (version) {
  * @returns {any} The blob.
  */
 function geojsonToBlob (geojson, outputFormat, featureNS, featureType) {
-    let blob, features, output;
+    let blob;
 
     switch (outputFormat) {
         case EXPORTFORMATS.geoJson:
             blob = new Blob([JSON.stringify(geojson)], {type: "application/geo+json"});
             break;
         case EXPORTFORMATS.gml:
-            features = new GeoJSON().readFeatures(geojson);
-            output = new GML32({featureNS, featureType, srsName: "EPSG:4326"}).writeFeatures(features);
+            const features = new GeoJSON().readFeatures(geojson);
+            const output = new GML32({featureNS, featureType, srsName: "EPSG:4326"}).writeFeatures(features);
             blob = new Blob([output], {type: "application/gml+xml; version=3.2"});
             break;
         default:
@@ -305,12 +290,12 @@ function geojsonToBlob (geojson, outputFormat, featureNS, featureType) {
  * @returns {any} The blob.
  */
 function gmlToBlob (gml, outputFormat, formatter, gmlMime) {
-    let blob, output, features;
+    let blob;
 
     switch (outputFormat) {
         case EXPORTFORMATS.geoJson:
-            features = formatter.readFeatures(gml);
-            output = new GeoJSON().writeFeatures(features);
+            const features = formatter.readFeatures(gml);
+            const output = new GeoJSON().writeFeatures(features);
             blob = new Blob([output], {type: "application/geo+json"});
             break;
         case EXPORTFORMATS.gml:
@@ -328,14 +313,17 @@ function gmlToBlob (gml, outputFormat, formatter, gmlMime) {
  *
  * @param {Object} wfsLayer The wfs layer to download.
  * @param {String} format The export format.
+ * @param {String} downloadProjection Optional download projection config.
  * @returns {void}
  */
-async function downloadWfsLayer (wfsLayer, format) {
+async function downloadWfsLayer (wfsLayer, format, downloadProjection) {
     const url = new URL(wfsLayer.url);
     const fileEnding = getFileEndingForFormat(format);
     const fileName = `${wfsLayer.name}.${fileEnding}`;
     const typeNameString = getTypeNameStringFromServiceVersion(wfsLayer.version);
-    const dataProjection = "EPSG:4326";
+    const dataProjection = format === EXPORTFORMATS.shp || format === EXPORTFORMATS.gpkg
+        ? getConfiguredDownloadProjection(downloadProjection)
+        : "EPSG:4326";
 
     url.searchParams.append("service", "WFS");
     url.searchParams.append("request", "GetFeature");
@@ -365,7 +353,7 @@ async function downloadWfsLayer (wfsLayer, format) {
         f => f.geometry.type.toLowerCase() === "multipolygon"
     );
 
-    let blob, gpkg, gpkgBytes, gmlMime;
+    let blob;
 
     switch (format) {
         case "shp":
@@ -379,13 +367,13 @@ async function downloadWfsLayer (wfsLayer, format) {
             shpdownload(geojson);
             return;
         case "gpkg":
-            gpkg = await createGeoPackage(geojson);
-            gpkgBytes = await gpkg.export();
+            const gpkg = await createGeoPackage(geojson);
+            const gpkgBytes = await gpkg.export();
 
             blob = new Blob([gpkgBytes], {type: "octet/stream"});
             break;
         default:
-            gmlMime = getGmlMimeFromVersion(wfsLayer.version);
+            const gmlMime = getGmlMimeFromVersion(wfsLayer.version);
 
             blob = gmlToBlob(wfsData, format, wfsFormat, gmlMime);
             break;
@@ -413,8 +401,8 @@ async function createGeoPackage (geojson) {
         }
     });
     // Create and prepare geopackage
-    const gpkg = await prepareGPKG(geojson.features[0].properties),
-        tableName = "export";
+    const gpkg = await prepareGPKG(geojson.features[0].properties);
+    const tableName = "export";
 
     // add features to feature table
     await gpkg.addGeoJSONFeaturesToGeoPackage(
@@ -452,8 +440,8 @@ async function prepareGPKG (properties) {
     // es-lint-disable-next-line no-undef
     window.GeoPackage.setSqljsWasmLocateFile(file => "./resources/" + file);
     // es-lint-disable-next-line no-undef
-    const gpkg = await window.GeoPackage.GeoPackageAPI.create(),
-        tableProperties = [];
+    const gpkg = await window.GeoPackage.GeoPackageAPI.create();
+    const tableProperties = [];
 
     // create new Feature Column from properties
     for (const [key, value] of Object.entries(properties)) {
@@ -473,28 +461,25 @@ async function prepareGPKG (properties) {
 }
 
 /**
- * Download a layer.
+ * Download a layer based on the layer type and requested format.
  *
  * @param {Object} layer The layer to download.
- * @param {String} format The export format.
+ * @param {String} format The requested output format.
+ * @param {String} downloadProjection Optional download projection config.
  * @returns {void}
  */
-export async function downloadLayer (layer, format) {
-    switch (layer.type) {
-        case LAYERTYPES.geoJson:
-            await downloadGeoJsonLayer(layer, format);
-            break;
-        case LAYERTYPES.wfs:
-            await downloadWfsLayer(layer, format);
-            break;
-        case LAYERTYPES.draw:
-            await downloadDrawLayer(layer, format);
-            break;
-        case LAYERTYPES.vectorBase:
-            await downloadVectorBaseLayer(layer, format);
-            break;
-        default:
-            break;
+export async function downloadLayer (layer, format, downloadProjection) {
+    const layerDownloadMap = {
+        [LAYERTYPES.geoJson]: downloadGeoJsonLayer,
+        [LAYERTYPES.wfs]: downloadWfsLayer,
+        [LAYERTYPES.draw]: downloadVectorLayer,
+        [LAYERTYPES.vectorBase]: downloadVectorLayer
+    };
+
+    const downloadFn = layerDownloadMap[layer.type];
+
+    if (downloadFn) {
+        await downloadFn(layer, format, downloadProjection);
     }
 }
 
