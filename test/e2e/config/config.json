@@ -8,13 +8,20 @@
         }
       },
       "mapView": {
-        "startCenter": [366972, 5618579],
-        "extent": [348412, 5600130, 384869, 5640342],
+        "startCenter": [
+          366972,
+          5618579
+        ],
+        "extent": [
+          348412,
+          5600130,
+          384869,
+          5640342
+        ],
         "startZoomLevel": 1
       }
     },
-    "tree": {
-    },
+    "tree": {},
     "mainMenu": {
       "expanded": false,
       "title": {
@@ -45,8 +52,7 @@
     "secondaryMenu": {
       "expanded": false,
       "sections": [
-        [
-        ]
+        []
       ]
     }
   },
@@ -65,6 +71,9 @@
     },
     "subjectlayer": {
       "elements": [
+        {
+          "id": "bonn_admin"
+        },
         {
           "id": "mobile_communication_tower"
         }

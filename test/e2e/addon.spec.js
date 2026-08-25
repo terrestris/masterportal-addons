@@ -20,7 +20,8 @@ const ADDON_NAME = process.env.ADDON_NAME || "tourGuide";
 
 test.skip(
     // TODO: Add test for type gfiTheme
-    ADDON_NAME === "simpleLineChart"
+    ADDON_NAME === "simpleLineChart" ||
+    ADDON_NAME === "iconTheme"
 );
 
 test.describe(`[${ADDON_NAME}] Generic smoke-tests`, () => {

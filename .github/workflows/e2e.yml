@@ -12,7 +12,7 @@ env:
   SERVE_PORT: 8080
   SERVE_HOST: localhost
   NODE_VERSION: 22.22.3
-  ADDONS: "exporter importer tourGuide simpleLineChart"
+  ADDONS: "exporter importer tourGuide simpleLineChart iconTheme"
 
 defaults:
   run:
@@ -145,7 +145,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        addon: [exporter, importer, tourGuide, simpleLineChart]
+        addon: [exporter, importer, tourGuide, simpleLineChart, iconTheme]
 
     env:
       ADDON_NAME: ${{ matrix.addon }}
