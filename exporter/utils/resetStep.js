@@ -28,8 +28,6 @@ export function getStepResetValues (stepName) {
         case STEPS.selectLayer:
             resetValues = {
                 selectedLayer: DEFAULT_VALUES.selectedLayer,
-                // we have to make sure to create a new object reference here
-                layerSelectionList: []
             };
             break;
         case STEPS.downloadLayer:
@@ -40,8 +38,6 @@ export function getStepResetValues (stepName) {
         case STEPS.selectExternalWfsLayer:
             resetValues = {
                 selectedLayer: DEFAULT_VALUES.selectedLayer,
-                // we have to make sure to create a new object reference here
-                layerSelectionList: []
             };
             break;
         default:

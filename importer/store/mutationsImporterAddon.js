@@ -60,18 +60,18 @@ const mutations = {
      * @returns {void}
      */
     resetImporterAddon: (state) => {
-        const basicResetValues = getBasicResetValues(),
-            provideOgcServiceResetValues = getStepResetValues(STEPS.provideOgcService),
-            selectLayersResetValues = getStepResetValues(STEPS.selectLayers),
-            uploadFileResetValues = getStepResetValues(STEPS.uploadFile),
-            styleLayersResetValues = getStepResetValues(STEPS.styleLayers),
-            resetValues = {
-                ...basicResetValues,
-                ...provideOgcServiceResetValues,
-                ...selectLayersResetValues,
-                ...uploadFileResetValues,
-                ...styleLayersResetValues
-            };
+        const basicResetValues = getBasicResetValues();
+        const provideOgcServiceResetValues = getStepResetValues(STEPS.provideOgcService);
+        const selectLayersResetValues = getStepResetValues(STEPS.selectLayers);
+        const uploadFileResetValues = getStepResetValues(STEPS.uploadFile);
+        const styleLayersResetValues = getStepResetValues(STEPS.styleLayers);
+        const resetValues = {
+            ...basicResetValues,
+            ...provideOgcServiceResetValues,
+            ...selectLayersResetValues,
+            ...uploadFileResetValues,
+            ...styleLayersResetValues
+        };
 
         for (const key in resetValues) {
             state[key] = resetValues[key];
