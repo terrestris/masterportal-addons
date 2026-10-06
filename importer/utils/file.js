@@ -1,7 +1,10 @@
-import MIMETYPES from "../constants/mimetypes";
-import FILETYPES from "../constants/filetypes";
+import MIMETYPES from "../constants/mimetypes.js";
+import FILETYPES from "../constants/filetypes.js";
 import {parseZip} from "shpjs";
-import GeoPackage from "@ngageoint/geopackage";
+import {
+  setSqljsWasmLocateFile,
+  GeoPackageAPI
+} from '@ngageoint/geopackage';
 
 /**
  * Check if the extension of the given file name is accepted for given service.
@@ -109,9 +112,9 @@ export async function readGeoPackageFile (file, resourcesPath) {
  * @returns {object} - The GeoPackage database connection
     */
 export async function prepareGPKG (uint8Array, resourcesPath) {
-    GeoPackage.setSqljsWasmLocateFile(file => resourcesPath + file);
+    setSqljsWasmLocateFile(file => resourcesPath + file);
     // create GeoPackage database connection
-    const gpkg = await GeoPackage.GeoPackageAPI.open(uint8Array);
+    const gpkg = await GeoPackageAPI.open(uint8Array);
     const tables = gpkg.getFeatureTables();
     const projections = tables.map((tableName) => gpkg.getFeatureDao(tableName).projection);
 
