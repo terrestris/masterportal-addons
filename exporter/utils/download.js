@@ -5,7 +5,6 @@ import {parse} from "ol/xml.js";
 import {Projection, addEquivalentProjections, get} from "ol/proj.js";
 import {download as shpdownload} from "@crmackey/shp-write";
 import {GeoPackageAPI, setSqljsWasmLocateFile} from "@ngageoint/geopackage";
-import sqlWasmUrl from "@ngageoint/geopackage/dist/sql-wasm.wasm?url";
 
 import EXPORTFORMATS from "../constants/exportformats.js";
 import LAYERTYPES from "../constants/layertypes.js";
@@ -60,9 +59,10 @@ function getConfiguredDownloadProjection (downloadProjection) {
  * @param {String} layerType The layer type (for blob conversion).
  * @param {String} layerName The layer name (for blob conversion).
  * @param {String} downloadProjection Optional download projection config.
+ * @param {String} resourcesPath Path to the folder containing the Sql.js wasm file.
  * @returns {Promise<void>}
  */
-async function handleFormatDownload (geojson, format, fileName, layerType, layerName, downloadProjection) {
+async function handleFormatDownload (geojson, format, fileName, layerType, layerName, downloadProjection, resourcesPath) {
     const exportProjection = getConfiguredDownloadProjection(downloadProjection);
 
     if (format === "shp") {
@@ -82,7 +82,7 @@ async function handleFormatDownload (geojson, format, fileName, layerType, layer
                 featureProjection: exportProjection,
                 dataProjection: exportProjection
             });
-        const gpkg = await createGeoPackage(projectedGeojson);
+        const gpkg = await createGeoPackage(projectedGeojson, resourcesPath);
         const gpkgBytes = await gpkg.export();
         const blob = new Blob([gpkgBytes], {type: "octet/stream"});
         const url = URL.createObjectURL(blob);
@@ -103,9 +103,10 @@ async function handleFormatDownload (geojson, format, fileName, layerType, layer
  * @param {Object} layer The vector layer to download (draw or vectorBase type).
  * @param {String} format The requested output format.
  * @param {String} downloadProjection Optional download projection config.
+ * @param {String} resourcesPath Path to the folder containing the Sql.js wasm file.
  * @returns {void}
  */
-async function downloadVectorLayer (layer, format, downloadProjection) {
+async function downloadVectorLayer (layer, format, downloadProjection, resourcesPath) {
     const fileEnding = getFileEndingForFormat(format),
         fileName = `${layer.name}.${fileEnding}`,
         features = layer.layer.getSource().getFeatures(),
@@ -114,7 +115,7 @@ async function downloadVectorLayer (layer, format, downloadProjection) {
         featureProjection = layer.epsg || layer.srsName || mapView.getProjection().getCode(),
         geojson = new GeoJSON().writeFeaturesObject(features, {featureProjection});
 
-    await handleFormatDownload(geojson, format, fileName, layer.type, layer.name, downloadProjection);
+    await handleFormatDownload(geojson, format, fileName, layer.type, layer.name, downloadProjection, resourcesPath);
 }
 
 /**
@@ -123,14 +124,15 @@ async function downloadVectorLayer (layer, format, downloadProjection) {
  * @param {Object} geoJsonLayer The geojson layer to download.
  * @param {String} format The requested output format.
  * @param {String} downloadProjection Optional download projection config.
+ * @param {String} resourcesPath Path to the folder containing the Sql.js wasm file.
  * @returns {void}
  */
-async function downloadGeoJsonLayer (geoJsonLayer, format, downloadProjection) {
+async function downloadGeoJsonLayer (geoJsonLayer, format, downloadProjection, resourcesPath) {
     const fileEnding = getFileEndingForFormat(format),
         fileName = `${geoJsonLayer.name}.${fileEnding}`,
         data = await fetchBlob(geoJsonLayer.url, "application/json");
 
-    await handleFormatDownload(data, format, fileName, geoJsonLayer.type, geoJsonLayer.name, downloadProjection);
+    await handleFormatDownload(data, format, fileName, geoJsonLayer.type, geoJsonLayer.name, downloadProjection, resourcesPath);
 }
 
 /**
@@ -316,9 +318,10 @@ function gmlToBlob (gml, outputFormat, formatter, gmlMime) {
  * @param {Object} wfsLayer The wfs layer to download.
  * @param {String} format The export format.
  * @param {String} downloadProjection Optional download projection config.
+ * @param {String} resourcesPath Path to the folder containing the Sql.js wasm file.
  * @returns {void}
  */
-async function downloadWfsLayer (wfsLayer, format, downloadProjection) {
+async function downloadWfsLayer (wfsLayer, format, downloadProjection, resourcesPath) {
     const url = new URL(wfsLayer.url);
     const fileEnding = getFileEndingForFormat(format);
     const fileName = `${wfsLayer.name}.${fileEnding}`;
@@ -369,7 +372,7 @@ async function downloadWfsLayer (wfsLayer, format, downloadProjection) {
             shpdownload(geojson);
             return;
         case "gpkg":
-            const gpkg = await createGeoPackage(geojson);
+            const gpkg = await createGeoPackage(geojson, resourcesPath);
             const gpkgBytes = await gpkg.export();
 
             blob = new Blob([gpkgBytes], {type: "octet/stream"});
@@ -391,9 +394,10 @@ async function downloadWfsLayer (wfsLayer, format, downloadProjection) {
  * creates a feature table based on the input geojson properties
  * and adds the features of the input geojson to the table.
  * @param {object} geojson  - The geojson object to be exported.
+ * @param {string} resourcesPath - Path to the Sql.js wasm file.
  * @returns {object} - The geopackage object
  */
-async function createGeoPackage (geojson) {
+async function createGeoPackage (geojson, resourcesPath) {
     // Filter feature properties to match only geopackage data types
     filterFeaturePropertiesForGpkg(geojson);
     // Add feature id to properties if not exists - needed to insert feature row
@@ -403,7 +407,7 @@ async function createGeoPackage (geojson) {
         }
     });
     // Create and prepare geopackage
-    const gpkg = await prepareGPKG(geojson.features[0].properties);
+    const gpkg = await prepareGPKG(geojson.features[0].properties, resourcesPath);
     const tableName = "export";
 
     // add features to feature table
@@ -436,10 +440,11 @@ function filterFeaturePropertiesForGpkg (geojson) {
 /**
  * Prepare a GeoPackage instance from input properties
  * @param {object} properties - The properties for the table data columns
+ * @param {string} resourcesPath - Path to the Sql.js wasm file.
  * @returns {object} - The geopackage
  */
-async function prepareGPKG (properties) {
-    setSqljsWasmLocateFile(() => sqlWasmUrl);
+async function prepareGPKG (properties, resourcesPath) {
+    setSqljsWasmLocateFile(file => resourcesPath + file);
     const gpkg = await GeoPackageAPI.create();
     const tableProperties = [];
 
@@ -466,9 +471,10 @@ async function prepareGPKG (properties) {
  * @param {Object} layer The layer to download.
  * @param {String} format The requested output format.
  * @param {String} downloadProjection Optional download projection config.
+ * @param {String} resourcesPath Path to the folder containing the Sql.js wasm file.
  * @returns {void}
  */
-export async function downloadLayer (layer, format, downloadProjection) {
+export async function downloadLayer (layer, format, downloadProjection, resourcesPath) {
     const layerDownloadMap = {
         [LAYERTYPES.geoJson]: downloadGeoJsonLayer,
         [LAYERTYPES.wfs]: downloadWfsLayer,
@@ -479,7 +485,7 @@ export async function downloadLayer (layer, format, downloadProjection) {
     const downloadFn = layerDownloadMap[layer.type];
 
     if (downloadFn) {
-        await downloadFn(layer, format, downloadProjection);
+        await downloadFn(layer, format, downloadProjection, resourcesPath);
     }
 }
 

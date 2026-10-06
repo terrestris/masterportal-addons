@@ -15,6 +15,7 @@ export const DEFAULT_VALUES = {
             EXPORTFORMATS.gpkg
         ],
         downloadProjection: "mapProjection",
+        resourcesPath: "./resources/",
         selectedExportFormat: undefined
     };
 
@@ -30,6 +31,7 @@ export const DEFAULT_VALUES = {
      * @property {Object} selectedLayer The currently selected layer to export.
      * @property {String[]} supportedExportFormats List of supported export formats.
      * @property {String} downloadProjection Optional projection mode used for shp/gpkg export.
+     * @property {String} resourcesPath Path to the folder containing the Sql.js wasm file for gpkg export.
      * @property {String} selectedExportFormat The currently selected export format.
      */
     const state = {

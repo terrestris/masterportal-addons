@@ -30,9 +30,9 @@ For more information, please check the official [Masterportal documentation](htt
 
 ### GeoPackage Support
 
-GeoPackage support works out of the box: the [GeoPackage library](https://www.npmjs.com/package/@ngageoint/geopackage) and the WebAssembly version of `Sql.js` are installed via `npm i` (step 2) and bundled by Vite. No additional files in the portal's `resources` folder are required.
-
-1. Verify that `gpkg` is defined in `supportedExportFormats` in your `config.json` (it is by default).
+1. Save the WebAssembly version of `Sql.js` to your portals resource folder. Use the file shipped with the [GeoPackage library](https://www.npmjs.com/package/@ngageoint/geopackage).
+   - `addons/exporter/node_modules/@ngageoint/geopackage/dist/sql-wasm.wasm` ➡ `myportal/resources/sql-wasm.wasm`
+1. Verify, that the GeoPackage (`gpkg`) is defined as `supportedExportFormats` in your `config.json`.
 
 ## Notes
 
