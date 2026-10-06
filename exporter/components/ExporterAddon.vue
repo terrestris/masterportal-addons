@@ -4,12 +4,12 @@ import {mapGetters, mapActions, mapMutations} from "vuex";
 import LayerDownloadOptions from "./LayerDownloadOptions.vue";
 import LayerSelection from "./LayerSelection.vue";
 
-import getters from "../store/gettersExporterAddon";
-import mutations from "../store/mutationsExporterAddon";
+import getters from "../store/gettersExporterAddon.js";
+import mutations from "../store/mutationsExporterAddon.js";
 
-import {downloadLayer} from "../utils/download";
+import {downloadLayer} from "../utils/download.js";
 
-import STEPS from "../constants/steps";
+import STEPS from "../constants/steps.js";
 import FlatButton from "@shared/modules/buttons/components/FlatButton.vue";
 
 export default {

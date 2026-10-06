@@ -1,13 +1,15 @@
 import axios from "axios";
-import {GeoJSON, WFS} from "ol/format";
-import GML32 from "ol/format/GML32";
+import {GeoJSON, WFS} from "ol/format.js";
+import GML32 from "ol/format/GML32.js";
 import {parse} from "ol/xml.js";
-import {Projection, addEquivalentProjections, get} from "ol/proj";
+import {Projection, addEquivalentProjections, get} from "ol/proj.js";
 import {download as shpdownload} from "@crmackey/shp-write";
+import {GeoPackageAPI, setSqljsWasmLocateFile} from "@ngageoint/geopackage";
+import sqlWasmUrl from "@ngageoint/geopackage/dist/sql-wasm.wasm?url";
 
-import EXPORTFORMATS from "../constants/exportformats";
-import LAYERTYPES from "../constants/layertypes";
-import GEOPACKAGEDATATYPE from "../constants/geoPackageDataTypes";
+import EXPORTFORMATS from "../constants/exportformats.js";
+import LAYERTYPES from "../constants/layertypes.js";
+import GEOPACKAGEDATATYPE from "../constants/geoPackageDataTypes.js";
 
 /**
  * Performs a download.
@@ -437,10 +439,8 @@ function filterFeaturePropertiesForGpkg (geojson) {
  * @returns {object} - The geopackage
  */
 async function prepareGPKG (properties) {
-    // es-lint-disable-next-line no-undef
-    window.GeoPackage.setSqljsWasmLocateFile(file => "./resources/" + file);
-    // es-lint-disable-next-line no-undef
-    const gpkg = await window.GeoPackage.GeoPackageAPI.create();
+    setSqljsWasmLocateFile(() => sqlWasmUrl);
+    const gpkg = await GeoPackageAPI.create();
     const tableProperties = [];
 
     // create new Feature Column from properties
