@@ -1,8 +1,8 @@
 <script>
 import {mapGetters, mapActions, mapMutations} from "vuex";
-import getters from "../store/gettersImporterAddon";
-import mutations from "../store/mutationsImporterAddon";
-import {isValidCapabilitiesUrl} from "../utils/capabilities";
+import getters from "../store/gettersImporterAddon.js";
+import mutations from "../store/mutationsImporterAddon.js";
+import {isValidCapabilitiesUrl} from "../utils/capabilities.js";
 
 export default {
     name: "ProvideOgcService",

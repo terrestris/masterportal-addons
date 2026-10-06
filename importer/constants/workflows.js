@@ -1,4 +1,4 @@
-import STEPS from "./steps";
+import STEPS from "./steps.js";
 
 const workflows = {
     wms: [STEPS.provideOgcService, STEPS.selectLayers],

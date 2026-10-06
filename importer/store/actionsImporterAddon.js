@@ -1,4 +1,4 @@
-import {createFileLayerConfigs} from "../utils/layer";
+import {createFileLayerConfigs} from "../utils/layer.js";
 
 const actions = {
     async setSelectedLayerFromFile ({commit, dispatch, getters}, {fileType, file, layerId, folderId}) {

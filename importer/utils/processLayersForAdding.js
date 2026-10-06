@@ -1,4 +1,4 @@
-import layerCollection from "@core/layers/js/layerCollection";
+import layerCollection from "@core/layers/js/layerCollection.js";
 
 
 /**

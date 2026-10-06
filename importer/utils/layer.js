@@ -1,6 +1,6 @@
 import createStyle from "@masterportal/masterportalapi/src/vectorStyle/createStyle";
-import {readGeoJsonFile, readShapeZipFile, readGeoPackageFile} from "./file";
-import layerCollection from "@core/layers/js/layerCollection";
+import {readGeoJsonFile, readShapeZipFile, readGeoPackageFile} from "./file.js";
+import layerCollection from "@core/layers/js/layerCollection.js";
 import styleList from "@masterportal/masterportalapi/src/vectorStyle/styleList";
 
 /**

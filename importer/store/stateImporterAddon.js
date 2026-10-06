@@ -1,4 +1,4 @@
-import {getWorkflowNames} from "../utils/workflows";
+import {getWorkflowNames} from "../utils/workflows.js";
 
 export const DEFAULT_VALUES = {
         currentWorkflow: undefined,
