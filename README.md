@@ -1,6 +1,6 @@
 # Masterportal Addons
 
-This repo contains addons for the current stable [Masterportal](https://bitbucket.org/geowerkstatt-hamburg/masterportal/), developed by [terrestris](https://terrestris.de).  
+This repo contains addons for the current stable [Masterportal](https://bitbucket.org/geowerkstatt-hamburg/masterportal/), developed by [terrestris](https://terrestris.de).
 We also developed several other addons to customize layout, design (e.g. icon library), start page, detail search. Feel free to contact us at sales@terrestris.de for more information.
 
 ## Installation
@@ -14,7 +14,7 @@ Please check the `README` or `doc` files within the respective addon folder.
 | Data Narrator¹     | Addon to integrate the Data Narrator Platform: Story dashboard, story editor, step editor, playback mode, layer selection, handle GeoJSON and 3D models. | v3.15.x (LTS)  |  tba |
 | embedit²       | Integrates the fully customizable form-based Geo-Editor to create/update/delete your data. | v3.15.x (LTS) | [terrestris Masterportal](https://masterportal.terrestris.de) |
 | exporter       | Export WFS and vector layers to common geodata formats. | v3.27.x (LTS)    |[terrestris Masterportal](https://masterportal.terrestris.de)|
-| importer       | Import common geodata formats and OGC services.        | v3.15.x (LTS)|[terrestris Masterportal](https://masterportal.terrestris.de)|
+| importer       | Import common geodata formats and OGC services.        | v3.27.x (LTS)|[terrestris Masterportal](https://masterportal.terrestris.de)|
 | iconTheme      | Custom GFI theme with icon rendering for selected attributes and optional custom links. | v3.15.x (LTS) | [Meckenheim Geoportal](https://geoportal.meckenheim.de) |
 | simpleLineChart     | Renders data points on simple chart.js component.      | v3.15.x (LTS)       | [FOSSGIS WS](https://github.com/terrestris/masterportal-ws)  |
 | tourGuide     | This addon enables a customised tour through the masterportal. Elements can be highlighted and provided with descriptions and graphics. Technically, it is basically a wrapper for [intro.js](https://introjs.com/) with minor adaptions to fit the masterportal design.      | v3.15.x (LTS)       | [Meckenheim Geoportal](https://geoportal.meckenheim.de)  |
