@@ -30,8 +30,6 @@ For more information, please check the official [Masterportal documentation](htt
 
 ### GeoPackage Support
 
-1. Save the WebAssembly version of `Sql.js` to your portals resource folder. Use the file shipped with the [GeoPackage library](https://www.npmjs.com/package/@ngageoint/geopackage).
-   - `addons/exporter/node_modules/@ngageoint/geopackage/dist/sql-wasm.wasm` ➡ `myportal/resources/sql-wasm.wasm`
 1. Verify, that the GeoPackage (`gpkg`) is defined as `supportedExportFormats` in your `config.json`.
 
 ## Notes
