@@ -125,8 +125,7 @@ jobs:
           NODE_OPTIONS: '--max-old-space-size=3072'
         run: |
           set -x
-          echo "" | npm run build
-          sed -i 's|"\.\./mastercode|"/mastercode|g' dist/e2e/index.html
+          echo "" | npm run buildPortal
           cat dist/e2e/index.html
 
       - name: Upload dist artifact
