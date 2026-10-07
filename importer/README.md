@@ -30,8 +30,6 @@ For more information, please check the official [Masterportal documentation](htt
 
 ### GeoPackage Support
 
-1. Download and save the WebAssembly version of `Sql.js` to your portals resource folder, cf. `https://github.com/sql-js/sql.js/#downloadingusing`.
-   - `sql-wasm.wasm` ➡ `myportal/resources/sql-wasm.wasm`
 1. Verify, that the GeoPackage is defined as `supportedImportWorkflows` in your `config.json.md`.
 
 ## Notes

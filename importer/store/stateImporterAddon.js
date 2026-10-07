@@ -21,8 +21,7 @@ export const DEFAULT_VALUES = {
         inputFile: undefined,
         supportedImportWorkflows: getWorkflowNames(),
         fileUploadIcon: "bi bi-cloud-arrow-up-fill",
-        removeFileIcon: "bi bi-x-circle-fill",
-        resourcesPath: "./resources/"
+        removeFileIcon: "bi bi-x-circle-fill"
     },
 
     /**

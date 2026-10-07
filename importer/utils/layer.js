@@ -186,10 +186,9 @@ export function createLayerConfigs (service, url, version, folderId, layerOpts) 
  * @param {File} file The file to create the config from.
  * @param {String} layerId The id of the layer.
  * @param {String} folderId The id of the folder to add the layers to.
- * @param {string} resourcesPath - Path to the Sql.js wasm file.
  * @returns {Object[]} List of config object.
  */
-export async function createFileLayerConfigs (filetype, file, layerId, folderId, resourcesPath) {
+export async function createFileLayerConfigs (filetype, file, layerId, folderId) {
     let layerConfigs = [];
 
     if (filetype === "geojson") {
@@ -212,7 +211,7 @@ export async function createFileLayerConfigs (filetype, file, layerId, folderId,
             layer, layer.fileName, layer.fileName, folderId));
     }
     if (filetype === "geopackage") {
-        const featureTables = await readGeoPackageFile(file, resourcesPath);
+        const featureTables = await readGeoPackageFile(file);
 
         layerConfigs = featureTables.map(geojson => createGeoJsonLayerConfig(
             geojson, geojson.tableName, geojson.tableName, folderId));
