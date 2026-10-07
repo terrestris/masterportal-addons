@@ -123,8 +123,6 @@ export default {
 
 
 <style lang="scss" scoped>
-@import "~variables";
-
 .gfi-theme-images-image {
     margin: auto;
     display: block;
