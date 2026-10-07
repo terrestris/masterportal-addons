@@ -114,8 +114,9 @@ jobs:
 
       - name: Copy e2e config into masterportal/portal
         working-directory: masterportal
+        # we need at least two portals starting with masterportal version 3.27
+        # otherwise the build will fail
         run: |
-          rm -rf portal/*
           cp -r ../masterportal-addons/test/e2e/config portal/e2e
           cp -r ../masterportal-addons/test/e2e/config/addonsConf.json addons/addonsConf.json
 
