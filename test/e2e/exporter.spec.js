@@ -37,7 +37,7 @@ test.describe("[exporter] Tool smoke-tests", () => {
         await openPortal(page);
         await openMainMenu(page);
         // make test wfs layer visible
-        const layerButton = page.locator('button[title="Mobilfunkmasten (OSM)"]').first();
+        const layerButton = page.locator('button[aria-label="Mobilfunkmasten (OSM)"]').first();
 
         await layerButton.click();
         // open exporter tool
