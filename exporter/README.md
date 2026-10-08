@@ -26,7 +26,7 @@ addons: [
 
 5. Configure the addon in your portal's `config.json`. See an example in `/doc/config.json.md`.
 
-For more information, please check the official [Masterportal documentation](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src/dev/doc/addOnsVue.md).
+For more information, please check the official [Masterportal documentation](https://gitlab.opencode.de/lgvhh/urban-data-solutions/masterportal/-/blob/dev/docs/Dev/Tutorials/addOnsVue.md).
 
 ### GeoPackage Support
 

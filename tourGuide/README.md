@@ -4,7 +4,7 @@ This addon enables a customised tour through the masterportal. Elements can be h
 
 ## Supported Masterportal Versions
 
-- [v3.15.3](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src/v3.15.3/)
+- [v3.27.0](https://gitlab.opencode.de/lgvhh/urban-data-solutions/masterportal/-/tree/v3.27.0)
 
 ## Installation
 
@@ -30,7 +30,7 @@ In `config.js` you can define custom steps for the tour.
 |----|--------|----|-------|-----------|
 |element|no|String||The querySelector of the element that shall be highlighted.|
 |intro|yes|**[intro](###Text)**||The content of the step.|
-|classes|no|String||The css classes to add to your step. Use `step-large` to 
+|classes|no|String||The css classes to add to your step. Use `step-large` to
 
 For further detailed configuration, please check the [intro.js docs](https://introjs.com/docs/tour/api#introjsaddstepoptions).
 

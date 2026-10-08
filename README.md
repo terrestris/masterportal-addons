@@ -1,6 +1,6 @@
 # Masterportal Addons
 
-This repo contains addons for the current stable [Masterportal](https://bitbucket.org/geowerkstatt-hamburg/masterportal/), developed by [terrestris](https://terrestris.de).
+This repo contains addons for the current stable [Masterportal](https://gitlab.opencode.de/lgvhh/urban-data-solutions/masterportal), developed by [terrestris](https://terrestris.de).
 We also developed several other addons to customize layout, design (e.g. icon library), start page, detail search. Feel free to contact us at sales@terrestris.de for more information.
 
 ## Installation
@@ -26,7 +26,7 @@ Please check the `README` or `doc` files within the respective addon folder.
 
 ### Unit Tests
 
-The unit tests run together with the Masterportal core module tests. They can be found within the `tests`folder of the respective addon. [Documentation](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src/dev/docs/Dev/unitTestVue.md).
+The unit tests run together with the Masterportal core module tests. They can be found within the `tests`folder of the respective addon. [Documentation](https://gitlab.opencode.de/lgvhh/urban-data-solutions/masterportal/-/blob/dev/docs/Dev/unitTestVue.md).
 
 ### E2E
 
