@@ -1,7 +1,7 @@
-import EXPORTFORMATS from "../constants/exportformats";
-import LAYERTYPES from "../constants/layertypes";
+import EXPORTFORMATS from "../constants/exportformats.js";
+import LAYERTYPES from "../constants/layertypes.js";
 
-import layerCollection from "@core/layers/js/layerCollection";
+import layerCollection from "@core/layers/js/layerCollection.js";
 
 /**
  * Get a layer from the layer collection by its id.

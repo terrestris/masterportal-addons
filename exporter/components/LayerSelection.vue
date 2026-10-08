@@ -3,9 +3,9 @@ import {mapGetters, mapActions, mapMutations} from "vuex";
 import AccordionItem from "@shared/modules/accordion/components/AccordionItem.vue";
 import RadioButton from "./RadioButton.vue";
 
-import mutations from "../store/mutationsExporterAddon";
-import LAYERTYPES from "../constants/layertypes";
-import {wfsToDownloadLayer, geoJsonToDownloadLayer, drawLayerToDownloadLayer, vectorBaseDownloadLayer} from "../utils/layer";
+import mutations from "../store/mutationsExporterAddon.js";
+import LAYERTYPES from "../constants/layertypes.js";
+import {wfsToDownloadLayer, geoJsonToDownloadLayer, drawLayerToDownloadLayer, vectorBaseDownloadLayer} from "../utils/layer.js";
 
 
 export default {

@@ -13,7 +13,7 @@ Bitte lesen Sie die `README`- oder `doc`-Dateien im jeweiligen Addon-Ordner.
 | --- | --- | --- | --- |
 | Data Narrator¹     | Addon zur Integration der Data Narrator Platform: Story dashboard, story editor, step editor, playback mode, layer selection, Integration von GeoJSON und 3D Daten. | v3.15.x (LTS)  |  tba |
 | embedit² | Integriert den voll anpassbaren formbasierten Geo-Editor zum Erstellen/Aktualisieren/Löschen Ihrer Daten. | v3.15.x (LTS) | [terrestris Masterportal](https://masterportal.terrestris.de) |
-| exporter | Exportiert WFS- und Vektorschichten in gängige Geodatenformate. | v3.15.x (LTS) | [terrestris Masterportal](https://masterportal.terrestris.de) |
+| exporter | Exportiert WFS- und Vektorschichten in gängige Geodatenformate. | v3.27.x (LTS) | [terrestris Masterportal](https://masterportal.terrestris.de) |
 | importer | Importiert gängige Geodatenformate und OGC-Dienste. | v3.15.x (LTS) | [terrestris Masterportal](https://masterportal.terrestris.de) |
 | iconTheme | Benutzerdefiniertes GFI-Theme mit Icon-Darstellung für ausgewählte Attribute und optionalen zusätzlichen Links. | v3.15.x (LTS) | [Meckenheim Geoportal](https://geoportal.meckenheim.de) |
 | simpleLineChart | Rendert Datenpunkte auf einer einfachen chart.js-Komponente. | v3.15.x (LTS) | [FOSSGIS WS](https://github.com/terrestris/masterportal-ws) |

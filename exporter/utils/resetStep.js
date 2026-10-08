@@ -1,5 +1,5 @@
-import {DEFAULT_VALUES} from "../store/stateExporterAddon";
-import STEPS from "../constants/steps";
+import {DEFAULT_VALUES} from "../store/stateExporterAddon.js";
+import STEPS from "../constants/steps.js";
 
 /**
  * Get the reset values for non step related state variables.

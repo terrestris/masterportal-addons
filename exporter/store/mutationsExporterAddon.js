@@ -1,7 +1,7 @@
-import {generateSimpleMutations} from "@shared/js/utils/generators";
-import stateExporterAddon from "./stateExporterAddon";
-import {getBasicResetValues, getStepResetValues} from "../utils/resetStep";
-import STEPS from "../constants/steps";
+import {generateSimpleMutations} from "@shared/js/utils/generators.js";
+import stateExporterAddon from "./stateExporterAddon.js";
+import {getBasicResetValues, getStepResetValues} from "../utils/resetStep.js";
+import STEPS from "../constants/steps.js";
 
 const mutations = {
     /**

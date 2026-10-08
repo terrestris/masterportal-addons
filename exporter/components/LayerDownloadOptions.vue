@@ -2,9 +2,9 @@
 import {mapGetters, mapActions, mapMutations} from "vuex";
 import RadioButton from "./RadioButton.vue";
 
-import mutations from "../store/mutationsExporterAddon";
+import mutations from "../store/mutationsExporterAddon.js";
 
-import LAYERTYPES from "../constants/layertypes";
+import LAYERTYPES from "../constants/layertypes.js";
 
 export default {
     name: "LayerDownloadOptions",

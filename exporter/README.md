@@ -6,7 +6,7 @@
 
 1. Copy the folder to your `addons` folder within your masterportal project.
 2. Run `npm i` within the specific addon folder: `addons/exporter`
-3. Adapt the `addons/addons.conf` by adding:
+3. Adapt the `addons/addonsConf.json` by adding:
 
 ```json
 {
@@ -30,13 +30,8 @@ For more information, please check the official [Masterportal documentation](htt
 
 ### GeoPackage Support
 
-1. Download and safe the GeoPackage library code and Web Assembly version of `Sql.js` to your portals resource folder, cf. `https://www.npmjs.com/package/@ngageoint/geopackage`.
-   - `geopackage.min.js` ➡ `myportal/resources/geopackage.min.js`
-   - `sql-wasm.wasm` ➡ `myportal/resources/sql-wasm.wasm`
-2. Add the following import to your `index.html`:
-   - `<script src="./resources/geopackage.min.js"></script>`
-1. Verify that GeoPackage is defined as `supportedExportFormats` in your `config.json.md`.
+1. Verify, that the GeoPackage (`gpkg`) is defined as `supportedExportFormats` in your `config.json`.
 
 ## Notes
 
-This plugin was developed and tested for Masterportal v3.15.3 (LTS).
+This plugin was developed and tested for Masterportal v3.27.0 (LTS).

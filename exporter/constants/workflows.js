@@ -1,4 +1,4 @@
-import STEPS from "./steps";
+import STEPS from "./steps.js";
 
 export const WORKFLOW_NAMES = {
     default: "default",

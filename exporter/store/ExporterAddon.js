@@ -1,7 +1,7 @@
-import getters from "./gettersExporterAddon";
-import mutations from "./mutationsExporterAddon";
-import actions from "./actionsExporterAddon";
-import state from "./stateExporterAddon";
+import getters from "./gettersExporterAddon.js";
+import mutations from "./mutationsExporterAddon.js";
+import actions from "./actionsExporterAddon.js";
+import state from "./stateExporterAddon.js";
 
 export default {
     namespaced: true,

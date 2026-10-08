@@ -1,5 +1,5 @@
 import ExporterAddonComponent from "./components/ExporterAddon.vue";
-import ExporterAddonStore from "./store/ExporterAddon";
+import ExporterAddonStore from "./store/ExporterAddon.js";
 import deLocale from "./locales/de/additional.json";
 import enLocale from "./locales/en/additional.json";
 

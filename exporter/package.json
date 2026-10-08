@@ -13,6 +13,7 @@
   "author": "terrestris GmbH & Co. KG, Dataport AöR",
   "license": "MIT",
   "dependencies": {
-    "@crmackey/shp-write": "^0.4.5"
+    "@crmackey/shp-write": "^0.4.5",
+    "@ngageoint/geopackage": "^4.2.9"
   }
 }

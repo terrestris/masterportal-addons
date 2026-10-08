@@ -1,6 +1,6 @@
-import {generateSimpleGetters} from "@shared/js/utils/generators";
-import WORKFLOWS from "../constants/workflows";
-import stateExporterAddon from "./stateExporterAddon";
+import {generateSimpleGetters} from "@shared/js/utils/generators.js";
+import WORKFLOWS from "../constants/workflows.js";
+import stateExporterAddon from "./stateExporterAddon.js";
 
 const getters = {
     ...generateSimpleGetters(stateExporterAddon),

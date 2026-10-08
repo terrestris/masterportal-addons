@@ -1,6 +1,6 @@
-import EXPORTFORMATS from "../constants/exportformats";
-import STEPS from "../constants/steps";
-import {WORKFLOW_NAMES} from "../constants/workflows";
+import EXPORTFORMATS from "../constants/exportformats.js";
+import STEPS from "../constants/steps.js";
+import {WORKFLOW_NAMES} from "../constants/workflows.js";
 
 export const DEFAULT_VALUES = {
         currentWorkflow: WORKFLOW_NAMES.default,
