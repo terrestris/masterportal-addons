@@ -13,7 +13,7 @@
   "author": "terrestris GmbH & Co. KG, Dataport AöR",
   "license": "MIT",
   "dependencies": {
-    "@ngageoint/geopackage": "^4.2.9",
+    "@ngageoint/geopackage": "^4.2.10",
     "shpjs": "^4.0.4"
   }
 }
