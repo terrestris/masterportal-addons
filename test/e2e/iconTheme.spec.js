@@ -24,7 +24,7 @@ test.describe("[iconTheme] Tool smoke-tests", () => {
         await openPortal(page);
         await openMainMenu(page);
         // make test wfs layer visible
-        const layerButton = page.locator('button[title="Bonn Stadtgebiet"]').first();
+        const layerButton = page.locator('button[aria-label="Bonn Stadtgebiet"]').first();
 
         await layerButton.click();
         // perform a GetFeatureInfo click on the map

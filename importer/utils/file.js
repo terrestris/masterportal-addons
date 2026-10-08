@@ -1,6 +1,11 @@
-import MIMETYPES from "../constants/mimetypes";
-import FILETYPES from "../constants/filetypes";
+import MIMETYPES from "../constants/mimetypes.js";
+import FILETYPES from "../constants/filetypes.js";
 import {parseZip} from "shpjs";
+import {
+  setSqljsWasmLocateFile,
+  GeoPackageAPI
+} from '@ngageoint/geopackage';
+import sqlWasmUrl from "@ngageoint/geopackage/dist/sql-wasm.wasm?url";
 
 /**
  * Check if the extension of the given file name is accepted for given service.
@@ -69,15 +74,14 @@ export async function readShapeZipFile (file) {
  * Reads a GeoPackage file and returns its content as GeoJSON.
  *
  * @param {File} file The GeoJSON file to read.
- * @param {string} resourcesPath - Path to the Sql.js wasm file.
  * @returns {Object} List of feature tables as GeoJSON FeatureCollections
  */
-export async function readGeoPackageFile (file, resourcesPath) {
+export async function readGeoPackageFile (file) {
     // create array buffer
     const buffer = await file.arrayBuffer();
     // create Uint8Array
     const uint8Array = new Uint8Array(buffer);
-    const gpkg = await prepareGPKG(uint8Array, resourcesPath);
+    const gpkg = await prepareGPKG(uint8Array);
 
     if (gpkg === null) {
         // abort file import
@@ -104,13 +108,12 @@ export async function readGeoPackageFile (file, resourcesPath) {
 /**
  * Prepare a GeoPackage instance from uint8Array
  * @param {object} uint8Array - The File Api object of the geopackage
- * @param {string} resourcesPath - Path to the Sql.js wasm file.
  * @returns {object} - The GeoPackage database connection
-    */
-export async function prepareGPKG (uint8Array, resourcesPath) {
-    window.GeoPackage.setSqljsWasmLocateFile(file => resourcesPath + file);
+ */
+export async function prepareGPKG (uint8Array) {
+    setSqljsWasmLocateFile(() => sqlWasmUrl);
     // create GeoPackage database connection
-    const gpkg = await window.GeoPackage.GeoPackageAPI.open(uint8Array);
+    const gpkg = await GeoPackageAPI.open(uint8Array);
     const tables = gpkg.getFeatureTables();
     const projections = tables.map((tableName) => gpkg.getFeatureDao(tableName).projection);
 

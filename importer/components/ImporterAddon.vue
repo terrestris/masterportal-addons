@@ -5,15 +5,15 @@ import LayerSelection from "./LayerSelection.vue";
 import ProvideOgcService from "./ProvideOgcService.vue";
 import WorkflowSelection from "./WorkflowSelection.vue";
 import StyleLayers from "./StyleLayers.vue";
-import getters from "../store/gettersImporterAddon";
-import mutations from "../store/mutationsImporterAddon";
-import STEPS from "../constants/steps";
-import {treeSubjectsKey} from "@shared/js/utils/constants";
-import isMobile from "@shared/js/utils/isMobile";
-import {applyStyles} from "../utils/layer";
+import getters from "../store/gettersImporterAddon.js";
+import mutations from "../store/mutationsImporterAddon.js";
+import STEPS from "../constants/steps.js";
+import {treeSubjectsKey} from "@shared/js/utils/constants.js";
+import isMobile from "@shared/js/utils/isMobile.js";
+import {applyStyles} from "../utils/layer.js";
 import FlatButton from "@shared/modules/buttons/components/FlatButton.vue";
-import buildTreeStructure from "@appstore/js/buildTreeStructure";
-import {processLayersForAdding} from "../utils/processLayersForAdding";
+import buildTreeStructure from "@appstore/js/buildTreeStructure.js";
+import {processLayersForAdding} from "../utils/processLayersForAdding.js";
 
 /**
  * ImporterAddon

@@ -1,12 +1,12 @@
 <script>
 import {mapGetters, mapActions, mapMutations} from "vuex";
-import mutations from "../store/mutationsImporterAddon";
+import mutations from "../store/mutationsImporterAddon.js";
 
-import FILETYPES from "../constants/filetypes";
-import MIMETYPES from "../constants/mimetypes";
+import FILETYPES from "../constants/filetypes.js";
+import MIMETYPES from "../constants/mimetypes.js";
 
-import {isMimeTypeAccepted, isFileExtensionAccepted} from "../utils/file";
-import {generateId} from "../utils/layer";
+import {isMimeTypeAccepted, isFileExtensionAccepted} from "../utils/file.js";
+import {generateId} from "../utils/layer.js";
 
 export default {
     name: "FileUpload",

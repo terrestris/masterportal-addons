@@ -1,4 +1,4 @@
-import WORKFLOWS from "../constants/workflows";
+import WORKFLOWS from "../constants/workflows.js";
 
 /**
  * Return the names of all workflows.

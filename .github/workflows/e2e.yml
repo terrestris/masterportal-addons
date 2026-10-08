@@ -8,10 +8,10 @@ on:
 
 env:
   MASTERPORTAL_REPO: https://bitbucket.org/geowerkstatt-hamburg/masterportal
-  MASTERPORTAL_TAG: v3.15.3
+  MASTERPORTAL_TAG: v3.27.0
   SERVE_PORT: 8080
   SERVE_HOST: localhost
-  NODE_VERSION: 22.22.3
+  NODE_VERSION: 24.21.0
   ADDONS: "exporter importer tourGuide simpleLineChart iconTheme"
 
 defaults:
@@ -26,7 +26,7 @@ jobs:
 
     steps:
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -49,7 +49,7 @@ jobs:
             librsvg2-dev
 
       - name: Checkout masterportal-addons
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: masterportal-addons
 
@@ -114,8 +114,9 @@ jobs:
 
       - name: Copy e2e config into masterportal/portal
         working-directory: masterportal
+        # we need at least two portals starting with masterportal version 3.27
+        # otherwise the build will fail
         run: |
-          rm -rf portal/*
           cp -r ../masterportal-addons/test/e2e/config portal/e2e
           cp -r ../masterportal-addons/test/e2e/config/addonsConf.json addons/addonsConf.json
 
@@ -126,11 +127,10 @@ jobs:
         run: |
           set -x
           echo "" | npm run build
-          sed -i 's|"\.\./mastercode|"/mastercode|g' dist/e2e/index.html
           cat dist/e2e/index.html
 
       - name: Upload dist artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: masterportal-dist
           path: masterportal/dist/
@@ -152,7 +152,7 @@ jobs:
 
     steps:
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -168,12 +168,12 @@ jobs:
             fonts-noto-color-emoji
 
       - name: Checkout masterportal-addons
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: masterportal-addons
 
       - name: Download dist artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: masterportal-dist
           path: masterportal-dist
@@ -218,7 +218,7 @@ jobs:
 
       - name: Upload Playwright report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-report-${{ env.ADDON_NAME }}
           path: masterportal-addons/playwright-report/

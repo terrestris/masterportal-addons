@@ -1,8 +1,8 @@
 <script>
 import {mapGetters, mapMutations} from "vuex";
-import getters from "../store/gettersImporterAddon";
-import mutations from "../store/mutationsImporterAddon";
-import ColorUtil from "../utils/color";
+import getters from "../store/gettersImporterAddon.js";
+import mutations from "../store/mutationsImporterAddon.js";
+import ColorUtil from "../utils/color.js";
 
 import IconButton from "@shared/modules/buttons/components/IconButton.vue";
 

@@ -1,8 +1,8 @@
 <script>
 import {mapGetters, mapMutations} from "vuex";
-import mutations from "../store/mutationsImporterAddon";
-import {createCapabilitiesUrl, fetchCapabilities, getLayersFromCapabilities, getVersionFromCapabilities, isValidCapabilitiesUrl, detectServiceType} from "../utils/capabilities";
-import {createLayerConfigs, generateId} from "../utils/layer";
+import mutations from "../store/mutationsImporterAddon.js";
+import {createCapabilitiesUrl, fetchCapabilities, getLayersFromCapabilities, getVersionFromCapabilities, isValidCapabilitiesUrl, detectServiceType} from "../utils/capabilities.js";
+import {createLayerConfigs, generateId} from "../utils/layer.js";
 import SpinnerItem from "@shared/modules/spinner/components/SpinnerItem.vue";
 
 export default {
