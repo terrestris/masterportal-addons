@@ -1,6 +1,6 @@
 # Masterportal Addons
 
-Dieses Repository enthält Addons für das aktuelle stabile [Masterportal](https://bitbucket.org/geowerkstatt-hamburg/masterportal/), entwickelt von [terrestris](https://terrestris.de).
+Dieses Repository enthält Addons für das aktuelle stabile [Masterportal](https://gitlab.opencode.de/lgvhh/urban-data-solutions/masterportal), entwickelt von [terrestris](https://terrestris.de).
 Wir haben zudem mehrere weitere Addons entwickelt, um Layout, Design (z.B. Icon-Bibliothek), Startseite und Detailsuche anzupassen. Bei Fragen hierzu können Sie uns gerne unter sales@terrestris.de kontaktieren.
 
 ## Installation
