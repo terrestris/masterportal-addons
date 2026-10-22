@@ -15,6 +15,7 @@ export const DEFAULT_VALUES = {
             EXPORTFORMATS.gpkg
         ],
         downloadProjection: "mapProjection",
+        projectionWkts: {},
         selectedExportFormat: undefined
     };
 
@@ -30,6 +31,7 @@ export const DEFAULT_VALUES = {
      * @property {Object} selectedLayer The currently selected layer to export.
      * @property {String[]} supportedExportFormats List of supported export formats.
      * @property {String} downloadProjection Optional projection mode used for shp/gpkg export.
+     * @property {Object} projectionWkts Optional WKT definitions by projection for shp export.
      * @property {String} selectedExportFormat The currently selected export format.
      */
     const state = {
