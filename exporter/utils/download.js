@@ -697,3 +697,4 @@ export async function downloadLayer (layer, format, downloadProjection, projecti
 export default {
     downloadLayer
 };
+
